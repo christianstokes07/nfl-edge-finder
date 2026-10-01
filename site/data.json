@@ -1,1 +1,2264 @@
-{"updated": null, "min_edge": 0.05, "stats": {}, "picks": []}
+{
+ "updated": "2026-10-01T13:33:12+00:00",
+ "min_edge": 0.05,
+ "stats": {
+  "markets": 19610,
+  "parsed": 3169,
+  "matched": 2851,
+  "scored": 989,
+  "by_stat": {
+   "rushing yds": 180,
+   "anytime TD": 604,
+   "receiving yds": 205
+  }
+ },
+ "params": {
+  "fee": 0.07,
+  "max_spread": 8,
+  "min_edge": 0.05,
+  "min_edge_td": 0.08,
+  "top_n": 10
+ },
+ "universe": [
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIJLOVE4-1",
+   "player": "Jeremiyah Love",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.5,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.483,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 49.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04ARINYG-ARIJLOVE4",
+   "player": "Jeremiyah Love",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.5,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.483,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 13.0,
+   "ask": 18.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04DENSF-DENJDOBBINS27-60",
+   "player": "J.K. Dobbins",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 60.0,
+   "fair": 0.501,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.502,
+    "fanduel": 0.5
+   },
+   "unc": 0.022,
+   "bid": 47.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04NYJCHI-CHIDSWIFT4-1",
+   "player": "D'Andre Swift",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.499,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.496,
+    "draftkings": 0.496,
+    "fanduel": 0.505
+   },
+   "unc": 0.04,
+   "bid": 50.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NEBUF-BUFDMOORE2-50",
+   "player": "DJ Moore",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 50.0,
+   "fair": 0.501,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.512,
+    "draftkings": 0.492,
+    "fanduel": 0.5
+   },
+   "unc": 0.022,
+   "bid": 48.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04NYJCHI-CHIDSWIFT4",
+   "player": "D'Andre Swift",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.499,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.496,
+    "draftkings": 0.496,
+    "fanduel": 0.505
+   },
+   "unc": 0.04,
+   "bid": 16.0,
+   "ask": 17.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04DETCAR-DETSVAKI33-10",
+   "player": "Sione Vaki",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 10.0,
+   "fair": 0.502,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.504,
+    "fanduel": 0.5
+   },
+   "unc": 0.033,
+   "bid": 47.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04KCLV-KCRRICE4-55",
+   "player": "Rashee Rice",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 55.0,
+   "fair": 0.502,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.505,
+    "fanduel": 0.5
+   },
+   "unc": 0.022,
+   "bid": 50.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04INDWAS-INDJTAYLOR28-90",
+   "player": "Jonathan Taylor",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 90.0,
+   "fair": 0.503,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.507,
+    "draftkings": 0.495,
+    "fanduel": 0.507
+   },
+   "unc": 0.021,
+   "bid": 47.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04GBTB-GBJLOVE10-5",
+   "player": "Jordan Love",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 5.0,
+   "fair": 0.503,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.506,
+    "fanduel": 0.5
+   },
+   "unc": 0.047,
+   "bid": 47.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NEBUF-NERDOUBS87-40",
+   "player": "Romeo Doubs",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.503,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.484,
+    "draftkings": 0.526,
+    "fanduel": 0.5
+   },
+   "unc": 0.023,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NEBUF-NEMHOLLINS13-45",
+   "player": "Mack Hollins",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 45.0,
+   "fair": 0.503,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.527,
+    "draftkings": 0.495,
+    "fanduel": 0.486
+   },
+   "unc": 0.023,
+   "bid": 45.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04KCLV-KCTTHORNTON2-20",
+   "player": "Tyquan Thornton",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 20.0,
+   "fair": 0.503,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.476,
+    "fanduel": 0.531
+   },
+   "unc": 0.026,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04KCLV-LVJNAILOR9-20",
+   "player": "Jalen Nailor",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 20.0,
+   "fair": 0.503,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.506,
+    "fanduel": 0.5
+   },
+   "unc": 0.026,
+   "bid": 50.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT05ATLNO-ATLBROBINSON7-40",
+   "player": "Bijan Robinson",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.497,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.494,
+    "fanduel": 0.5
+   },
+   "unc": 0.023,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04NEBUF-NETHENDERSON32-40",
+   "player": "TreVeyon Henderson",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 40.0,
+   "fair": 0.504,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.483,
+    "draftkings": 0.529,
+    "fanduel": 0.5
+   },
+   "unc": 0.023,
+   "bid": 50.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04LARPHI-LARKWILLIAMS23-1",
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.496,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.496,
+    "fanduel": 0.478
+   },
+   "unc": 0.04,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DALHOU-DALJFERGUSON87-25",
+   "player": "Jake Ferguson",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.504,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.534,
+    "draftkings": 0.504,
+    "fanduel": 0.474
+   },
+   "unc": 0.025,
+   "bid": 48.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04JACCIN-CINSPERINE34-10",
+   "player": "Samaje Perine",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 10.0,
+   "fair": 0.496,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.492,
+    "fanduel": 0.5
+   },
+   "unc": 0.033,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-KWILLIAMS23",
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.496,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.496,
+    "fanduel": 0.478
+   },
+   "unc": 0.04,
+   "bid": 1.0,
+   "ask": 2.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04LARPHI-LARKWILLIAMS23",
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.496,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.496,
+    "fanduel": 0.478
+   },
+   "unc": 0.04,
+   "bid": 12.0,
+   "ask": 15.0
+  },
+  {
+   "ticker": "KXNFLTSPEC-27PIT-JWARREN30R75R75",
+   "player": "Jaylen Warren",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 75.0,
+   "fair": 0.504,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.491,
+    "draftkings": 0.505,
+    "fanduel": 0.518
+   },
+   "unc": 0.022,
+   "bid": 17.0,
+   "ask": 25.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LARPHI-PHIJHURTS1-25",
+   "player": "Jalen Hurts",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 25.0,
+   "fair": 0.505,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.509,
+    "fanduel": 0.5
+   },
+   "unc": 0.025,
+   "bid": 49.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04MIAMIN-MIAMWILLIS2-30",
+   "player": "Malik Willis",
+   "game": "Miami Dolphins @ Minnesota Vikings",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 30.0,
+   "fair": 0.495,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.514,
+    "fanduel": 0.477
+   },
+   "unc": 0.024,
+   "bid": 49.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LACSEA-SEAEWILSON23-40",
+   "player": "Emanuel Wilson",
+   "game": "Los Angeles Chargers @ Seattle Seahawks",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 40.0,
+   "fair": 0.495,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.506,
+    "fanduel": 0.483
+   },
+   "unc": 0.023,
+   "bid": 45.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04NEBUF-BUFJCOOK4-1",
+   "player": "James Cook",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.495,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.468,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 52.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-JCOOK4",
+   "player": "James Cook",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.495,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.468,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 4.0,
+   "ask": 5.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04NEBUF-BUFJCOOK4",
+   "player": "James Cook",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.495,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.468,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 16.0,
+   "ask": 17.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04DALHOU-DALJWILLIAMS33-60",
+   "player": "Javonte Williams",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 60.0,
+   "fair": 0.494,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.466,
+    "draftkings": 0.517,
+    "fanduel": 0.5
+   },
+   "unc": 0.022,
+   "bid": 50.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04JACCIN-JACJMEYERS3-40",
+   "player": "Jakobi Meyers",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.506,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.518,
+    "fanduel": 0.5
+   },
+   "unc": 0.023,
+   "bid": 50.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04JACCIN-CINJCHASE1-80",
+   "player": "Ja'Marr Chase",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.493,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.492,
+    "draftkings": 0.496,
+    "fanduel": 0.492
+   },
+   "unc": 0.022,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LARPHI-PHIDSMITH6-70",
+   "player": "DeVonta Smith",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.493,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.495,
+    "fanduel": 0.491
+   },
+   "unc": 0.025,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LACSEA-SEAJSMITHNJIGBA11-90",
+   "player": "Jaxon Smith-Njigba",
+   "game": "Los Angeles Chargers @ Seattle Seahawks",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 90.0,
+   "fair": 0.508,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.509,
+    "fanduel": 0.507
+   },
+   "unc": 0.021,
+   "bid": 49.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DETCAR-CARTMCMILLAN4-70",
+   "player": "Tetairoa McMillan",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.508,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.507,
+    "fanduel": 0.509
+   },
+   "unc": 0.022,
+   "bid": 48.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04NEBUF-BUFJALLEN17-1",
+   "player": "Josh Allen",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.509,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.543,
+    "draftkings": 0.487,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 50.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-JALLEN17",
+   "player": "Josh Allen",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.509,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.543,
+    "draftkings": 0.487,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 12.0,
+   "ask": 21.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04NEBUF-BUFJALLEN17",
+   "player": "Josh Allen",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.509,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.543,
+    "draftkings": 0.487,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 11.0,
+   "ask": 13.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04ARINYG-NYGILIKELY9-40",
+   "player": "Isaiah Likely",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.51,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.52,
+    "fanduel": 0.5
+   },
+   "unc": 0.023,
+   "bid": 49.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT05ATLNO-ATLDLONDON5-80",
+   "player": "Drake London",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.49,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.488,
+    "fanduel": 0.492
+   },
+   "unc": 0.025,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04NEBUF-BUFJCOOK4-90",
+   "player": "James Cook",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 90.0,
+   "fair": 0.489,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.493,
+    "draftkings": 0.49,
+    "fanduel": 0.485
+   },
+   "unc": 0.024,
+   "bid": 45.0,
+   "ask": 46.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04MIAMIN-MIAOGORDON0-30",
+   "player": "Ollie Gordon II",
+   "game": "Miami Dolphins @ Minnesota Vikings",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 30.0,
+   "fair": 0.511,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.5,
+    "fanduel": 0.522
+   },
+   "unc": 0.024,
+   "bid": 51.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT05ATLNO-ATLBROBINSON15-30",
+   "player": "Brian Robinson Jr.",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 30.0,
+   "fair": 0.511,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.522,
+    "fanduel": 0.5
+   },
+   "unc": 0.024,
+   "bid": 52.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NYJCHI-CHIDSWIFT4-15",
+   "player": "D'Andre Swift",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 15.0,
+   "fair": 0.489,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.51,
+    "draftkings": 0.456,
+    "fanduel": 0.5
+   },
+   "unc": 0.028,
+   "bid": 47.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04GBTB-GBSMOORE23-20",
+   "player": "Skyy Moore",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 20.0,
+   "fair": 0.512,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.494,
+    "fanduel": 0.531
+   },
+   "unc": 0.026,
+   "bid": 47.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DETCAR-CARCHUBBARD30-1",
+   "player": "Chuba Hubbard",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.513,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.521,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 51.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DETCAR-DETASTBROWN14-1",
+   "player": "Amon-Ra St. Brown",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.487,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.47,
+    "draftkings": 0.496,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 51.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LARPHI-PHIDWICKS13-40",
+   "player": "Dontayvion Wicks",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.513,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.511,
+    "fanduel": 0.515
+   },
+   "unc": 0.023,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04TENBAL-BALZFLOWERS4-70",
+   "player": "Zay Flowers",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.487,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.469,
+    "fanduel": 0.491
+   },
+   "unc": 0.022,
+   "bid": 46.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT05ATLNO-NOJJOHNSON83-40",
+   "player": "Juwan Johnson",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.513,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.511,
+    "fanduel": 0.515
+   },
+   "unc": 0.023,
+   "bid": 49.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXLEADERNFLRTDS-27-ASTBROWN14",
+   "player": "Amon-Ra St. Brown",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.487,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.47,
+    "draftkings": 0.496,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 18.0,
+   "ask": 21.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-CHUBBARD30",
+   "player": "Chuba Hubbard",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.513,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.521,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 0.0,
+   "ask": 1.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04DETCAR-CARCHUBBARD30",
+   "player": "Chuba Hubbard",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.513,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.521,
+    "draftkings": 0.505,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 10.0,
+   "ask": 14.000000000000002
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04DETCAR-DETASTBROWN14",
+   "player": "Amon-Ra St. Brown",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.487,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.47,
+    "draftkings": 0.496,
+    "fanduel": 0.496
+   },
+   "unc": 0.04,
+   "bid": 10.0,
+   "ask": 12.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04KCLV-LVAJEANTY2-60",
+   "player": "Ashton Jeanty",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 60.0,
+   "fair": 0.486,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.507,
+    "fanduel": 0.466
+   },
+   "unc": 0.022,
+   "bid": 49.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04ARINYG-ARIMWILSON14-60",
+   "player": "Michael Wilson",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 60.0,
+   "fair": 0.486,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.494,
+    "fanduel": 0.479
+   },
+   "unc": 0.022,
+   "bid": 46.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04JACCIN-JACBTHOMAS7-30",
+   "player": "Brian Thomas Jr",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 30.0,
+   "fair": 0.486,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.5,
+    "fanduel": 0.457
+   },
+   "unc": 0.024,
+   "bid": 47.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LACSEA-SEACKUPP10-25",
+   "player": "Cooper Kupp",
+   "game": "Los Angeles Chargers @ Seattle Seahawks",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.514,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.504,
+    "fanduel": 0.525
+   },
+   "unc": 0.025,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT01PITCLE-CLEDWATSON4-30",
+   "player": "Deshaun Watson",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 30.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.553,
+    "draftkings": 0.492,
+    "fanduel": 0.5
+   },
+   "unc": 0.024,
+   "bid": 49.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALJWILLIAMS33-1",
+   "player": "Javonte Williams",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.536,
+    "draftkings": 0.505,
+    "fanduel": 0.505
+   },
+   "unc": 0.04,
+   "bid": 52.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT01PITCLE-CLEHFANNIN44-40",
+   "player": "Harold Fannin Jr.",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.515,
+    "draftkings": 0.513,
+    "fanduel": 0.515
+   },
+   "unc": 0.023,
+   "bid": 51.0,
+   "ask": 52.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04JACCIN-CINTHIGGINS5-60",
+   "player": "Tee Higgins",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 60.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.52,
+    "draftkings": 0.514,
+    "fanduel": 0.51
+   },
+   "unc": 0.022,
+   "bid": 50.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-JWILLIAMS33",
+   "player": "Javonte Williams",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.536,
+    "draftkings": 0.505,
+    "fanduel": 0.505
+   },
+   "unc": 0.04,
+   "bid": 0.0,
+   "ask": 1.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04DALHOU-DALJWILLIAMS33",
+   "player": "Javonte Williams",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.515,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.536,
+    "draftkings": 0.505,
+    "fanduel": 0.505
+   },
+   "unc": 0.04,
+   "bid": 13.0,
+   "ask": 16.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LACSEA-SEAJPRICE8-40",
+   "player": "Jadarian Price",
+   "game": "Los Angeles Chargers @ Seattle Seahawks",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 40.0,
+   "fair": 0.516,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.516,
+    "fanduel": 0.517
+   },
+   "unc": 0.023,
+   "bid": 52.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGCSKATTEBO44-1",
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.513,
+    "fanduel": 0.521
+   },
+   "unc": 0.04,
+   "bid": 52.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04KCLV-LVAJEANTY2-1",
+   "player": "Ashton Jeanty",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.521,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 55.00000000000001,
+   "ask": 56.00000000000001
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DALHOU-DALGPICKENS3-70",
+   "player": "George Pickens",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.484,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.482,
+    "draftkings": 0.48,
+    "fanduel": 0.491
+   },
+   "unc": 0.025,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DALHOU-HOUKBOUTTE14-25",
+   "player": "Kayshon Boutte",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.484,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.494,
+    "fanduel": 0.474
+   },
+   "unc": 0.025,
+   "bid": 49.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DETCAR-DETSLAPORTA87-50",
+   "player": "Sam LaPorta",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 50.0,
+   "fair": 0.484,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.481,
+    "fanduel": 0.487
+   },
+   "unc": 0.027,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DETCAR-DETJWILLIAMS1-50",
+   "player": "Jameson Williams",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 50.0,
+   "fair": 0.516,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.52,
+    "fanduel": 0.512
+   },
+   "unc": 0.022,
+   "bid": 53.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-AJEANTY2",
+   "player": "Ashton Jeanty",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.521,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 0.0,
+   "ask": 2.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-CSKATTEBO44",
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.513,
+    "fanduel": 0.521
+   },
+   "unc": 0.04,
+   "bid": 1.0,
+   "ask": 2.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04ARINYG-NYGCSKATTEBO44",
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.513,
+    "fanduel": 0.521
+   },
+   "unc": 0.04,
+   "bid": 14.000000000000002,
+   "ask": 16.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04KCLV-LVAJEANTY2",
+   "player": "Ashton Jeanty",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.516,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.521,
+    "fanduel": 0.513
+   },
+   "unc": 0.04,
+   "bid": 13.0,
+   "ask": 15.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04ARINYG-ARITMCBRIDE85-70",
+   "player": "Trey McBride",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.483,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.484,
+    "fanduel": 0.482
+   },
+   "unc": 0.029,
+   "bid": 46.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04GBTB-TBEEGBUKA2-40",
+   "player": "Emeka Egbuka",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.483,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.484,
+    "draftkings": 0.48,
+    "fanduel": 0.484
+   },
+   "unc": 0.029,
+   "bid": 47.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04ARINYG-NYGNHARRIS23-25",
+   "player": "Najee Harris",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 25.0,
+   "fair": 0.482,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.492,
+    "fanduel": 0.472
+   },
+   "unc": 0.025,
+   "bid": 46.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LARPHI-PHISBARKLEY26-80",
+   "player": "Saquon Barkley",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 80.0,
+   "fair": 0.482,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.489,
+    "fanduel": 0.474
+   },
+   "unc": 0.025,
+   "bid": 47.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04TENBAL-BALMANDREWS89-40",
+   "player": "Mark Andrews",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.482,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.523,
+    "draftkings": 0.456,
+    "fanduel": 0.468
+   },
+   "unc": 0.029,
+   "bid": 46.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04NYJCHI-CHITBAGENT17-15",
+   "player": "Tyson Bagent",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 15.0,
+   "fair": 0.481,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.489,
+    "fanduel": 0.474
+   },
+   "unc": 0.028,
+   "bid": 45.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04TENBAL-BALDHENRY22-100",
+   "player": "Derrick Henry",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 100.0,
+   "fair": 0.481,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.48,
+    "draftkings": 0.484,
+    "fanduel": 0.48
+   },
+   "unc": 0.026,
+   "bid": 48.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04INDWAS-WASTMCLAURIN17-55",
+   "player": "Terry McLaurin",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 55.0,
+   "fair": 0.481,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.467,
+    "fanduel": 0.477
+   },
+   "unc": 0.022,
+   "bid": 37.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04NYJCHI-CHIKMONANGAI25-40",
+   "player": "Kyle Monangai",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 40.0,
+   "fair": 0.479,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.465,
+    "draftkings": 0.487,
+    "fanduel": 0.483
+   },
+   "unc": 0.029,
+   "bid": 45.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DENSF-SFCMCCAFFREY23-40",
+   "player": "Christian McCaffrey",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.479,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.474,
+    "fanduel": 0.484
+   },
+   "unc": 0.029,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LACSEA-LACOGADSDEN86-25",
+   "player": "Oronde Gadsden II",
+   "game": "Los Angeles Chargers @ Seattle Seahawks",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.521,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.518,
+    "fanduel": 0.525
+   },
+   "unc": 0.025,
+   "bid": 50.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT05ATLNO-ATLBROBINSON7-90",
+   "player": "Bijan Robinson",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 90.0,
+   "fair": 0.478,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.472,
+    "fanduel": 0.485
+   },
+   "unc": 0.027,
+   "bid": 46.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT01PITCLE-PITJWARREN30-25",
+   "player": "Jaylen Warren",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.522,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.542,
+    "fanduel": 0.525
+   },
+   "unc": 0.025,
+   "bid": 50.0,
+   "ask": 51.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DALHOU-DALCLAMB88-80",
+   "player": "CeeDee Lamb",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.478,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.484,
+    "draftkings": 0.473,
+    "fanduel": 0.476
+   },
+   "unc": 0.028,
+   "bid": 45.0,
+   "ask": 47.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04KCLV-LVBBOWERS89-80",
+   "player": "Brock Bowers",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.478,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.48,
+    "fanduel": 0.476
+   },
+   "unc": 0.028,
+   "bid": 44.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DETCAR-CARDWALLER88-25",
+   "player": "Darren Waller",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.478,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.481,
+    "fanduel": 0.474
+   },
+   "unc": 0.035,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LARPHI-LARKWILLIAMS23-60",
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 60.0,
+   "fair": 0.477,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.477,
+    "fanduel": 0.477
+   },
+   "unc": 0.03,
+   "bid": 44.0,
+   "ask": 47.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04DETCAR-DETJGIBBS0-100",
+   "player": "Jahmyr Gibbs",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 100.0,
+   "fair": 0.477,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.489,
+    "fanduel": 0.466
+   },
+   "unc": 0.026,
+   "bid": 46.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04LARPHI-LARKWILLIAMS23-15",
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 15.0,
+   "fair": 0.477,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.454,
+    "fanduel": 0.5
+   },
+   "unc": 0.028,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04KCLV-KCTKELCE87-50",
+   "player": "Travis Kelce",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 50.0,
+   "fair": 0.477,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.479,
+    "fanduel": 0.475
+   },
+   "unc": 0.033,
+   "bid": 46.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLTSPEC-27DET-JGIBBS0R100R100",
+   "player": "Jahmyr Gibbs",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 100.0,
+   "fair": 0.477,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.489,
+    "fanduel": 0.466
+   },
+   "unc": 0.026,
+   "bid": 9.0,
+   "ask": 17.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04LARPHI-LARBCORUM24-40",
+   "player": "Blake Corum",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 40.0,
+   "fair": 0.524,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.531,
+    "fanduel": 0.517
+   },
+   "unc": 0.023,
+   "bid": 51.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04GBTB-GBMGOLDEN0-60",
+   "player": "Matthew Golden",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 60.0,
+   "fair": 0.476,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.49,
+    "draftkings": 0.459,
+    "fanduel": 0.479
+   },
+   "unc": 0.026,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DENSF-DENCSUTTON14-40",
+   "player": "Courtland Sutton",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.476,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.468,
+    "fanduel": 0.484
+   },
+   "unc": 0.029,
+   "bid": 48.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04GBTB-GBMLLOYD32-25",
+   "player": "MarShawn Lloyd",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 25.0,
+   "fair": 0.475,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.454,
+    "fanduel": 0.472
+   },
+   "unc": 0.025,
+   "bid": 42.0,
+   "ask": 44.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04NYJCHI-CHIDSWIFT4-70",
+   "player": "D'Andre Swift",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 70.0,
+   "fair": 0.475,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.481,
+    "draftkings": 0.475,
+    "fanduel": 0.471
+   },
+   "unc": 0.029,
+   "bid": 44.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04MIAMIN-MINAJONES33-70",
+   "player": "Aaron Jones",
+   "game": "Miami Dolphins @ Minnesota Vikings",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 70.0,
+   "fair": 0.475,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.469,
+    "fanduel": 0.481
+   },
+   "unc": 0.029,
+   "bid": 46.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04GBTB-TBCOTTON88-25",
+   "player": "Cade Otton",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 25.0,
+   "fair": 0.525,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.534,
+    "draftkings": 0.518,
+    "fanduel": 0.525
+   },
+   "unc": 0.025,
+   "bid": 51.0,
+   "ask": 54.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DENSF-DENJWADDLE17-55",
+   "player": "Jaylen Waddle",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 55.0,
+   "fair": 0.525,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.529,
+    "fanduel": 0.522
+   },
+   "unc": 0.026,
+   "bid": 36.0,
+   "ask": 68.0
+  },
+  {
+   "ticker": "KXNFLTSPEC-27PHI-SBARKLEY26R75R75",
+   "player": "Saquon Barkley",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 75.0,
+   "fair": 0.525,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.533,
+    "fanduel": 0.518
+   },
+   "unc": 0.025,
+   "bid": 10.0,
+   "ask": 18.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04GBTB-GBKJOHNSON26-30",
+   "player": "Kaleb Johnson",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 30.0,
+   "fair": 0.527,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.537,
+    "fanduel": 0.544
+   },
+   "unc": 0.024,
+   "bid": 51.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NEBUF-BUFDKINCAID86-50",
+   "player": "Dalton Kincaid",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 50.0,
+   "fair": 0.527,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.536,
+    "draftkings": 0.534,
+    "fanduel": 0.512
+   },
+   "unc": 0.022,
+   "bid": 51.0,
+   "ask": 53.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04TENBAL-TENWROBINSON4-40",
+   "player": "Wan'Dale Robinson",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 40.0,
+   "fair": 0.473,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.461,
+    "draftkings": 0.474,
+    "fanduel": 0.484
+   },
+   "unc": 0.029,
+   "bid": 46.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DETCAR-DETASTBROWN14-80",
+   "player": "Amon-Ra St. Brown",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.473,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.478,
+    "fanduel": 0.468
+   },
+   "unc": 0.028,
+   "bid": 46.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04NYJCHI-NYJGWILSON5-80",
+   "player": "Garrett Wilson",
+   "game": "New York Jets @ Chicago Bears",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 80.0,
+   "fair": 0.472,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.476,
+    "draftkings": 0.47,
+    "fanduel": 0.468
+   },
+   "unc": 0.031,
+   "bid": 43.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04DENSF-DENJWADDLE17-60",
+   "player": "Jaylen Waddle",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 60.0,
+   "fair": 0.472,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.475,
+    "fanduel": 0.468
+   },
+   "unc": 0.03,
+   "bid": 46.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04KCLV-KCKWALKER9-90",
+   "player": "Kenneth Walker III",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 90.0,
+   "fair": 0.471,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.465,
+    "fanduel": 0.477
+   },
+   "unc": 0.03,
+   "bid": 47.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04JACCIN-JACTLAWRENCE16-15",
+   "player": "Trevor Lawrence",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 15.0,
+   "fair": 0.47,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.463,
+    "draftkings": 0.448,
+    "fanduel": 0.5
+   },
+   "unc": 0.028,
+   "bid": 47.0,
+   "ask": 50.0
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUDMONTGOMERY32-1",
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.53,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.536,
+    "fanduel": 0.543
+   },
+   "unc": 0.04,
+   "bid": 54.0,
+   "ask": 55.00000000000001
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04TENBAL-TENGHELM84-20",
+   "player": "Gunnar Helm",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 20.0,
+   "fair": 0.47,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.5,
+    "draftkings": 0.442,
+    "fanduel": 0.468
+   },
+   "unc": 0.026,
+   "bid": 45.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT05ATLNO-NOCOLAVE12-90",
+   "player": "Chris Olave",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 90.0,
+   "fair": 0.47,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.468,
+    "fanduel": 0.472
+   },
+   "unc": 0.033,
+   "bid": 44.0,
+   "ask": 48.0
+  },
+  {
+   "ticker": "KXLEADERNFLRUSHTDS-27-DMONTGOMERY5",
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.53,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.536,
+    "fanduel": 0.543
+   },
+   "unc": 0.04,
+   "bid": 2.0,
+   "ask": 3.0
+  },
+  {
+   "ticker": "KXNFLFIRSTTD-26OCT04DALHOU-HOUDMONTGOMERY32",
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.53,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.513,
+    "draftkings": 0.536,
+    "fanduel": 0.543
+   },
+   "unc": 0.04,
+   "bid": 13.0,
+   "ask": 17.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04ARINYG-ARITALLGEIER22-20",
+   "player": "Tyler Allgeier",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 20.0,
+   "fair": 0.469,
+   "books": 2,
+   "by_book": {
+    "draftkings": 0.473,
+    "fanduel": 0.465
+   },
+   "unc": 0.039,
+   "bid": 45.0,
+   "ask": 49.0
+  },
+  {
+   "ticker": "KXNFLRSHYDS-26OCT04TENBAL-TENTPOLLARD20-50",
+   "player": "Tony Pollard",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_rush_yds",
+   "label": "rushing yds",
+   "threshold": 50.0,
+   "fair": 0.468,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.473,
+    "draftkings": 0.459,
+    "fanduel": 0.473
+   },
+   "unc": 0.033,
+   "bid": 46.0,
+   "ask": 47.0
+  },
+  {
+   "ticker": "KXNFLRECYDS-26OCT04GBTB-GBCWATSON9-70",
+   "player": "Christian Watson",
+   "game": "Green Bay Packers @ Tampa Bay Buccaneers",
+   "stat": "player_reception_yds",
+   "label": "receiving yds",
+   "threshold": 70.0,
+   "fair": 0.468,
+   "books": 3,
+   "by_book": {
+    "betmgm": 0.473,
+    "draftkings": 0.45,
+    "fanduel": 0.482
+   },
+   "unc": 0.029,
+   "bid": 48.0,
+   "ask": 49.0
+  }
+ ],
+ "picks": [
+  {
+   "player": "Christian McCaffrey",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.59,
+   "edge": 0.569,
+   "books": 2,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CMCCAFFREY23",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Chase Brown",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.564,
+   "edge": 0.542,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CBROWN30",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Bijan Robinson",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 7,
+   "fair": 0.615,
+   "edge": 0.541,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-BROBINSON7",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Jonathan Taylor",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 12,
+   "fair": 0.657,
+   "edge": 0.53,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-JTAYLOR28",
+   "label": "anytime TD"
+  },
+  {
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 3,
+   "fair": 0.53,
+   "edge": 0.498,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-DMONTGOMERY5",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.516,
+   "edge": 0.494,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CSKATTEBO44",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Jahmyr Gibbs",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 20,
+   "fair": 0.689,
+   "edge": 0.478,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-JGIBBS0",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.496,
+   "edge": 0.474,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-KWILLIAMS23",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Derrick Henry",
+   "game": "Tennessee Titans @ Baltimore Ravens",
+   "stat": "player_rush_yds",
+   "threshold": 75.0,
+   "side": "YES",
+   "price": 20,
+   "fair": 0.668,
+   "edge": 0.457,
+   "books": 3,
+   "ticker": "KXNFLTSPEC-27BAL-DHENRY22R75R75",
+   "label": "rushing yds"
+  },
+  {
+   "player": "Kenneth Walker III",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 10,
+   "fair": 0.562,
+   "edge": 0.456,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-KWALKER9",
+   "label": "anytime TD"
+  }
+ ]
+}

@@ -1,0 +1,260 @@
+ts_utc,game,player,stat,threshold,side,price_c,fair,edge,ticker
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_anytime_td,1.0,YES,2,0.590,0.569,KXLEADERNFLRUSHTDS-27-CMCCAFFREY23
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Chase Brown,player_anytime_td,1.0,YES,2,0.564,0.542,KXLEADERNFLRUSHTDS-27-CBROWN30
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_anytime_td,1.0,YES,7,0.615,0.541,KXLEADERNFLRUSHTDS-27-BROBINSON7
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Jonathan Taylor,player_anytime_td,1.0,YES,12,0.657,0.530,KXLEADERNFLRUSHTDS-27-JTAYLOR28
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,David Montgomery,player_anytime_td,1.0,YES,3,0.530,0.498,KXLEADERNFLRUSHTDS-27-DMONTGOMERY5
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Cam Skattebo,player_anytime_td,1.0,YES,2,0.516,0.494,KXLEADERNFLRUSHTDS-27-CSKATTEBO44
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_anytime_td,1.0,YES,20,0.689,0.478,KXLEADERNFLRUSHTDS-27-JGIBBS0
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Kyren Williams,player_anytime_td,1.0,YES,2,0.496,0.474,KXLEADERNFLRUSHTDS-27-KWILLIAMS23
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Derrick Henry,player_rush_yds,75.0,YES,20,0.668,0.457,KXNFLTSPEC-27BAL-DHENRY22R75R75
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_anytime_td,1.0,YES,10,0.562,0.456,KXLEADERNFLRUSHTDS-27-KWALKER9
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Jonathan Taylor,player_rush_yds,75.0,YES,17,0.623,0.443,KXNFLTSPEC-27IND-JTAYLOR28R75R75
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,James Cook,player_anytime_td,1.0,YES,5,0.495,0.442,KXLEADERNFLRUSHTDS-27-JCOOK4
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_anytime_td,1.0,YES,24,0.689,0.436,KXNFLFIRSTTD-26OCT04DETCAR-DETJGIBBS0
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Saquon Barkley,player_anytime_td,1.0,YES,3,0.432,0.400,KXLEADERNFLRUSHTDS-27-SBARKLEY26
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Jacory Croskey-Merritt,player_rush_yds,50.0,YES,17,0.579,0.399,KXNFLTSPEC-27WAS-JCROSKEYMERRITT22R50R50
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Chase Brown,player_anytime_td,1.0,YES,16,0.564,0.394,KXNFLFIRSTTD-26OCT04JACCIN-CINCBROWN30
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_anytime_td,1.0,YES,21,0.615,0.394,KXNFLFIRSTTD-26OCT05ATLNO-ATLBROBINSON7
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Justin Jefferson,player_anytime_td,1.0,YES,2,0.406,0.385,KXLEADERNFLRTDS-27-JJEFFERSON18
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Jonathan Taylor,player_anytime_td,1.0,YES,26,0.657,0.384,KXNFLFIRSTTD-26OCT04INDWAS-INDJTAYLOR28
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_rush_yds,75.0,YES,20,0.592,0.381,KXNFLTSPEC-27KC-KWALKER9R75R75
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Ja'Marr Chase,player_anytime_td,1.0,YES,8,0.464,0.379,KXLEADERNFLRTDS-27-JCHASE1
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_anytime_td,1.0,YES,20,0.590,0.379,KXNFLFIRSTTD-26OCT04DENSF-SFCMCCAFFREY23
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,AJ Dillon,player_anytime_td,1.0,NO,49,0.886,0.378,KXNFLTSPEC-27CAR-ADILLON28RUTD
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Josh Allen,player_anytime_td,1.0,YES,13,0.509,0.371,KXNFLFIRSTTD-26OCT04NEBUF-BUFJALLEN17
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_anytime_td,1.0,YES,14,0.513,0.364,KXNFLFIRSTTD-26OCT04DETCAR-CARCHUBBARD30
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Davante Adams,player_anytime_td,1.0,YES,5,0.415,0.362,KXLEADERNFLRTDS-27-DADAMS17
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_anytime_td,1.0,YES,12,0.487,0.360,KXNFLFIRSTTD-26OCT04DETCAR-DETASTBROWN14
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Omarion Hampton,player_anytime_td,1.0,YES,6,0.422,0.358,KXLEADERNFLRUSHTDS-27-OHAMPTON8
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_anytime_td,1.0,YES,15,0.516,0.357,KXNFLFIRSTTD-26OCT04KCLV-LVAJEANTY2
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_anytime_td,1.0,YES,20,0.562,0.351,KXNFLFIRSTTD-26OCT04KCLV-KCKWALKER9
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,David Montgomery,player_anytime_td,1.0,YES,17,0.530,0.351,KXNFLFIRSTTD-26OCT04DALHOU-HOUDMONTGOMERY32
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Zay Flowers,player_anytime_td,1.0,YES,3,0.380,0.348,KXLEADERNFLRTDS-27-ZFLOWERS4
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Derrick Henry,player_anytime_td,1.0,YES,25,0.611,0.348,KXNFLFIRSTTD-26OCT04TENBAL-BALDHENRY22
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Cam Skattebo,player_anytime_td,1.0,YES,16,0.516,0.346,KXNFLFIRSTTD-26OCT04ARINYG-NYGCSKATTEBO44
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Javonte Williams,player_anytime_td,1.0,YES,16,0.515,0.346,KXNFLFIRSTTD-26OCT04DALHOU-DALJWILLIAMS33
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Drake London,player_anytime_td,1.0,YES,3,0.375,0.343,KXLEADERNFLRTDS-27-DLONDON5
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Puka Nacua,player_anytime_td,1.0,YES,4,0.383,0.340,KXLEADERNFLRTDS-27-PNACUA12
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,CeeDee Lamb,player_anytime_td,1.0,YES,4,0.383,0.340,KXLEADERNFLRTDS-27-CLAMB88
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Ja'Marr Chase,player_anytime_td,1.0,YES,12,0.464,0.337,KXNFLFIRSTTD-26OCT04JACCIN-CINJCHASE1
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Kyren Williams,player_anytime_td,1.0,YES,15,0.496,0.337,KXNFLFIRSTTD-26OCT04LARPHI-LARKWILLIAMS23
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Tee Higgins,player_anytime_td,1.0,YES,3,0.367,0.335,KXLEADERNFLRTDS-27-THIGGINS5
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Saquon Barkley,player_rush_yds,75.0,YES,18,0.525,0.335,KXNFLTSPEC-27PHI-SBARKLEY26R75R75
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Nico Collins,player_anytime_td,1.0,YES,3,0.356,0.324,KXLEADERNFLRTDS-27-NCOLLINS12
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,D'Andre Swift,player_anytime_td,1.0,YES,17,0.499,0.319,KXNFLFIRSTTD-26OCT04NYJCHI-CHIDSWIFT4
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Bhayshul Tuten,player_anytime_td,1.0,YES,13,0.454,0.316,KXNFLFIRSTTD-26OCT04JACCIN-JACBTUTEN33
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,James Cook,player_anytime_td,1.0,YES,17,0.495,0.315,KXNFLFIRSTTD-26OCT04NEBUF-BUFJCOOK4
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Jeremiyah Love,player_anytime_td,1.0,YES,18,0.500,0.310,KXNFLFIRSTTD-26OCT04ARINYG-ARIJLOVE4
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,George Pickens,player_anytime_td,1.0,YES,2,0.331,0.309,KXLEADERNFLRTDS-27-GPICKENS3
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Ja'Marr Chase,player_anytime_td,1.0,YES,15,0.464,0.305,KXNFLTSPEC-27CIN-JCHASE1RUTD
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Jaxon Smith-Njigba,player_anytime_td,1.0,YES,15,0.464,0.305,KXNFLFIRSTTD-26OCT04LACSEA-SEAJSMITHNJIGBA11
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_anytime_td,1.0,YES,23,0.547,0.304,KXNFLFIRSTTD-26OCT04MIAMIN-MINAJONES33
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Jacory Croskey-Merritt,player_anytime_td,1.0,YES,12,0.425,0.298,KXNFLFIRSTTD-26OCT04INDWAS-WASJCROSKEYMERRITT22
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_rush_yds,100.0,YES,17,0.477,0.297,KXNFLTSPEC-27DET-JGIBBS0R100R100
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_anytime_td,1.0,YES,11,0.412,0.295,KXNFLFIRSTTD-26OCT05ATLNO-NOCOLAVE12
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_rush_yds,75.0,YES,12,0.421,0.294,KXNFLTSPEC-27CAR-CHUBBARD30R75R75
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_anytime_td,1.0,YES,4,0.336,0.293,KXLEADERNFLRTDS-27-BBOWERS89
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,CeeDee Lamb,player_anytime_td,1.0,YES,9,0.383,0.287,KXNFLFIRSTTD-26OCT04DALHOU-DALCLAMB88
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Derrick Henry,player_anytime_td,1.0,YES,31,0.611,0.286,KXLEADERNFLRUSHTDS-27-DHENRY22
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Omarion Hampton,player_anytime_td,1.0,YES,13,0.422,0.284,KXNFLFIRSTTD-26OCT04LACSEA-LACOHAMPTON8
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Saquon Barkley,player_anytime_td,1.0,YES,14,0.432,0.284,KXNFLFIRSTTD-26OCT04LARPHI-PHISBARKLEY26
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Jaylen Warren,player_anytime_td,1.0,YES,17,0.462,0.282,KXNFLFIRSTTD-26OCT01PITCLE-PITJWARREN30
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Tetairoa McMillan,player_anytime_td,1.0,YES,8,0.366,0.281,KXNFLFIRSTTD-26OCT04DETCAR-CARTMCMILLAN4
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Drake London,player_anytime_td,1.0,YES,9,0.375,0.279,KXNFLFIRSTTD-26OCT05ATLNO-ATLDLONDON5
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_anytime_td,1.0,YES,12,0.406,0.279,KXNFLFIRSTTD-26OCT05ATLNO-NOAKAMARA41
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Davante Adams,player_anytime_td,1.0,YES,13,0.415,0.278,KXNFLFIRSTTD-26OCT04LARPHI-LARDADAMS17
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Parker Washington,player_anytime_td,1.0,YES,9,0.372,0.276,KXNFLFIRSTTD-26OCT04JACCIN-JACPWASHINGTON11
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,J.K. Dobbins,player_anytime_td,1.0,YES,13,0.411,0.273,KXNFLFIRSTTD-26OCT04DENSF-DENJDOBBINS27
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Tee Higgins,player_anytime_td,1.0,YES,9,0.367,0.271,KXNFLFIRSTTD-26OCT04JACCIN-CINTHIGGINS5
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Braelon Allen,player_anytime_td,1.0,YES,13,0.409,0.271,KXNFLFIRSTTD-26OCT04NYJCHI-NYJBALLEN0
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Rhamondre Stevenson,player_anytime_td,1.0,YES,9,0.365,0.269,KXNFLFIRSTTD-26OCT04NEBUF-NERSTEVENSON38
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_anytime_td,1.0,YES,21,0.487,0.266,KXLEADERNFLRTDS-27-ASTBROWN14
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_anytime_td,1.0,YES,2,0.286,0.264,KXLEADERNFLRTDS-27-JWADDLE17
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,George Kittle,player_anytime_td,1.0,YES,8,0.347,0.262,KXNFLFIRSTTD-26OCT04DENSF-SFGKITTLE85
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_anytime_td,1.0,YES,7,0.336,0.261,KXNFLFIRSTTD-26OCT04KCLV-LVBBOWERS89
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Deebo Samuel,player_anytime_td,1.0,YES,8,0.343,0.258,KXNFLFIRSTTD-26OCT04DENSF-SFDSAMUEL19
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Quinshon Judkins,player_anytime_td,1.0,YES,14,0.406,0.257,KXNFLFIRSTTD-26OCT01PITCLE-CLEQJUDKINS10
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Trey McBride,player_anytime_td,1.0,YES,10,0.362,0.256,KXNFLFIRSTTD-26OCT04ARINYG-ARITMCBRIDE85
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Garrett Wilson,player_anytime_td,1.0,YES,9,0.350,0.255,KXNFLFIRSTTD-26OCT04NYJCHI-NYJGWILSON5
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Zay Flowers,player_anytime_td,1.0,YES,12,0.380,0.253,KXNFLFIRSTTD-26OCT04TENBAL-BALZFLOWERS4
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_anytime_td,1.0,YES,12,0.380,0.253,KXNFLFIRSTTD-26OCT04LACSEA-SEAJPRICE8
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Lamar Jackson,player_anytime_td,1.0,YES,2,0.271,0.249,KXLEADERNFLRUSHTDS-27-LJACKSON8
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Rashee Rice,player_anytime_td,1.0,YES,10,0.355,0.249,KXNFLFIRSTTD-26OCT04KCLV-KCRRICE4
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,George Pickens,player_anytime_td,1.0,YES,8,0.331,0.246,KXNFLFIRSTTD-26OCT04DALHOU-DALGPICKENS3
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Jordan Addison,player_anytime_td,1.0,YES,13,0.380,0.242,KXNFLFIRSTTD-26OCT04MIAMIN-MINJADDISON3
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Jaylen Warren,player_rush_yds,75.0,YES,25,0.504,0.241,KXNFLTSPEC-27PIT-JWARREN30R75R75
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Dalton Kincaid,player_anytime_td,1.0,YES,9,0.335,0.239,KXNFLFIRSTTD-26OCT04NEBUF-BUFDKINCAID86
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Tyler Warren,player_anytime_td,1.0,YES,9,0.335,0.239,KXNFLFIRSTTD-26OCT04INDWAS-INDTWARREN84
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,DeVonta Smith,player_anytime_td,1.0,YES,7,0.314,0.239,KXNFLFIRSTTD-26OCT04LARPHI-PHIDSMITH6
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Mike Evans,player_anytime_td,1.0,YES,10,0.343,0.237,KXLEADERNFLRTDS-27-MEVANS13
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Travis Kelce,player_anytime_td,1.0,YES,10,0.343,0.237,KXNFLFIRSTTD-26OCT04KCLV-KCTKELCE87
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Mark Andrews,player_anytime_td,1.0,YES,11,0.353,0.236,KXNFLFIRSTTD-26OCT04TENBAL-BALMANDREWS89
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Tony Pollard,player_anytime_td,1.0,YES,7,0.309,0.235,KXNFLFIRSTTD-26OCT04TENBAL-TENTPOLLARD20
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Josh Downs,player_anytime_td,1.0,YES,8,0.319,0.234,KXNFLFIRSTTD-26OCT04INDWAS-INDJDOWNS2
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,DJ Moore,player_anytime_td,1.0,YES,10,0.339,0.233,KXNFLFIRSTTD-26OCT04NEBUF-BUFDMOORE2
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Jalen Hurts,player_anytime_td,1.0,YES,10,0.335,0.229,KXNFLFIRSTTD-26OCT04LARPHI-PHIJHURTS1
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_anytime_td,1.0,YES,8,0.312,0.226,KXNFLFIRSTTD-26OCT04DETCAR-DETSLAPORTA87
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,TreVeyon Henderson,player_anytime_td,1.0,YES,7,0.301,0.226,KXNFLFIRSTTD-26OCT04NEBUF-NETHENDERSON32
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Michael Wilson,player_anytime_td,1.0,YES,8,0.303,0.218,KXNFLFIRSTTD-26OCT04ARINYG-ARIMWILSON14
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Dalton Schultz,player_anytime_td,1.0,YES,7,0.289,0.214,KXNFLFIRSTTD-26OCT04DALHOU-HOUDSCHULTZ86
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Kyle Monangai,player_anytime_td,1.0,YES,9,0.308,0.213,KXNFLFIRSTTD-26OCT04NYJCHI-CHIKMONANGAI25
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Jameson Williams,player_anytime_td,1.0,YES,8,0.298,0.212,KXNFLFIRSTTD-26OCT04DETCAR-DETJWILLIAMS1
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_anytime_td,1.0,YES,7,0.286,0.211,KXNFLFIRSTTD-26OCT04DENSF-DENJWADDLE17
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Malik Nabers,player_anytime_td,1.0,YES,8,0.294,0.209,KXNFLFIRSTTD-26OCT04ARINYG-NYGMNABERS1
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Chase Brown,player_rush_yds,75.0,YES,19,0.409,0.208,KXNFLTSPEC-27CIN-CBROWN30R75R75
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Woody Marks,player_anytime_td,1.0,YES,8,0.293,0.208,KXNFLFIRSTTD-26OCT04DALHOU-HOUWMARKS4
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Dalton Kincaid,player_anytime_td,1.0,YES,12,0.335,0.208,KXNFLTSPEC-27BUF-DKINCAID86RUTD
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Bucky Irving,player_anytime_td,1.0,YES,12,0.333,0.206,KXNFLFIRSTTD-26OCT04GBTB-TBBIRVING7
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Emanuel Wilson,player_anytime_td,1.0,YES,8,0.290,0.205,KXNFLFIRSTTD-26OCT04LACSEA-SEAEWILSON23
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Terry McLaurin,player_anytime_td,1.0,YES,6,0.267,0.203,KXNFLFIRSTTD-26OCT04INDWAS-WASTMCLAURIN17
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_anytime_td,1.0,YES,7,0.277,0.202,KXNFLFIRSTTD-26OCT04DENSF-DENCSUTTON14
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Ladd McConkey,player_anytime_td,1.0,YES,2,0.224,0.202,KXLEADERNFLRTDS-27-LMCCONKEY15
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Christian Watson,player_anytime_td,1.0,YES,12,0.328,0.200,KXNFLFIRSTTD-26OCT04GBTB-GBCWATSON9
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Luther Burden III,player_anytime_td,1.0,YES,8,0.285,0.200,KXNFLFIRSTTD-26OCT04NYJCHI-CHILBURDEN10
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Darren Waller,player_anytime_td,1.0,YES,5,0.252,0.199,KXNFLFIRSTTD-26OCT04DETCAR-CARDWALLER88
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Hunter Henry,player_anytime_td,1.0,YES,5,0.251,0.198,KXNFLFIRSTTD-26OCT04NEBUF-NEHHENRY85
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Juwan Johnson,player_anytime_td,1.0,YES,7,0.272,0.197,KXNFLFIRSTTD-26OCT05ATLNO-NOJJOHNSON83
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Stefon Diggs,player_anytime_td,1.0,YES,6,0.260,0.196,KXNFLFIRSTTD-26OCT04INDWAS-WASSDIGGS3
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_anytime_td,1.0,YES,8,0.281,0.196,KXNFLFIRSTTD-26OCT04DENSF-DENRHARVEY12
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Brenton Strange,player_anytime_td,1.0,YES,5,0.247,0.194,KXNFLFIRSTTD-26OCT04JACCIN-JACBSTRANGE85
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_anytime_td,1.0,YES,8,0.278,0.193,KXNFLFIRSTTD-26OCT05ATLNO-NODVELE14
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,T.J. Hockenson,player_anytime_td,1.0,YES,12,0.316,0.189,KXNFLFIRSTTD-26OCT04MIAMIN-MINTHOCKENSON87
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Chris Rodriguez Jr.,player_anytime_td,1.0,YES,6,0.252,0.189,KXNFLFIRSTTD-26OCT04JACCIN-JACCRODRIGUEZ24
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Emeka Egbuka,player_anytime_td,1.0,YES,3,0.220,0.188,KXLEADERNFLRTDS-27-EEGBUKA2
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Rachaad White,player_anytime_td,1.0,YES,5,0.241,0.188,KXNFLFIRSTTD-26OCT04INDWAS-WASRWHITE1
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Mack Hollins,player_anytime_td,1.0,YES,5,0.241,0.187,KXNFLFIRSTTD-26OCT04NEBUF-NEMHOLLINS13
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Jakobi Meyers,player_anytime_td,1.0,YES,6,0.249,0.185,KXNFLFIRSTTD-26OCT04JACCIN-JACJMEYERS3
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Rome Odunze,player_anytime_td,1.0,YES,2,0.206,0.185,KXLEADERNFLRTDS-27-RODUNZE15
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_anytime_td,1.0,YES,7,0.258,0.184,KXNFLFIRSTTD-26OCT04KCLV-KCXWORTHY1
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Romeo Doubs,player_anytime_td,1.0,YES,5,0.236,0.183,KXNFLFIRSTTD-26OCT04NEBUF-NERDOUBS87
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Tucker Kraft,player_anytime_td,1.0,YES,8,0.267,0.181,KXNFLFIRSTTD-26OCT04GBTB-GBTKRAFT85
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Kaleb Johnson,player_anytime_td,1.0,YES,10,0.285,0.179,KXNFLFIRSTTD-26OCT04GBTB-GBKJOHNSON26
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Blake Corum,player_anytime_td,1.0,YES,6,0.242,0.178,KXNFLFIRSTTD-26OCT04LARPHI-LARBCORUM24
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Kaytron Allen,player_anytime_td,1.0,YES,5,0.231,0.177,KXNFLFIRSTTD-26OCT04INDWAS-WASKALLEN31
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Khalil Shakir,player_anytime_td,1.0,YES,7,0.251,0.176,KXNFLFIRSTTD-26OCT04NEBUF-BUFKSHAKIR10
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Matthew Golden,player_anytime_td,1.0,YES,10,0.282,0.176,KXNFLFIRSTTD-26OCT04GBTB-GBMGOLDEN0
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Lamar Jackson,player_anytime_td,1.0,YES,9,0.271,0.175,KXNFLFIRSTTD-26OCT04TENBAL-BALLJACKSON8
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Bucky Irving,player_rush_yds,75.0,YES,20,0.386,0.174,KXNFLTSPEC-27TB-BIRVING7R75R75
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Isaiah Likely,player_anytime_td,1.0,YES,7,0.247,0.173,KXNFLFIRSTTD-26OCT04ARINYG-NYGILIKELY9
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Colston Loveland,player_anytime_td,1.0,YES,7,0.247,0.172,KXNFLFIRSTTD-26OCT04NYJCHI-CHICLOVELAND84
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,DK Metcalf,player_anytime_td,1.0,YES,9,0.267,0.171,KXNFLFIRSTTD-26OCT01PITCLE-PITDMETCALF4
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Mike Gesicki,player_anytime_td,1.0,YES,5,0.224,0.171,KXNFLFIRSTTD-26OCT04JACCIN-CINMGESICKI88
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Rashod Bateman,player_anytime_td,1.0,YES,8,0.255,0.170,KXNFLFIRSTTD-26OCT04TENBAL-BALRBATEMAN7
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_anytime_td,1.0,YES,8,0.252,0.167,KXNFLFIRSTTD-26OCT04LACSEA-SEAABARNER88
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Brian Thomas Jr,player_anytime_td,1.0,YES,5,0.220,0.166,KXNFLFIRSTTD-26OCT04JACCIN-JACBTHOMAS7
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_anytime_td,1.0,YES,5,0.218,0.165,KXNFLFIRSTTD-26OCT04DENSF-SFKBLACK26
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Jake Ferguson,player_anytime_td,1.0,YES,5,0.214,0.161,KXNFLFIRSTTD-26OCT04DALHOU-DALJFERGUSON87
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Ladd McConkey,player_anytime_td,1.0,YES,6,0.224,0.160,KXNFLFIRSTTD-26OCT04LACSEA-LACLMCCONKEY15
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Tyler Allgeier,player_anytime_td,1.0,YES,7,0.234,0.159,KXNFLFIRSTTD-26OCT04ARINYG-ARITALLGEIER22
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_anytime_td,1.0,YES,6,0.223,0.159,KXNFLFIRSTTD-26OCT04LACSEA-SEARSHAHEED22
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Keenan Allen,player_anytime_td,1.0,YES,7,0.233,0.158,KXNFLFIRSTTD-26OCT04INDWAS-INDKALLEN10
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Isaiah Davis,player_anytime_td,1.0,YES,6,0.222,0.158,KXNFLFIRSTTD-26OCT04NYJCHI-NYJIDAVIS32
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Jaylen Warren,player_anytime_td,1.0,YES,29,0.462,0.158,KXNFLTEAMFIRSTTD-26OCT01PITCLE-PIT-JWARREN30
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Harold Fannin Jr.,player_anytime_td,1.0,YES,8,0.241,0.156,KXNFLFIRSTTD-26OCT01PITCLE-CLEHFANNIN44
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Dontayvion Wicks,player_anytime_td,1.0,YES,5,0.209,0.156,KXNFLFIRSTTD-26OCT04LARPHI-PHIDWICKS13
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,MarShawn Lloyd,player_anytime_td,1.0,YES,8,0.241,0.155,KXNFLFIRSTTD-26OCT04GBTB-GBMLLOYD32
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_anytime_td,1.0,YES,6,0.218,0.154,KXNFLFIRSTTD-26OCT04KCLV-LVTTUCKER1
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_anytime_td,1.0,YES,7,0.228,0.153,KXNFLFIRSTTD-26OCT05ATLNO-NOTSHOUGH6
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Tony Pollard,player_rush_yds,50.0,YES,30,0.468,0.153,KXNFLTSPEC-27TEN-TPOLLARD20R50R50
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Ryan Flournoy,player_anytime_td,1.0,YES,5,0.207,0.153,KXNFLFIRSTTD-26OCT04DALHOU-DALRFLOURNOY19
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Brian Robinson Jr.,player_anytime_td,1.0,YES,6,0.217,0.153,KXNFLFIRSTTD-26OCT05ATLNO-ATLBROBINSON15
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Michael Pittman Jr.,player_anytime_td,1.0,YES,5,0.206,0.153,KXNFLFIRSTTD-26OCT01PITCLE-PITMPITTMAN11
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Trevor Lawrence,player_anytime_td,1.0,YES,6,0.216,0.152,KXNFLFIRSTTD-26OCT04JACCIN-JACTLAWRENCE16
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Samaje Perine,player_anytime_td,1.0,YES,4,0.194,0.152,KXNFLFIRSTTD-26OCT04JACCIN-CINSPERINE34
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Carnell Tate,player_anytime_td,1.0,YES,5,0.205,0.151,KXNFLFIRSTTD-26OCT04TENBAL-TENCTATE14
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Denzel Boston,player_anytime_td,1.0,YES,6,0.215,0.151,KXNFLFIRSTTD-26OCT01PITCLE-CLEDBOSTON12
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_anytime_td,1.0,YES,7,0.225,0.150,KXNFLFIRSTTD-26OCT04MIAMIN-MIAOGORDON0
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Jaxon Smith-Njigba,player_anytime_td,1.0,YES,30,0.464,0.149,KXLEADERNFLRTDS-27-JSMITHNJIGBA11
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_anytime_td,1.0,YES,6,0.213,0.149,KXNFLFIRSTTD-26OCT04DENSF-SFBPURDY13
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Jalon Daniels,player_anytime_td,1.0,YES,6,0.212,0.148,KXNFLFIRSTTD-26OCT04GBTB-TBJDANIELS10
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Kendre Miller,player_anytime_td,1.0,YES,6,0.210,0.146,KXNFLFIRSTTD-26OCT05ATLNO-NOKMILLER5
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Emeka Egbuka,player_anytime_td,1.0,YES,7,0.220,0.145,KXNFLFIRSTTD-26OCT04GBTB-TBEEGBUKA2
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Kayshon Boutte,player_anytime_td,1.0,YES,5,0.198,0.145,KXNFLFIRSTTD-26OCT04DALHOU-HOUKBOUTTE14
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Tyler Higbee,player_anytime_td,1.0,YES,6,0.207,0.143,KXNFLFIRSTTD-26OCT04LARPHI-LARTHIGBEE89
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Marcus Mariota,player_anytime_td,1.0,YES,5,0.196,0.143,KXNFLFIRSTTD-26OCT04INDWAS-WASMMARIOTA8
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_anytime_td,1.0,YES,7,0.217,0.143,KXNFLFIRSTTD-26OCT04LACSEA-SEAGHOLANI36
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Quinshon Judkins,player_anytime_td,1.0,YES,25,0.406,0.143,KXNFLTEAMFIRSTTD-26OCT01PITCLE-CLE-QJUDKINS10
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Rome Odunze,player_anytime_td,1.0,YES,6,0.206,0.142,KXNFLFIRSTTD-26OCT04NYJCHI-CHIRODUNZE15
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,DeMario Douglas,player_anytime_td,1.0,YES,4,0.184,0.141,KXNFLFIRSTTD-26OCT04NEBUF-NEDDOUGLAS3
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Najee Harris,player_anytime_td,1.0,YES,6,0.205,0.141,KXNFLFIRSTTD-26OCT04ARINYG-NYGNHARRIS23
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_anytime_td,1.0,YES,5,0.194,0.141,KXNFLFIRSTTD-26OCT04DENSF-DENPBRYANT13
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_anytime_td,1.0,YES,5,0.193,0.139,KXNFLFIRSTTD-26OCT04KCLV-KCEJOHNSON10
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_anytime_td,1.0,YES,7,0.213,0.139,KXNFLFIRSTTD-26OCT04LACSEA-SEACKUPP10
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_anytime_td,1.0,YES,5,0.191,0.137,KXNFLFIRSTTD-26OCT04MIAMIN-MIAMWASHINGTON6
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Kalif Raymond,player_anytime_td,1.0,YES,6,0.201,0.137,KXNFLFIRSTTD-26OCT04NYJCHI-CHIKRAYMOND14
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Marvin Harrison Jr.,player_anytime_td,1.0,YES,6,0.201,0.137,KXNFLFIRSTTD-26OCT04ARINYG-ARIMHARRISON18
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Pat Freiermuth,player_anytime_td,1.0,YES,5,0.190,0.136,KXNFLFIRSTTD-26OCT01PITCLE-PITPFREIERMUTH88
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Xavier Hutchinson,player_anytime_td,1.0,YES,6,0.196,0.132,KXNFLFIRSTTD-26OCT04DALHOU-HOUXHUTCHINSON19
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Daniel Jones,player_anytime_td,1.0,YES,5,0.185,0.132,KXNFLFIRSTTD-26OCT04INDWAS-INDDJONES17
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Drake Maye,player_anytime_td,1.0,YES,4,0.174,0.131,KXNFLFIRSTTD-26OCT04NEBUF-NEDMAYE10
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Bo Nix,player_anytime_td,1.0,YES,6,0.194,0.130,KXNFLFIRSTTD-26OCT04DENSF-DENBNIX10
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_anytime_td,1.0,YES,5,0.183,0.130,KXNFLFIRSTTD-26OCT04LACSEA-LACOGADSDEN86
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_anytime_td,1.0,YES,5,0.183,0.130,KXNFLFIRSTTD-26OCT04LACSEA-LACQJOHNSTON1
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Isaiah Williams,player_anytime_td,1.0,YES,4,0.170,0.128,KXNFLFIRSTTD-26OCT04NYJCHI-NYJIWILLIAMS18
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_anytime_td,1.0,YES,5,0.181,0.127,KXNFLFIRSTTD-26OCT04KCLV-KCPMAHOMES15
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Deshaun Watson,player_anytime_td,1.0,YES,6,0.190,0.126,KXNFLFIRSTTD-26OCT01PITCLE-CLEDWATSON4
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Dohnte Meyers,player_anytime_td,1.0,YES,4,0.168,0.125,KXNFLFIRSTTD-26OCT04JACCIN-CINDMEYERS81
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_anytime_td,1.0,YES,5,0.178,0.125,KXNFLFIRSTTD-26OCT05ATLNO-ATLKPITTS8
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_anytime_td,1.0,YES,7,0.198,0.124,KXNFLFIRSTTD-26OCT04MIAMIN-MINKMURRAY1
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Keon Coleman,player_anytime_td,1.0,YES,5,0.176,0.122,KXNFLFIRSTTD-26OCT04NEBUF-BUFKCOLEMAN0
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_anytime_td,1.0,YES,4,0.165,0.122,KXNFLFIRSTTD-26OCT04LACSEA-LACTHARRIS9
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Jauan Jennings,player_anytime_td,1.0,YES,7,0.195,0.121,KXNFLFIRSTTD-26OCT04MIAMIN-MINJJENNINGS14
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_anytime_td,1.0,YES,5,0.174,0.120,KXNFLFIRSTTD-26OCT04KCLV-LVMMAYER87
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Malachi Fields,player_anytime_td,1.0,YES,5,0.173,0.120,KXNFLFIRSTTD-26OCT04ARINYG-NYGMFIELDS88
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Wan'Dale Robinson,player_anytime_td,1.0,YES,4,0.160,0.118,KXNFLFIRSTTD-26OCT04TENBAL-TENWROBINSON4
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_anytime_td,1.0,YES,4,0.160,0.117,KXNFLFIRSTTD-26OCT04KCLV-LVJNAILOR9
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Isaac TeSlaa,player_anytime_td,1.0,YES,4,0.158,0.115,KXNFLFIRSTTD-26OCT04DETCAR-DETITESLAA18
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Laquon Treadwell,player_anytime_td,1.0,YES,4,0.158,0.115,KXNFLFIRSTTD-26OCT04INDWAS-INDLTREADWELL13
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Ty Johnson,player_anytime_td,1.0,YES,4,0.158,0.115,KXNFLFIRSTTD-26OCT04NEBUF-BUFTJOHNSON26
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_anytime_td,1.0,YES,13,0.252,0.114,KXNFLTSPEC-27SEA-ABARNER88RTD1RTD1
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Justice Hill,player_anytime_td,1.0,YES,5,0.165,0.111,KXNFLFIRSTTD-26OCT04TENBAL-BALJHILL43
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Noah Fant,player_anytime_td,1.0,YES,4,0.154,0.111,KXNFLFIRSTTD-26OCT05ATLNO-NONFANT87
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_anytime_td,1.0,YES,6,0.175,0.111,KXNFLFIRSTTD-26OCT04MIAMIN-MIAMWILLIS2
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Tyjae Spears,player_anytime_td,1.0,YES,4,0.153,0.110,KXNFLFIRSTTD-26OCT04TENBAL-TENTSPEARS2
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Kenny Gainwell,player_anytime_td,1.0,YES,5,0.163,0.110,KXNFLFIRSTTD-26OCT04GBTB-TBKGAINWELL1
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Makai Lemon,player_anytime_td,1.0,YES,4,0.152,0.109,KXNFLFIRSTTD-26OCT04LARPHI-PHIMLEMON9
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Evan Engram,player_anytime_td,1.0,YES,4,0.151,0.109,KXNFLFIRSTTD-26OCT04DENSF-DENEENGRAM1
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_anytime_td,1.0,YES,4,0.151,0.108,KXNFLFIRSTTD-26OCT04DETCAR-CARTTREMBLE82
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_anytime_td,1.0,YES,4,0.151,0.108,KXNFLFIRSTTD-26OCT05ATLNO-ATLJDOTSON4
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Roman Wilson,player_anytime_td,1.0,YES,5,0.161,0.108,KXNFLFIRSTTD-26OCT01PITCLE-PITRWILSON14
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_anytime_td,1.0,YES,5,0.160,0.107,KXNFLFIRSTTD-26OCT04KCLV-KCTTHORNTON2
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Kendrick Bourne,player_anytime_td,1.0,YES,4,0.150,0.107,KXNFLFIRSTTD-26OCT04ARINYG-ARIKBOURNE17
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Gunnar Helm,player_anytime_td,1.0,YES,3,0.138,0.106,KXNFLFIRSTTD-26OCT04TENBAL-TENGHELM84
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Bryce Lance,player_anytime_td,1.0,YES,4,0.149,0.106,KXNFLFIRSTTD-26OCT05ATLNO-NOBLANCE18
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,C.J. Stroud,player_anytime_td,1.0,YES,4,0.147,0.104,KXNFLFIRSTTD-26OCT04DALHOU-HOUCSTROUD7
+2026-10-01T13:33:12+00:00,Detroit Lions @ Carolina Panthers,Bryce Young,player_anytime_td,1.0,YES,4,0.146,0.103,KXNFLFIRSTTD-26OCT04DETCAR-CARBYOUNG9
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Mike Washington Jr.,player_anytime_td,1.0,YES,4,0.145,0.102,KXNFLFIRSTTD-26OCT04KCLV-LVMWASHINGTON4
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Konata Mumpfield,player_anytime_td,1.0,YES,4,0.143,0.100,KXNFLFIRSTTD-26OCT04LARPHI-LARKMUMPFIELD4
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Tyson Bagent,player_anytime_td,1.0,YES,5,0.153,0.100,KXNFLFIRSTTD-26OCT04NYJCHI-CHITBAGENT17
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Cody White,player_anytime_td,1.0,YES,3,0.131,0.099,KXNFLFIRSTTD-26OCT04KCLV-LVCWHITE82
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Dawson Knox,player_anytime_td,1.0,YES,4,0.141,0.098,KXNFLFIRSTTD-26OCT04NEBUF-BUFDKNOX88
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,DK Metcalf,player_anytime_td,1.0,YES,16,0.267,0.097,KXNFLTEAMFIRSTTD-26OCT01PITCLE-PIT-DMETCALF4
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Jacoby Brissett,player_anytime_td,1.0,YES,4,0.140,0.097,KXNFLFIRSTTD-26OCT04ARINYG-ARIJBRISSETT7
+2026-10-01T13:33:12+00:00,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_anytime_td,1.0,YES,3,0.129,0.097,KXNFLFIRSTTD-26OCT04MIAMIN-MIAGDULCICH85
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Chris Godwin,player_anytime_td,1.0,YES,5,0.150,0.096,KXNFLFIRSTTD-26OCT04GBTB-TBCGODWIN14
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Keaton Mitchell,player_anytime_td,1.0,YES,4,0.138,0.095,KXNFLFIRSTTD-26OCT04LACSEA-LACKMITCHELL34
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Darius Slayton,player_anytime_td,1.0,YES,4,0.137,0.095,KXNFLFIRSTTD-26OCT04INDWAS-INDDSLAYTON11
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Skyy Moore,player_anytime_td,1.0,YES,5,0.148,0.095,KXNFLFIRSTTD-26OCT04GBTB-GBSMOORE23
+2026-10-01T13:33:12+00:00,Arizona Cardinals @ New York Giants,Darnell Mooney,player_anytime_td,1.0,YES,4,0.137,0.095,KXNFLFIRSTTD-26OCT04ARINYG-NYGDMOONEY17
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_anytime_td,1.0,YES,4,0.135,0.092,KXNFLFIRSTTD-26OCT04LACSEA-LACJHERBERT10
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Darnell Washington,player_anytime_td,1.0,YES,4,0.134,0.091,KXNFLFIRSTTD-26OCT01PITCLE-PITDWASHINGTON80
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Cade Otton,player_anytime_td,1.0,YES,5,0.144,0.091,KXNFLFIRSTTD-26OCT04GBTB-TBCOTTON88
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Chris Brooks,player_anytime_td,1.0,YES,4,0.133,0.090,KXNFLFIRSTTD-26OCT04GBTB-GBCBROOKS30
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Joshua Palmer,player_anytime_td,1.0,YES,4,0.132,0.090,KXNFLFIRSTTD-26OCT04NEBUF-BUFJPALMER5
+2026-10-01T13:33:12+00:00,Indianapolis Colts @ Washington Commanders,Antonio Williams,player_anytime_td,1.0,YES,4,0.132,0.090,KXNFLFIRSTTD-26OCT04INDWAS-WASAWILLIAMS14
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Michael Pittman Jr.,player_anytime_td,1.0,YES,11,0.206,0.089,KXNFLTEAMFIRSTTD-26OCT01PITCLE-PIT-MPITTMAN11
+2026-10-01T13:33:12+00:00,New York Jets @ Chicago Bears,Cole Kmet,player_anytime_td,1.0,YES,4,0.131,0.088,KXNFLFIRSTTD-26OCT04NYJCHI-CHICKMET85
+2026-10-01T13:33:12+00:00,Kansas City Chiefs @ Las Vegas Raiders,Brashard Smith,player_anytime_td,1.0,YES,3,0.120,0.088,KXNFLFIRSTTD-26OCT04KCLV-KCBSMITH24
+2026-10-01T13:33:12+00:00,Green Bay Packers @ Tampa Bay Buccaneers,Ted Hurst III,player_anytime_td,1.0,YES,6,0.151,0.087,KXNFLFIRSTTD-26OCT04GBTB-TBTHURST17
+2026-10-01T13:33:12+00:00,Los Angeles Rams @ Philadelphia Eagles,Zach Ertz,player_anytime_td,1.0,YES,4,0.130,0.087,KXNFLFIRSTTD-26OCT04LARPHI-PHIZERTZ86
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Nicholas Singleton,player_anytime_td,1.0,YES,2,0.106,0.085,KXNFLFIRSTTD-26OCT04TENBAL-TENNSINGLETON32
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Josh Cameron,player_anytime_td,1.0,YES,3,0.117,0.085,KXNFLFIRSTTD-26OCT04JACCIN-JACJCAMERON19
+2026-10-01T13:33:12+00:00,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_rush_yds,100.0,YES,31,0.409,0.084,KXNFLTSPEC-27ATL-BROBINSON7R100R100
+2026-10-01T13:33:12+00:00,Tennessee Titans @ Baltimore Ravens,Cam Ward,player_anytime_td,1.0,YES,4,0.125,0.082,KXNFLFIRSTTD-26OCT04TENBAL-TENCWARD1
+2026-10-01T13:33:12+00:00,Jacksonville Jaguars @ Cincinnati Bengals,Samaje Perine,player_rush_yds,10.0,YES,58,0.679,0.082,KXNFLRSHYDS-26OCT04JACCIN-CINSPERINE34-10
+2026-10-01T13:33:12+00:00,Dallas Cowboys @ Houston Texans,Dak Prescott,player_anytime_td,1.0,YES,4,0.123,0.081,KXNFLFIRSTTD-26OCT04DALHOU-DALDPRESCOTT4
+2026-10-01T13:33:12+00:00,Denver Broncos @ San Francisco 49ers,Kyle Juszczyk,player_anytime_td,1.0,YES,4,0.123,0.081,KXNFLFIRSTTD-26OCT04DENSF-SFKJUSZCZYK44
+2026-10-01T13:33:12+00:00,New England Patriots @ Buffalo Bills,Rhamondre Stevenson,player_reception_yds,15.0,YES,56,0.654,0.077,KXNFLRECYDS-26OCT04NEBUF-NERSTEVENSON38-15
+2026-10-01T13:33:12+00:00,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_rush_yds,50.0,YES,30,0.369,0.054,KXNFLTSPEC-27SEA-JPRICE8R50R50
+2026-10-01T13:33:12+00:00,Pittsburgh Steelers @ Cleveland Browns,Roman Wilson,player_reception_yds,15.0,YES,61,0.677,0.050,KXNFLRECYDS-26OCT01PITCLE-PITRWILSON14-15

@@ -200,6 +200,11 @@ to a single manual run with the `markets` box on the Run workflow screen.
 
 ## Reading the page
 
+- **Game / slate:** pick a slate (Thursday Night, Sunday main slate, Sunday early or late, Sunday Night,
+  Monday Night, plus Saturday, Friday or international games when they're on the schedule) or a single game.
+  Slates come from each game's kickoff day and time in US Eastern, so they follow every week's schedule. A
+  chosen slate is remembered for next week; a single game isn't.
+
 - **Hit chance (big %):** how often the pick should win, from all books' prices with their cut removed.
 - **Line and odds:** "Over 65.5" wins at 66 or more. −115 means bet $115 to win $100, +140 means bet
   $100 to win $140. On Kalshi a 43¢ YES pays $1 if it happens.

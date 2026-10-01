@@ -238,7 +238,7 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
   <div class="controls">
     <button class="pk wide" type="button" data-picker="where"><small>Where I bet</small><b id="v-where">…</b></button>
     <button class="pk" type="button" data-picker="prop"><small>Prop</small><b id="v-prop">All props</b></button>
-    <button class="pk" type="button" data-picker="game"><small>Game</small><b id="v-game">All games</b></button>
+    <button class="pk" type="button" data-picker="game"><small>Game / slate</small><b id="v-game">All games</b></button>
     <button class="pk wide" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Most likely to hit</b></button>
   </div>
 
@@ -341,7 +341,7 @@ const AN = window.Analytics;
 let A = null, aNote = "", openWhy = new Set();
 let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null;
 const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all",
-              game:"all", sort:store.get("ps_sort") || "hit", legsN:Number(store.get("ps_legsN")) || 3};
+              game:store.get("ps_slate") || "all", sort:store.get("ps_sort") || "hit", legsN:Number(store.get("ps_legsN")) || 3};
 let slip = [];
 try { slip = JSON.parse(store.get("ps_slip") || "[]") || []; } catch(e) { slip = []; }
 
@@ -354,6 +354,49 @@ function kickText(gid){
   const g = game(gid); if (!g || !g.t) return "";
   const d = new Date(g.t);
   return d.toLocaleDateString([], {weekday:"short"}) + " " + d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+}
+/* slates, from kickoff day and hour in US Eastern time (so they follow each week's schedule) */
+const SLATES = [
+  {k:"thu", t:"Thursday Night"}, {k:"fri", t:"Friday"}, {k:"sat", t:"Saturday"},
+  {k:"sun_main", t:"Sunday main slate", d:"all Sunday daytime games"},
+  {k:"sun_intl", t:"Sunday morning (international)"}, {k:"sun_early", t:"Sunday early (1pm ET)"},
+  {k:"sun_late", t:"Sunday late (4pm ET)"}, {k:"snf", t:"Sunday Night"}, {k:"mnf", t:"Monday Night"},
+  {k:"other", t:"Other days"},
+];
+function etParts(iso){
+  const p = {};
+  for (const x of new Intl.DateTimeFormat("en-US", {timeZone:"America/New_York", weekday:"short", hour:"numeric", hourCycle:"h23"}).formatToParts(new Date(iso))) p[x.type] = x.value;
+  return {day:p.weekday, hour:Number(p.hour)};
+}
+function slateOf(gid){
+  const g = game(gid); if (!g || !g.t) return "other";
+  const {day, hour} = etParts(g.t);
+  if (day === "Thu") return "thu";
+  if (day === "Fri") return "fri";
+  if (day === "Sat") return "sat";
+  if (day === "Sun") return hour < 12 ? "sun_intl" : hour < 16 ? "sun_early" : hour < 19 ? "sun_late" : "snf";
+  if (day === "Mon") return "mnf";
+  return "other";
+}
+function slateList(ids){
+  const by = {};
+  for (const g of ids) (by[slateOf(g)] = by[slateOf(g)] || []).push(g);
+  const main = ["sun_intl", "sun_early", "sun_late"].flatMap(k => by[k] || []);
+  if (main.length && ["sun_intl", "sun_early", "sun_late"].filter(k => by[k]).length > 1) by.sun_main = main;
+  return SLATES.filter(s => by[s.k]).map(s => ({...s, games:by[s.k]}));
+}
+function inGameFilter(gid){
+  if (pref.game === "all") return true;
+  if (pref.game.startsWith("slate:")){
+    const k = pref.game.slice(6), sl = slateOf(gid);
+    return k === sl || (k === "sun_main" && ["sun_intl", "sun_early", "sun_late"].includes(sl));
+  }
+  return gid === pref.game;
+}
+function gameFilterLabel(){
+  if (pref.game === "all") return "All games";
+  if (pref.game.startsWith("slate:")) return (SLATES.find(s => s.k === pref.game.slice(6)) || {t:"Slate"}).t;
+  return gameName(pref.game);
 }
 function kickMs(gid){ const g = game(gid); return g && g.t ? +new Date(g.t) : Infinity; }
 function bookName(k){
@@ -432,7 +475,7 @@ function filtered(where, sortKey){
   const key = SORTKEY[sortKey] || SORTKEY.hit, best = new Map();
   for (const c of picksFor(where)){
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
-    if (pref.game !== "all" && c.g !== pref.game) continue;
+    if (!inGameFilter(c.g)) continue;
     const cur = best.get(c.group);
     if (!cur || key(c) > key(cur)) best.set(c.group, c);
   }
@@ -557,7 +600,7 @@ function render(){
   if (!D) return;
   $("v-where").textContent = whereLabel(pref.where);
   $("v-prop").textContent = pref.prop === "all" ? "All props" : (STAT[pref.prop] || {t:pref.prop}).t;
-  $("v-game").textContent = pref.game === "all" ? "All games" : gameName(pref.game);
+  $("v-game").textContent = gameFilterLabel();
   $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
   if (pref.where !== "kalshi") $("live").textContent = "";
   const list = filtered(pref.where, pref.sort);
@@ -578,6 +621,8 @@ function emptyText(){
   const b = (D.books || []).find(x => x.k === pref.where);
   if (b && !b.n) return "No " + b.name + " lines in the last scan." +
     (b.paid ? " The Odds API only sends " + b.name + " on paid plans." : " Try another book or Best price anywhere.");
+  if (pref.game.startsWith("slate:") && !Object.keys(D.games || {}).some(inGameFilter))
+    return "No " + gameFilterLabel() + " games in the last scan. Pick another slate or All games.";
   return "Nothing matches these filters. Try All props or All games.";
 }
 
@@ -606,12 +651,16 @@ const PICKERS = {
     for (const k of Object.keys(STAT)) if (have.has(k)) h += opt(k, STAT[k].t, STAT[k].d, pref.prop === k);
     return h;
   }},
-  game: {t:"Game", d:"Show one game, handy for same-game parlays", build(){
+  game: {t:"Game / slate", d:"One slate (like Sunday Night) or one game. Updates with each week's schedule", build(){
     const n = {};
     for (const p of D.props || []) n[p.g] = (n[p.g] || 0) + 1;
-    let h = opt("all", "All games", "Every game in the last scan", pref.game === "all");
     const ids = Object.keys(D.games || {}).sort((a, b) => kickMs(a) - kickMs(b));
-    for (const g of ids) h += opt(g, gameName(g), [kickText(g), n[g] ? n[g] + " props" : ""].filter(Boolean).join(" · "), pref.game === g);
+    let h = opt("all", "All games", "Every game in the last scan (" + ids.length + ")", pref.game === "all");
+    const slates = slateList(ids);
+    if (slates.length) h += '<div class="opt-sec">Slates</div>';
+    for (const sl of slates) h += opt("slate:" + sl.k, sl.t, sl.games.map(gameName).join(", "), pref.game === "slate:" + sl.k);
+    h += '<div class="opt-sec">Games</div>';
+    for (const g of ids) h += opt(g, gameName(g), [SLATES.find(x => x.k === slateOf(g)).t, kickText(g), n[g] ? n[g] + " props" : ""].filter(Boolean).join(" · "), pref.game === g);
     return h;
   }},
   sort: {t:"Show first", d:"How the list is ordered", build(){
@@ -668,6 +717,7 @@ $("sheet").addEventListener("click", e => {
   if (o && sheetMode && PICKERS[sheetMode]){
     pref[sheetMode] = o.dataset.v;
     if (sheetMode !== "game") store.set("ps_" + sheetMode, o.dataset.v);
+    else store.set("ps_slate", o.dataset.v.startsWith("slate:") || o.dataset.v === "all" ? o.dataset.v : "");  // slates carry over to next week; single games don't
     shown = PAGE;
     closeSheet(); render();
     if (pref.where === "kalshi") live();
@@ -744,7 +794,7 @@ function renderSlip(){
     h += '<div class="callout info"><b>Your slip is empty.</b> Tap "+ Parlay" on any pick, or let auto-build pick the legs for you.</div>';
   }
   h += '<div class="auto"><h3>Auto-build</h3><p>Picks the highest hit chances from the list you\'re looking at (' + esc(whereLabel(pref.where)) +
-    ", " + esc(pref.prop === "all" ? "all props" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameName(pref.game)) +
+    ", " + esc(pref.prop === "all" ? "all props" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameFilterLabel()) +
     "). One leg per player, no two legs from one game when it can avoid it, and it skips picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
     '<div class="seg" role="radiogroup" aria-label="Number of legs">' + [2, 3, 4, 5, 6].map(k =>
       '<button type="button" role="radio" aria-checked="' + (pref.legsN === k) + '" data-legs="' + k + '">' + k + "</button>").join("") + "</div>" +
@@ -852,7 +902,7 @@ async function load(){
   }
   const valid = new Set(["best", "kalshi", ...(D.books || []).map(b => b.k)]);
   if (!valid.has(pref.where)) pref.where = "best";
-  if (pref.game !== "all" && !game(pref.game)) pref.game = "all";
+  if (pref.game !== "all" && !pref.game.startsWith("slate:") && !game(pref.game)) pref.game = "all";
   $("status").innerHTML = statusLine();
   const s = D.stats || {};
   $("diag").textContent = (D.props || []).length + " sportsbook props across " + Object.keys(D.games || {}).length + " games. Kalshi: " +

@@ -10,6 +10,17 @@ class OddsAPIError(Exception):
     pass
 
 
+def region_units(bookmakers):
+    """The Odds API bills every group of up to 10 bookmakers as one region."""
+    n = len([b for b in bookmakers.split(",") if b.strip()])
+    return max(1, -(-n // 10))
+
+
+def run_cost(n_games, markets, bookmakers):
+    """Upper bound on credits for one scan: games x markets x regions (empty markets are free)."""
+    return n_games * len(markets) * region_units(bookmakers)
+
+
 def _get(path, params):
     r = requests.get(f"{BASE}{path}", params=params, timeout=30)
     if r.status_code != 200:

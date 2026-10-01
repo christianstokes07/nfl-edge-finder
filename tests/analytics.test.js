@@ -1,0 +1,72 @@
+// Run with: node tests/analytics.test.js  (pytest runs it too, see test_parlay.py)
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+global.Parlay = require("../site/parlay.js");
+const AN = require("../site/analytics.js");
+const A = JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", "analytics_mock.json"), "utf8"));
+const CASES = JSON.parse(fs.readFileSync(path.join(__dirname, "fixtures", "verdict_cases.json"), "utf8"));
+
+// same verdict rules as src/verdict.py
+for (const c of CASES) assert.equal(AN.verdict(c.stat, c.side, c.line, c.proj, c.market_p ?? null), c.want, JSON.stringify(c));
+
+// player lookup by name, disambiguated by the game's teams
+assert.equal(AN.findPlayer(A, "Jaylen Warren", []).id, "00-1");
+assert.equal(AN.findPlayer(A, "Josh Allen", ["Pittsburgh Steelers", "Cleveland Browns"]).id, "00-4");
+assert.equal(AN.findPlayer(A, "Nobody Here", []), null);
+
+// evidence: 4 sections, real numbers from the file, ranks, and n/a with a reason
+const warren = AN.findPlayer(A, "Jaylen Warren", []);
+const secs = AN.sections(A, warren, "player_rush_yds");
+assert.deepEqual(secs.map(s => s.title), ["Usage", "Efficiency", "Matchup vs Browns", "Game context"]);
+for (const s of secs) assert.ok(s.lines.length >= 3 && s.lines.length <= 5, s.title + " has " + s.lines.length);
+const all = secs.flatMap(s => s.lines.map(l => l.text)).join("\n");
+assert.match(all, /gets 58% of the Steelers' carries \(81st percentile among running backs\)/);
+assert.match(all, /4\.9 yards per carry \(4\.7 adjusted for defenses faced\)/);
+assert.match(all, /Browns allow 4\.6 yards per carry, 6th most in the NFL/);            // adjusted rounds the same: not repeated
+assert.match(all, /Browns stop 17% of runs at or behind the line \(21% adjusted for offenses faced\), 8th highest/);
+assert.ok(secs[1].lines.some(l => l.key === "ryoe_att" && l.na && l.text === "n/a (Next Gen Stats only lists runners with enough carries)"));
+assert.match(all, /Steelers are 2\.5-point underdogs; expected to score 19\.5 points \(game total 41\.5\)/);
+assert.match(all, /wind 18 mph/);
+const te = AN.sections(A, AN.findPlayer(A, "Pat Freiermuth", []), "player_reception_yds");
+assert.match(te[2].lines.map(l => l.text).join("\n"), /Browns allow 8\.7 yards per target to tight ends \(8\.1 adjusted\), 6th most \(26 targets\)/);
+assert.ok(te[1].lines.some(l => l.key === "yprr_proxy" && l.text === "n/a (not found in nflverse snap counts)"));
+
+// glossary: every key used in an evidence line has a definition and a direction note
+for (const s of secs.concat(te)) for (const l of s.lines) assert.ok(l.key === null || AN.DEF[l.key], "no definition for " + l.key);
+assert.equal(AN.dirNote("stuff_rate", "Over"), "For this Over pick, lower is better.");
+assert.equal(AN.dirNote("target_share", "Under"), "For this Under pick, lower is better.");
+assert.match(AN.dirNote("adot", "Over"), /Context only/);
+
+// projection breakdown uses the stored inputs
+assert.match(AN.projText("player_rush_yds", warren.pj.player_rush_yds), /^15\.2 carries \(58% of 26\.2 team carries\) × 4\.8 yards per carry × 1\.10 defense factor = 80\.0 on average\. .* so 68\.4\.$/);
+assert.match(AN.projText("player_anytime_td", warren.pj.player_anytime_td), /→ 46% to score at least once/);
+
+// flags: player injury, teammate out, opposing defense starter out, wind on a passing stat, line move
+const fl = AN.flags(A, warren, "player_rush_yds", "Over", {mv: [60.5, 66.5]});
+const txt = fl.map(f => f.text).join("\n");
+assert.match(txt, /Warren is listed Questionable \(Knee\)/);
+assert.match(txt, /Teammate WR Calvin Austin is Out \(Ankle\): had 18% target share/);
+assert.match(txt, /Browns defense missing CB Denzel Ward \(Out\)/);
+assert.match(txt, /Line moved from 60\.5 to 66\.5 since the previous scan \(against this pick\)/);
+assert.ok(!/Wind/.test(txt), "wind shouldn't flag a rushing prop");
+assert.match(AN.flags(A, AN.findPlayer(A, "Pat Freiermuth", []), "player_reception_yds", "Over").map(f => f.text).join(), /Wind 18 mph/);
+
+// confidence: books set the base, stats agree/disagree move it, serious warnings lower it
+assert.equal(AN.confidence(5, "agree", []).level, "High");
+assert.equal(AN.confidence(5, "neutral", []).level, "Medium");
+assert.equal(AN.confidence(5, "disagree", []).level, "Low");
+assert.equal(AN.confidence(1, "agree", []).level, "Medium");
+assert.equal(AN.confidence(5, "agree", [{sev: 1}]).level, "Medium");
+
+// the one-line why
+const c = {hit: 0.55, n: 6, stat: "player_rush_yds"};
+const w = AN.why(c, A, warren, warren.pj.player_rush_yds, "neutral", 65.5, "Over 65.5 rushing yards");
+assert.equal(w, "Why 55%: 6 sportsbooks' prices, with the books' cut removed, give \u201cOver 65.5 rushing yards\u201d a 55% chance. Stats are neutral: projection 68.4 rushing yards vs the 65.5 line (58% carry share; Browns allow 4.6 yards per carry, 6th most).");
+assert.match(AN.why(c, null, null, null, "n/a", 65.5, "x"), /Stats: n\/a \(analytics haven't loaded\)/);
+assert.match(AN.why(c, A, null, null, "n/a", 65.5, "x"), /Stats: n\/a \(no nflverse stats for this player this season\)/);
+
+// bottom-half ranks read from the other end: rank 18 of 32 -> "15th fewest"
+assert.match(all, /Browns allow −0\.04 EPA per run \(−0\.07 adjusted for offenses faced\), 15th fewest in the NFL/);
+assert.match(all, /The Steelers run 61\.2 plays per game, 9th most/);
+console.log("analytics.js: all tests passed");

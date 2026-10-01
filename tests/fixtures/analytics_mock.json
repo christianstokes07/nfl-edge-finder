@@ -1,0 +1,38 @@
+{"version": 1, "generated": "2026-10-01T15:00:00+00:00", "season": 2026, "week": 4, "played": [1, 2, 3], "prior": 2025, "inj_week": 4,
+ "tdpp": 0.106, "nteams": 32, "consts": {"recency": 0.8, "prior_games": 3, "small": 4},
+ "mk": {"RB": ["carry_share", "snap_share", "carries_pg", "rz_carries", "rz_carry_share", "ypc", "ypc_adj", "ryoe_att", "ybc", "explosive_rate", "stuff_rate", "rz_opp_share", "gl_opp_share", "td_per_touch", "tds", "touches_pg"],
+        "WR": ["target_share", "air_share", "targets_pg", "tprr_proxy", "snap_share", "adot", "ypt", "ypt_adj", "yprr_proxy", "catch_rate", "croe", "separation", "rz_targets", "rz_target_share"],
+        "TE": ["target_share", "air_share", "targets_pg", "tprr_proxy", "snap_share", "adot", "ypt", "ypt_adj", "yprr_proxy", "catch_rate", "croe", "separation", "rz_targets", "rz_target_share"],
+        "QB": ["db_share", "dropbacks_pg", "epa_db", "cpoe", "ypa", "ypa_adj", "ttt", "sack_rate", "pressure_faced", "pass_yds_pg"]},
+ "sources": {"play-by-play": {"ok": true, "rows": 8311}, "participation (per-play on-field players)": {"ok": false, "note": "not available: Season must be between 2016 and 2025"}},
+ "notes": ["Per-play participation isn't published for this season, so routes and pass snaps are estimated."],
+ "games": {
+  "PIT": {"opp": "CLE", "home": false, "kick": "2026-10-04T17:00:00+00:00", "spread": 2.5, "total": 41.5, "implied": 19.5, "roof": "outdoors", "stadium": "Huntington Bank Field",
+          "wx": {"temp": 55, "wind": 18, "precip": 20}, "wx_note": null, "rest": 7, "opp_rest": 7, "vol": {"plays": 61.0, "pass_rate": 0.6, "script_pass_rate": 0.605, "dropbacks": 36.6, "carries": 26.2, "attempts": 32.4}, "tds": 2.07},
+  "CLE": {"opp": "PIT", "home": true, "kick": "2026-10-04T17:00:00+00:00", "spread": -2.5, "total": 41.5, "implied": 22.0, "roof": "outdoors", "stadium": "Huntington Bank Field",
+          "wx": {"temp": 55, "wind": 18, "precip": 20}, "wx_note": null, "rest": 7, "opp_rest": 7, "vol": {"plays": 58.0, "pass_rate": 0.58, "script_pass_rate": 0.595, "dropbacks": 33.6, "carries": 26.0, "attempts": 30.0}, "tds": 2.33},
+  "DET": {"opp": "GB", "home": true, "kick": "2026-10-04T20:25:00+00:00", "spread": -3.0, "total": 49.5, "implied": 26.3, "roof": "indoors", "stadium": "Ford Field", "wx": null, "wx_note": "indoors", "rest": 7, "opp_rest": 10, "vol": null, "tds": 2.79}
+ },
+ "teams": {
+  "PIT": {"name": "Pittsburgh Steelers", "g": 3, "d": {}, "dp": {}, "o": {"plays_pg": [61.2, 9]}, "out": [{"n": "Calvin Austin", "pos": "WR", "s": "Out", "i": "Ankle", "side": "off", "role": "18% target share"}]},
+  "CLE": {"name": "Cleveland Browns", "g": 3,
+          "d": {"ypc": [4.581, 4.601, 6], "run_epa": [-0.044, -0.074, 18], "stuff_rate": [0.172, 0.21, 8], "explosive_run_rate": [0.164, 0.154, 1], "missed_tackle_pct": [0.137, null, 3],
+                "db_epa": [-0.017, 0.028, 21], "pressure_rate": [0.191, null, 28], "cov_ypt": [7.252, null, 22], "rz_td_pct": [0.545, null, 25], "rz_drives": 11, "ypa": [6.673, 6.793, 22]},
+          "dp": {"TE": {"ypt": [8.7, 8.1, 6], "comp": [0.736, null, 19], "rating": [91.5, null, 25], "n": 26}, "WR": {"ypt": [8.0, 7.5, 24], "comp": [0.547, null, 28], "rating": [108.4, null, 7], "n": 54}},
+          "o": {"plays_pg": [55.2, 28]}, "out": [{"n": "Denzel Ward", "pos": "CB", "s": "Out", "i": "Hamstring", "side": "def", "role": "92% of defensive snaps"}]},
+  "DET": {"name": "Detroit Lions", "g": 3, "d": {}, "dp": {}, "o": {}, "out": []},
+  "GB": {"name": "Green Bay Packers", "g": 3, "d": {}, "dp": {}, "o": {}, "out": []}
+ },
+ "players": [
+  {"n": "Jaylen Warren", "id": "00-1", "pos": "RB", "t": "PIT", "g": 3, "wk": [1, 2, 3], "qual": true,
+   "m": [[0.58, 81], [0.66, 70], [16.3, 85], [6, 77], [0.6, 80], [4.9, 74], [4.7, 70], null, [2.6, 66], [0.11, 60], [0.15, 40], [0.5, 88], [0.6, 92], [0.03, 55], [2, 70], [19.0, 86]],
+   "pj": {"player_rush_yds": {"mean": 80.0, "med": 68.4, "in": {"carries": 15.2, "share": 0.58, "ypc": 4.8, "opp": 1.097, "team_carries": 26.2, "mf": 0.855}},
+          "player_anytime_td": {"p": 0.46, "in": {"team_tds": 2.07, "rush_share": 0.62, "rec_share": 0.08, "rush_frac": 0.378, "implied": 19.5, "lam": 0.62}}},
+   "prior": {"g": 17}, "inj": ["Questionable", "Knee", "Limited Participation in Practice"]},
+  {"n": "Pat Freiermuth", "id": "00-2", "pos": "TE", "t": "PIT", "g": 2, "wk": [2, 3], "qual": true,
+   "m": [[0.17, 60], [0.2, 65], [5.5, 55], null, [0.72, 66], [6.1, 40], [9.0, 70], [8.6, 66], null, [0.8, 60], [0.04, 62], [3.4, 50], [1, 40], [0.1, 45]],
+   "pj": {"player_reception_yds": {"mean": 44.0, "med": 37.0, "in": {"targets": 5.5, "share": 0.17, "ypt": 7.4, "opp": 1.19, "team_att": 32.4, "mf": 0.841}}},
+   "prior": null, "inj": null},
+  {"n": "Josh Allen", "id": "00-3", "pos": "QB", "t": "DET", "g": 3, "wk": [1, 2, 3], "qual": true, "m": [], "pj": {}, "prior": null, "inj": null},
+  {"n": "Josh Allen", "id": "00-4", "pos": "QB", "t": "CLE", "g": 3, "wk": [1, 2, 3], "qual": true, "m": [], "pj": {}, "prior": null, "inj": null}
+ ]}

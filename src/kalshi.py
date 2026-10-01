@@ -22,12 +22,15 @@ STAT_PATTERNS = [
     ("player_receptions", re.compile(r"receptions|catches", re.I)),
     ("player_anytime_td", re.compile(r"touchdown", re.I)),
 ]
-# markets we can't price from single-stat lines
+# markets we can't price from single-stat lines, plus season-long markets (stat leaders, season totals,
+# awards) whose titles mention the same stats but aren't single-game props
 SKIP = re.compile(
     r"rushing\s*(?:and|\+|&)\s*receiving|scrimmage|combined|longest|first touchdown|last touchdown"
-    r"|first td|last td|first scorer",
+    r"|first td|last td|first scorer"
+    r"|leader|\bmost\b|season|mvp|award|career|all-pro|pro bowl",
     re.I,
 )
+SKIP_TICKER = re.compile(r"LEADER|SEASON|MVP|AWARD|ROTY|OPOY|DPOY", re.I)
 PLUS = re.compile(r"(\d+(?:\.\d+)?)\s*\+")
 OVER = re.compile(r"(?:over|at least)\s+(\d+(?:\.\d+)?)", re.I)
 
@@ -99,7 +102,8 @@ def prices(m):
 def parse_contract(m):
     """Return {'stat', 'threshold'} for single-stat player contracts, else None."""
     text = market_text(m)
-    if SKIP.search(text):
+    if SKIP.search(text) or SKIP_TICKER.search(m.get("ticker", "") or "") \
+            or SKIP_TICKER.search(m.get("event_ticker", "") or ""):
         return None
     stat = next((s for s, pat in STAT_PATTERNS if pat.search(text)), None)
     if not stat:

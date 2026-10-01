@@ -1,0 +1,48 @@
+name: NFL analytics
+
+# Builds site/analytics.json (the "Why this pick" panels) from free nflverse data. Uses 0 Odds API
+# credits, except an optional 2-credit call if nflverse hasn't posted a game's spread/total yet.
+on:
+  schedule:
+    # Thursday ~11am ET: the week's stats, lines and first injury report (before the noon scan).
+    - cron: "0 15 * * 4"
+    # Sunday ~11:45am ET: refresh injury designations and forecasts before the Sunday scan.
+    - cron: "45 15 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes
+  cancel-in-progress: false
+
+jobs:
+  analytics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-analytics.txt
+      - run: pip install -r requirements-analytics.txt
+      - name: Cache nflverse downloads
+        uses: actions/cache@v4
+        with:
+          path: .cache/nflverse
+          key: nflverse-${{ github.run_id }}
+          restore-keys: nflverse-
+      - name: Build analytics.json
+        env:
+          NFLREADPY_CACHE: filesystem
+          NFLREADPY_CACHE_DIR: .cache/nflverse
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}   # only used if nflverse has no spread/total for a game
+        run: python -m src.analytics
+      - name: Commit
+        run: |
+          git config user.name "edge-bot"
+          git config user.email "edge-bot@users.noreply.github.com"
+          git add site/analytics.json
+          git diff --cached --quiet || (git commit -m "analytics" && git pull --rebase && git push)

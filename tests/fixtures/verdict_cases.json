@@ -1,0 +1,15 @@
+[
+  {"stat": "player_rush_yds", "side": "Over", "line": 65.5, "proj": {"med": 71.0}, "want": "agree"},
+  {"stat": "player_rush_yds", "side": "Under", "line": 65.5, "proj": {"med": 71.0}, "want": "disagree"},
+  {"stat": "player_rush_yds", "side": "Over", "line": 65.5, "proj": {"med": 68.0}, "want": "neutral"},
+  {"stat": "player_reception_yds", "side": "Under", "line": 50.5, "proj": {"med": 44.0}, "want": "agree"},
+  {"stat": "player_pass_yds", "side": "YES", "line": 249.5, "proj": {"med": 220.0}, "want": "disagree"},
+  {"stat": "player_receptions", "side": "Over", "line": 4.5, "proj": {"med": 5.1}, "want": "agree"},
+  {"stat": "player_receptions", "side": "Over", "line": 4.5, "proj": {"med": 4.8}, "want": "neutral"},
+  {"stat": "player_pass_tds", "side": "Under", "line": 1.5, "proj": {"med": 1.1}, "want": "agree"},
+  {"stat": "player_anytime_td", "side": "Yes", "line": null, "proj": {"p": 0.46}, "market_p": 0.38, "want": "agree"},
+  {"stat": "player_anytime_td", "side": "No", "line": null, "proj": {"p": 0.46}, "market_p": 0.38, "want": "disagree"},
+  {"stat": "player_anytime_td", "side": "Yes", "line": null, "proj": {"p": 0.40}, "market_p": 0.38, "want": "neutral"},
+  {"stat": "player_anytime_td", "side": "Yes", "line": null, "proj": {"p": 0.40}, "market_p": null, "want": "n/a"},
+  {"stat": "player_rush_yds", "side": "Over", "line": 65.5, "proj": null, "want": "n/a"}
+]

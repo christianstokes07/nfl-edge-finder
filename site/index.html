@@ -4,62 +4,363 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>Kalshi edges</title>
+<meta name="theme-color" content="#f3eee4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14130f" media="(prefers-color-scheme: dark)">
+<title>Prop Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
 <style>
-:root{--bg:#f4f6f3;--ink:#16221b;--mute:#5d6b62;--line:#d9dfd8;--edge:#0c7a43;--warn:#9a5b00;
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1511;--ink:#e8efe9;--mute:#97a69c;--line:#26332b;--edge:#4fd18b;--warn:#e0a84a}}
+:root{
+  --bg:#f3eee4;--surface:#fffcf5;--sunk:#ebe5d8;--ink:#1a1814;--ink2:#4c463d;--mute:#7a7264;--line:#e0d8c8;
+  --accent:#2a3fd1;--accent-ink:#fff;--accent-soft:#e3e6fb;--track:#e4ddcf;
+  --good:#14634a;--warn:#a6420b;--warn-soft:#fbe9dc;
+  --shadow:0 1px 0 rgba(26,24,20,.04),0 8px 24px -12px rgba(26,24,20,.18);
+  --font:"Archivo",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);--safe-t:env(safe-area-inset-top,0px);
+  --safe-l:env(safe-area-inset-left,0px);--safe-r:env(safe-area-inset-right,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14130f;--surface:#1d1b17;--sunk:#24211c;--ink:#f2ece1;--ink2:#cbc3b5;--mute:#978e80;--line:#302c26;
+  --accent:#9aabff;--accent-ink:#10153a;--accent-soft:#252b4d;--track:#34302a;
+  --good:#7fd6ae;--warn:#ffab73;--warn-soft:#3a2518;--shadow:0 1px 0 rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.7)}}
+:root[data-theme="dark"]{
+  --bg:#14130f;--surface:#1d1b17;--sunk:#24211c;--ink:#f2ece1;--ink2:#cbc3b5;--mute:#978e80;--line:#302c26;
+  --accent:#9aabff;--accent-ink:#10153a;--accent-soft:#252b4d;--track:#34302a;
+  --good:#7fd6ae;--warn:#ffab73;--warn-soft:#3a2518;--shadow:0 1px 0 rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.7)}
 *{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
-main{max-width:560px;margin:0 auto;padding:20px 18px 40px}
-h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
-.sub{color:var(--mute);font-size:14px;margin:0 0 4px}
-.stale{color:var(--warn)}
-.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-.filters label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--mute)}
-.filters label:last-child{grid-column:1/-1}
-select{font:inherit;font-size:16px;padding:9px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
-select:focus-visible,button:focus-visible{outline:2px solid var(--edge);outline-offset:2px}
-ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-li{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
-.who{font-weight:650;font-size:17px}
-.what,.buy{color:var(--mute);font-size:14px;margin-top:2px}
-.buy b{color:var(--ink);font-weight:650}
-.edge{font-size:30px;font-weight:700;color:var(--edge);letter-spacing:-.02em;white-space:nowrap;text-align:right}
-.edge small{display:block;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0}
-.empty{padding:28px 0;color:var(--mute)}
-.note{color:var(--mute);font-size:13px;margin-top:18px}
-button{font:inherit;margin-top:14px;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+html{-webkit-text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--font);font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
+main{max-width:620px;margin:0 auto;padding:calc(18px + var(--safe-t)) calc(16px + var(--safe-r)) calc(120px + var(--safe-b)) calc(16px + var(--safe-l))}
+
+/* masthead */
+.mast{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:3px solid var(--ink);padding-bottom:10px}
+h1{margin:0;font-size:40px;line-height:.9;font-weight:900;font-stretch:68%;text-transform:uppercase;letter-spacing:-.01em}
+h1 span{color:var(--accent)}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
+.theme{min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);
+  font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;white-space:nowrap}
+.status{font-size:14px;color:var(--ink2);margin:10px 0 0;display:flex;flex-wrap:wrap;gap:4px 10px}
+.status .warnline{color:var(--warn);font-weight:600}
+.demo{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--warn-soft);color:var(--warn);padding:2px 8px;border-radius:6px}
+
+/* pickers */
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 12px}
+.pk{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:1px;min-height:58px;padding:8px 36px 8px 14px;
+  border-radius:14px;border:1px solid var(--line);background:var(--surface);text-align:left;cursor:pointer;position:relative;box-shadow:var(--shadow);min-width:0}
+.pk::after{content:"";position:absolute;right:15px;top:50%;width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:translateY(-70%) rotate(45deg)}
+.pk small{font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--mute)}
+.pk b{font-size:16px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.pk.wide{grid-column:1/-1;min-height:64px}
+.pk.wide b{font-size:19px;font-weight:750}
+
+/* how to read */
+details.how{margin:4px 0 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+details.how summary{list-style:none;cursor:pointer;min-height:48px;display:flex;align-items:center;gap:10px;padding:0 14px;font-weight:650}
+details.how summary::-webkit-details-marker{display:none}
+details.how summary::before{content:"?";display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:800;flex:none}
+details.how summary::after{content:"Show";margin-left:auto;font-size:13px;color:var(--mute);font-weight:600}
+details.how[open] summary::after{content:"Hide"}
+.how dl{margin:0;padding:2px 14px 14px;display:grid;gap:12px}
+.how dt{font-weight:700}
+.how dd{margin:2px 0 0;color:var(--ink2);font-size:15px}
+
+.live{font-size:13px;color:var(--mute);margin:0 0 8px}
+.live:empty{display:none}
+.count{font-size:13px;color:var(--mute);margin:0 0 8px;font-weight:600;letter-spacing:.02em}
+
+/* picks */
+ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pick{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:1fr auto;gap:2px 12px}
+.pick .who{font-size:18px;font-weight:750;line-height:1.2;letter-spacing:-.005em}
+.pick .line{font-size:16px;margin-top:3px;color:var(--ink)}
+.pick .line b{font-weight:750}
+.pick .price{font-size:15px;color:var(--ink2);margin-top:1px}
+.pick .price b{color:var(--ink);font-weight:700}
+.pick .game{font-size:13px;color:var(--mute);margin-top:4px}
+.hit{text-align:right;align-self:start}
+.hit .pct{font-size:46px;line-height:.9;font-weight:850;font-stretch:72%;letter-spacing:-.02em}
+.hit .pct sup{font-size:20px;font-weight:700;vertical-align:top;margin-left:1px;position:relative;top:4px}
+.hit .cap{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--mute);margin-top:4px}
+.meter{grid-column:1/-1;margin-top:10px;display:flex;align-items:center;gap:10px}
+.bar{position:relative;flex:1;height:10px;border-radius:99px;background:var(--track);overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--accent);border-radius:99px}
+.bar::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--surface);opacity:.9}
+.tier{font-size:13px;font-weight:650;color:var(--ink2);white-space:nowrap;min-width:84px;text-align:right}
+.foot{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.value{font-size:14px;color:var(--ink2);display:flex;gap:7px;align-items:flex-start;line-height:1.3}
+.value .ic{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font-size:12px;font-weight:800;border:1.5px solid currentColor;margin-top:-1px}
+.value.good{color:var(--good)}
+.value.good .txt{color:var(--ink)}
+.value small{display:block;color:var(--mute);font-size:12.5px;margin-top:1px}
+.add{flex:none;min-height:44px;min-width:92px;padding:0 14px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;font-weight:750;font-size:15px;cursor:pointer}
+.add[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.gap{grid-column:1/-1;margin-top:10px;font-size:14px;font-weight:600;color:var(--warn);background:var(--warn-soft);border-radius:10px;padding:8px 10px}
+/* why-this-pick */
+.why{grid-column:1/-1;margin-top:10px;font-size:14.5px;line-height:1.45;color:var(--ink2)}
+.why b{color:var(--ink)}
+.tags{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;padding:4px 9px;border-radius:999px;border:1.5px solid var(--line);color:var(--ink2);background:var(--bg)}
+.tag.agree{border-color:var(--good);color:var(--good)}
+.tag.disagree{border-color:var(--warn);color:var(--warn)}
+.tag.conf-High{border-color:var(--ink);color:var(--ink)}
+.flag{grid-column:1/-1;margin-top:8px;font-size:14px;color:var(--ink);background:var(--sunk);border-radius:10px;padding:8px 10px;display:flex;gap:8px}
+.flag.sev{background:var(--warn-soft)}
+.flag .fi{flex:none;font-weight:800;color:var(--warn)}
+.flag .fi.info{color:var(--mute)}
+.whybtn{grid-column:1/-1;margin-top:10px;min-height:44px;width:100%;display:flex;align-items:center;justify-content:space-between;padding:0 14px;
+  border-radius:12px;border:1px solid var(--line);background:var(--bg);font-weight:700;font-size:15px;cursor:pointer}
+.whybtn::after{content:"";width:8px;height:8px;border-right:2px solid var(--mute);border-bottom:2px solid var(--mute);transform:translateY(-25%) rotate(45deg);transition:transform .15s}
+.whybtn[aria-expanded="true"]::after{transform:translateY(25%) rotate(225deg)}
+.panel{grid-column:1/-1;margin-top:8px}
+.proj{border:1.5px solid var(--line);border-radius:14px;padding:12px;background:var(--bg)}
+.proj .pv{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.proj .pn{font-size:30px;font-weight:850;font-stretch:72%}
+.proj .pl{font-size:14px;color:var(--ink2)}
+.proj .ph{font-size:13.5px;color:var(--ink2);margin-top:6px;line-height:1.45}
+.sec{margin-top:14px}
+.sec h4{margin:0 0 6px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.sec ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.sec li{font-size:14.5px;line-height:1.4;padding-left:12px;position:relative}
+.sec li::before{content:"";position:absolute;left:0;top:.55em;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.sec li.na{color:var(--mute)}
+.sec li.na::before{background:var(--line)}
+.term{font:inherit;font-weight:700;color:var(--ink);background:none;border:0;padding:0;border-bottom:1.5px dotted var(--accent);cursor:help;text-align:left;min-height:24px}
+.panel .src{font-size:12.5px;color:var(--mute);margin-top:12px}
+.defdir{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);font-weight:650}
+.more,.ghost{display:block;width:100%;min-height:48px;margin:14px 0 0;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-weight:650;cursor:pointer}
+.empty{padding:28px 18px;border:1.5px dashed var(--line);border-radius:18px;color:var(--ink2);text-align:center}
+.notes{margin-top:22px;font-size:13px;color:var(--mute)}
+.notes p{margin:0 0 8px}
+
+/* slip bar */
+.slipbar{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:10px calc(12px + var(--safe-r)) calc(10px + var(--safe-b)) calc(12px + var(--safe-l));
+  background:linear-gradient(to top,var(--bg) 70%,transparent)}
+.slipbar button{display:flex;align-items:center;gap:12px;width:100%;max-width:620px;margin:0 auto;min-height:60px;padding:8px 10px 8px 16px;border-radius:18px;border:0;
+  background:var(--ink);color:var(--bg);text-align:left;cursor:pointer;box-shadow:0 12px 30px -10px rgba(0,0,0,.45)}
+.slipbar .sb-t{flex:1;min-width:0}
+.slipbar .sb-t b{display:block;font-size:16px;font-weight:750}
+.slipbar .sb-t span{display:block;font-size:13px;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slipbar .sb-n{font-size:28px;font-weight:850;font-stretch:72%;padding:0 4px}
+.slipbar .sb-go{flex:none;padding:8px 12px;border-radius:12px;background:var(--bg);color:var(--ink);font-weight:750;font-size:14px}
+
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(10,9,7,.5);z-index:40;opacity:0;transition:opacity .2s}
+.scrim.on{opacity:1}
+.sheet{position:fixed;z-index:50;left:0;right:0;bottom:0;max-height:88vh;max-height:88dvh;display:flex;flex-direction:column;background:var(--surface);color:var(--ink);
+  border-radius:22px 22px 0 0;box-shadow:0 -10px 40px -10px rgba(0,0,0,.4);transform:translateY(105%);transition:transform .24s cubic-bezier(.2,.8,.2,1);
+  padding-bottom:var(--safe-b)}
+.sheet.on{transform:none}
+.sheet[hidden],.scrim[hidden]{display:none}
+.sh-head{padding:8px 18px 10px;border-bottom:1px solid var(--line);flex:none;position:relative}
+.grab{width:40px;height:5px;border-radius:9px;background:var(--line);margin:0 auto 10px}
+.sh-head h2{margin:0;font-size:24px;font-weight:850;font-stretch:75%;text-transform:uppercase;letter-spacing:.01em}
+.sh-head p{margin:2px 0 0;font-size:14px;color:var(--mute);padding-right:56px}
+.close{position:absolute;right:10px;top:12px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:20px;line-height:1;cursor:pointer}
+.sh-body{overflow:auto;-webkit-overflow-scrolling:touch;padding:10px 12px 18px;overscroll-behavior:contain}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:10px 12px;border:0;border-radius:14px;background:transparent;text-align:left;cursor:pointer}
+.opt+.opt{margin-top:2px}
+.opt:hover{background:var(--sunk)}
+.opt[aria-checked="true"]{background:var(--accent-soft)}
+.opt .o-t{display:block;font-weight:700;font-size:16.5px}
+.opt .o-d{display:block;font-size:14px;color:var(--ink2);margin-top:1px}
+.opt .o-x{flex:1;min-width:0}
+.opt .dot{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid var(--mute);display:grid;place-items:center}
+.opt[aria-checked="true"] .dot{border-color:var(--accent);background:var(--accent)}
+.opt[aria-checked="true"] .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent-ink)}
+.opt.dim .o-t{color:var(--mute)}
+.opt-sec{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin:12px 12px 4px}
+@media (min-width:720px){
+  .sheet{left:50%;right:auto;bottom:auto;top:50%;width:560px;max-height:84vh;border-radius:22px;transform:translate(-50%,-46%);opacity:0;transition:transform .2s,opacity .2s}
+  .sheet.on{transform:translate(-50%,-50%);opacity:1}
+  .grab{display:none}
+  .sh-head{padding-top:16px}
+}
+@media (prefers-reduced-motion:reduce){.sheet,.scrim{transition:none}}
+
+/* slip sheet */
+.combo{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:end;padding:12px 6px 14px}
+.combo .big{font-size:64px;line-height:.85;font-weight:900;font-stretch:68%;letter-spacing:-.02em}
+.combo .big sup{font-size:26px;vertical-align:top;position:relative;top:6px}
+.combo .lbl{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--mute)}
+.combo .sub{font-size:15px;color:var(--ink2)}
+.combo .meter{margin-top:6px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 12px;padding:12px 6px;border-top:1px solid var(--line);font-size:15px}
+.kv dt{color:var(--ink2)}
+.kv dd{margin:0;font-weight:750;text-align:right}
+.kv .hint{grid-column:1/-1;font-size:13px;color:var(--mute);margin-top:-4px}
+.legs{list-style:none;margin:6px 0;padding:0;border-top:1px solid var(--line)}
+.legs li{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid var(--line)}
+.legs .l-x{flex:1;min-width:0}
+.legs .l-t{font-weight:700}
+.legs .l-d{font-size:14px;color:var(--ink2)}
+.legs .l-p{font-size:22px;font-weight:850;font-stretch:72%}
+.legs .rm{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:18px}
+.callout{margin:10px 0;padding:10px 12px;border-radius:12px;background:var(--warn-soft);color:var(--ink);font-size:14px}
+.callout b{color:var(--warn)}
+.callout.info{background:var(--sunk)}
+.callout.info b{color:var(--ink)}
+.field{display:block;padding:12px 6px 4px;border-top:1px solid var(--line)}
+.field label{display:block;font-weight:700;margin-bottom:6px}
+.field .row{display:flex;gap:8px}
+.field input{flex:1;min-width:0;font:inherit;font-size:20px;font-weight:700;min-height:50px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.verdict{margin:8px 0 0;font-size:15px;min-height:1.4em}
+.verdict.good{color:var(--good)}
+.verdict.bad{color:var(--warn)}
+.auto{padding:14px 6px 4px;border-top:1px solid var(--line)}
+.auto h3{margin:0 0 4px;font-size:17px}
+.auto p{margin:0 0 10px;font-size:14px;color:var(--ink2)}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+.seg button{min-height:48px;border-radius:12px;border:1.5px solid var(--line);background:transparent;font-weight:750;font-size:17px;cursor:pointer}
+.seg button[aria-checked="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.primary{width:100%;min-height:52px;border-radius:14px;border:0;background:var(--accent);color:var(--accent-ink);font-weight:800;font-size:16px;cursor:pointer}
+.fine{font-size:13px;color:var(--mute);padding:6px}
+.fine p{margin:8px 0}
+.toast{position:fixed;left:50%;bottom:calc(92px + var(--safe-b));transform:translateX(-50%);background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:12px;font-weight:650;font-size:14px;z-index:60;max-width:calc(100% - 32px);text-align:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
 <main>
-  <h1>Kalshi edges</h1>
-  <p class="sub" id="sub">Loading…</p>
-  <p class="sub" id="live"></p>
-  <div class="filters">
-    <label>Prop type<select id="prop"></select></label>
-    <label>Fair value from<select id="book"></select></label>
-    <label>Sort by<select id="sort">
-      <option value="value">Best value (edge after a safety margin)</option>
-      <option value="hit">Most likely to hit</option>
-      <option value="edge">Biggest raw edge</option>
-    </select></label>
+  <header>
+    <p class="kicker">NFL player props</p>
+    <div class="mast">
+      <h1>Prop<span>/</span>Sheet</h1>
+      <button class="theme" id="theme" type="button" aria-label="Color theme">Auto</button>
+    </div>
+    <p class="status" id="status">Loading…</p>
+  </header>
+
+  <div class="controls">
+    <button class="pk wide" type="button" data-picker="where"><small>Where I bet</small><b id="v-where">…</b></button>
+    <button class="pk" type="button" data-picker="prop"><small>Prop</small><b id="v-prop">All props</b></button>
+    <button class="pk" type="button" data-picker="game"><small>Game</small><b id="v-game">All games</b></button>
+    <button class="pk wide" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Most likely to hit</b></button>
   </div>
-  <ul id="list"></ul>
+
+  <details class="how" id="how">
+    <summary>How to read this</summary>
+    <dl>
+      <div><dt>Hit chance (the big %)</dt>
+        <dd>How often this pick should win. We take every sportsbook's price, remove the cut each book keeps
+        for itself (called the "vig"), and average them. 60% means it should win about 6 times in 10.</dd></div>
+      <div><dt>The line</dt>
+        <dd>"Over 65.5 rushing yards" wins at 66 or more. The .5 means there are no ties. "Anytime TD" wins if the
+        player scores at least one touchdown, running or catching.</dd></div>
+      <div><dt>The odds</dt>
+        <dd>−115 means you bet $115 to win $100. +140 means you bet $100 to win $140. On Kalshi, a 43¢ YES pays $1
+        if it happens, so you pay 43¢ for a $1 ticket.</dd></div>
+      <div><dt>Why most sportsbook picks sit near 50%</dt>
+        <dd>Books set their main line (like Over/Under 65.5) so both sides are about even. Higher hit chances come
+        from lower lines: "alternate lines" at a book (e.g. Over 39.5 at −300) or Kalshi's lower thresholds (e.g. 40+).
+        They win more often but pay much less.</dd></div>
+      <div><dt>Value (the line under the meter)</dt>
+        <dd>Compares what you get paid with the hit chance. "Good value" means the book pays more than the pick is
+        worth. Most picks are a bit below fair because every book keeps a cut. A likely pick can still be a bad deal.</dd></div>
+      <div><dt>Why this pick (stats)</dt>
+        <dd>Each pick has a one-line "Why" and a panel with usage, efficiency, matchup and game-context numbers from
+        nflverse. A simple stats projection (usage × opponent-adjusted efficiency × game script) is compared with the line:
+        <b>Stats agree</b> raises the confidence tag, <b>Stats disagree</b> lowers it and shows a warning. The hit chance itself
+        always stays the sportsbooks' number. Tap any dotted stat name for a plain-English definition.</dd></div>
+      <div><dt>Confidence tag</dt>
+        <dd>Medium when 3+ books price the pick (Low with fewer). One step up if stats agree, one step down if they
+        disagree, and one step down for a serious warning (player injury listing, strong wind on a passing pick, a line move against you).</dd></div>
+      <div><dt>"Big gap: check injury news"</dt>
+        <dd>When one price is far from all the others, the usual reason is news (an injury, a benched player) that
+        our last scan doesn't know about. Check before betting.</dd></div>
+      <div><dt>Parlays</dt>
+        <dd>Every leg must win. The chances multiply, so three 60% legs hit together only about 22% of the time.
+        Tap "+ Parlay" on a pick to add it to your slip at the bottom.</dd></div>
+      <div><dt>What this is not</dt>
+        <dd>It isn't a prediction model. It's math on the books' own prices from the last scan. It won't see late
+        news, weather or lineup changes.</dd></div>
+    </dl>
+  </details>
+
+  <p class="live" id="live" aria-live="polite"></p>
+  <p class="count" id="count"></p>
+  <ol class="picks" id="list"></ol>
   <div class="empty" id="empty" hidden></div>
-  <p class="note">The big number is the edge after a safety margin for how rough the math is: fair probability minus price and fees, with sportsbook lines as fair value. Hit chance is the fair probability of the side you'd buy. Prices are live while this page is open. Check the inactives before you buy.</p>
-  <p class="note" id="diag"></p>
-  <button id="refresh">Reload</button>
+  <button class="more" id="more" type="button" hidden>Show more</button>
+
+  <div class="notes">
+    <p id="diag"></p>
+    <p id="anaSrc"></p>
+    <p>Picks priced shorter than −1000 (about 91¢ on Kalshi) are hidden: they barely change what a parlay pays.
+    Sportsbook data from The Odds API. Kalshi prices refresh every 30 seconds while you're on the Kalshi view.
+    Most bettors lose money over time. Only bet what you can afford to lose.</p>
+  </div>
+  <button class="ghost" id="reload" type="button">Reload data</button>
 </main>
+
+<div class="slipbar" id="slipbar">
+  <button type="button" id="slipBtn" aria-haspopup="dialog">
+    <span class="sb-n" id="sbN">0</span>
+    <span class="sb-t"><b id="sbT">Parlay slip</b><span id="sbS">Tap + Parlay on picks, or auto-build one</span></span>
+    <span class="sb-go">Open</span>
+  </button>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle" hidden>
+  <div class="sh-head"><div class="grab"></div><h2 id="shTitle"></h2><p id="shSub"></p>
+    <button class="close" type="button" data-close aria-label="Close">✕</button></div>
+  <div class="sh-body" id="shBody"></div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="parlay.js"></script>
+<script src="analytics.js"></script>
 <script>
+"use strict";
 const $ = id => document.getElementById(id);
-const BOOKS = {draftkings:"DraftKings", fanduel:"FanDuel", betmgm:"BetMGM", caesars:"Caesars", pointsbetus:"PointsBet", espnbet:"ESPN Bet"};
-let D = null, Q = null;
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const P = window.Parlay;
 const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { return null; } },
                set:(k, v) => { try { localStorage.setItem(k, v); } catch(e) {} }};
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const TD = "player_anytime_td";
+const STAT = {
+  player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
+  player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
+  player_pass_yds:      {t:"Passing yards",   u:"passing yards",   d:"Yards a quarterback throws for"},
+  player_receptions:    {t:"Receptions",      u:"catches",         d:"How many passes a player catches"},
+  player_pass_tds:      {t:"Passing TDs",     u:"passing TDs",     d:"Touchdown passes a quarterback throws"},
+  player_anytime_td:    {t:"Anytime TD",      u:"touchdown",       d:"Player scores at least once, running or catching"},
+};
+const SORTS = [
+  {k:"hit",   t:"Most likely to hit", d:"Safest single picks, best parlay legs"},
+  {k:"value", t:"Best value",         d:"Biggest gap between the price and the true odds"},
+  {k:"game",  t:"By kickoff",         d:"Earliest games first, then most likely to hit"},
+];
+const PAGE = 40;
+const AN = window.Analytics;
+let A = null, aNote = "", openWhy = new Set();
+let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null;
+const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all",
+              game:"all", sort:store.get("ps_sort") || "hit", legsN:Number(store.get("ps_legsN")) || 3};
+let slip = [];
+try { slip = JSON.parse(store.get("ps_slip") || "[]") || []; } catch(e) { slip = []; }
+
+/* ---------- helpers ---------- */
+const pct = p => Math.round(p * 100);
+function teamShort(n){ const w = String(n || "").trim().split(/\s+/); return w[w.length - 1] || ""; }
+function game(gid){ return (D && D.games && D.games[gid]) || null; }
+function gameName(gid){ const g = game(gid); return g ? teamShort(g.a) + " @ " + teamShort(g.h) : ""; }
+function kickText(gid){
+  const g = game(gid); if (!g || !g.t) return "";
+  const d = new Date(g.t);
+  return d.toLocaleDateString([], {weekday:"short"}) + " " + d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+}
+function kickMs(gid){ const g = game(gid); return g && g.t ? +new Date(g.t) : Infinity; }
+function bookName(k){
+  if (k === "kalshi") return "Kalshi";
+  const b = D && (D.books || []).find(x => x.k === k);
+  return b ? b.name : k;
+}
 function ago(iso){
   const m = Math.round((Date.now() - new Date(iso)) / 60000);
   if (m < 2) return "just now";
@@ -67,80 +368,517 @@ function ago(iso){
   const h = Math.round(m / 60);
   return h < 36 ? h + " hr ago" : Math.round(h / 24) + " days ago";
 }
-function score(fair, q){
-  const P = D.params;
-  if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P.max_spread) return null;
-  const yc = q.ask / 100, nc = 1 - q.bid / 100, fee = c => P.fee * c * (1 - c);
-  const ey = fair - yc - fee(yc), en = (1 - fair) - nc - fee(nc);
-  return en > ey ? {side:"NO", price:Math.round(nc * 100), hit:1 - fair, edge:en}
-                 : {side:"YES", price:Math.round(yc * 100), hit:fair, edge:ey};
+function tier(p){
+  return p >= .75 ? "Very likely" : p >= .6 ? "Likely" : p >= .45 ? "Coin flip" : p >= .25 ? "Unlikely" : "Long shot";
 }
-function rows(){
-  const P = D.params, src = $("book").value, kind = $("prop").value, out = [];
-  for (const u of D.universe){
-    if (kind !== "all" && u.stat !== kind) continue;
-    let fair = u.fair, extra = 0;
-    if (src !== "all"){ if (u.by_book[src] == null) continue; fair = u.by_book[src]; extra = 0.02; }
-    const s = score(fair, (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask});
-    if (!s) continue;
-    const net = s.edge - u.unc - extra;
-    if (s.edge < (u.stat === "player_anytime_td" ? P.min_edge_td : P.min_edge) || net <= 0) continue;
-    out.push({...u, ...s, net, nbooks: src === "all" ? u.books : 1});
+function fmtPt(x){ return Number(x) % 1 ? Number(x).toFixed(1) : String(Number(x)); }
+// signed amount per $1 bet: +7¢, −12¢, +$3.98
+function money(x){
+  const a = Math.abs(x), sign = x < 0 ? "−" : "+";
+  return a < 0.995 ? sign + Math.round(a * 100) + "¢" : sign + "$" + a.toFixed(2);
+}
+function oneIn(p){
+  if (!(p > 0)) return "";
+  return p >= 0.5 ? "Wins about " + Math.round(p * 10) + " times in 10" : "About 1 in " + Math.round(1 / p);
+}
+const MIN_DEC = 1.1;  // hide prices shorter than −1000: they barely move a parlay's payout
+
+/* ---------- picks for the chosen platform ---------- */
+function mk(c){
+  c.implied = 1 / c.dec;
+  c.ev = c.hit * c.dec - 1;
+  c.evSafe = (c.hit - c.unc) * c.dec - 1;
+  const who = P.norm(c.player);
+  c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
+  c.prop = who + "|" + c.m + "|" + c.pt;  // same prop, any side
+  c.group = (c.plat === "kalshi" || /_alternate$/.test(c.m)) ? c.prop : who + "|" + c.m;
+  return c;
+}
+function kalshiPicks(){
+  const out = [], P2 = D.params || {fee:.07, max_spread:8};
+  const fee = c => P2.fee * c * (1 - c);
+  for (const u of D.kalshi || []){
+    const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
+    if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P2.max_spread) continue;
+    for (const [side, hit, cost] of [["YES", u.fair, q.ask / 100], ["NO", 1 - u.fair, 1 - q.bid / 100]]){
+      if (1 / (cost + fee(cost)) < MIN_DEC) continue;
+      out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat,
+                   pt:u.threshold, side, hit, unc:u.unc || .03, n:u.books, cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
+    }
   }
-  const key = {value:"net", hit:"hit", edge:"edge"}[$("sort").value];
-  return out.sort((a, b) => b[key] - a[key]).slice(0, 15);
+  return out;
 }
+function bookPicks(where){
+  const out = [];
+  for (const p of D.props || []){
+    const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
+    for (const s of [0, 1]){
+      let best = null;
+      for (const b of books){
+        const a = p.b[b][s], dec = a == null ? null : P.americanToDecimal(a);
+        if (dec && (!best || dec > best.dec)) best = {b, a, dec};
+      }
+      if (!best || best.dec < MIN_DEC) continue;
+      const side = p.stat === TD ? (s ? "No" : "Yes") : (s ? "Under" : "Over");
+      out.push(mk({plat:"book", book:best.b, player:p.player, g:p.g, stat:p.stat, m:p.m, pt:p.pt, side,
+                   hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec, prop_mv:p.mv || null}));
+    }
+  }
+  return out;
+}
+function picksFor(where){ return where === "kalshi" ? kalshiPicks() : bookPicks(where); }
+const SORTKEY = {hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
+function filtered(where, sortKey){
+  const key = SORTKEY[sortKey] || SORTKEY.hit, best = new Map();
+  for (const c of picksFor(where)){
+    if (pref.prop !== "all" && c.stat !== pref.prop) continue;
+    if (pref.game !== "all" && c.g !== pref.game) continue;
+    const cur = best.get(c.group);
+    if (!cur || key(c) > key(cur)) best.set(c.group, c);
+  }
+  const out = [...best.values()];
+  if (sortKey === "game") out.sort((a, b) => kickMs(a.g) - kickMs(b.g) || b.hit - a.hit);
+  else out.sort((a, b) => key(b) - key(a));
+  return out;
+}
+
+/* ---------- text for a pick ---------- */
+function lineText(c){
+  const s = STAT[c.stat] || {u:c.stat};
+  if (c.stat === TD) return (c.side === "Yes" || c.side === "YES") ? "<b>Scores a TD</b> (anytime)" : "<b>No TD</b>";
+  if (c.plat === "kalshi") return c.side === "YES" ? "<b>" + fmtPt(c.pt) + "+</b> " + s.u : "<b>Under " + fmtPt(c.pt) + "</b> " + s.u;
+  return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> " + s.u;
+}
+function priceText(c){
+  if (c.plat === "kalshi") return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on Kalshi";
+  return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book));
+}
+function valueHtml(c){
+  const k = c.plat === "kalshi";
+  if (c.evSafe >= 0)
+    return '<div class="value good"><span class="ic" aria-hidden="true">✓</span><span class="txt">Good value: ' +
+      (k ? "Kalshi's price is below what it's worth" : "this book pays more than it's worth") +
+      '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
+  if (c.ev >= -0.06)
+    return '<div class="value"><span class="ic" aria-hidden="true">=</span><span class="txt">Fair price: about what it\'s worth' +
+      '<small>' + (k ? "after Kalshi's fee" : "the book's usual cut is built in") + '</small></span></div>';
+  return '<div class="value"><span class="ic" aria-hidden="true">−</span><span class="txt">Poor value: pays less than it\'s worth' +
+    '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
+}
+/* ---------- stats layer (analytics.json) ---------- */
+function anaFor(c){
+  if (c._ana !== undefined) return c._ana;
+  const g = game(c.g), teams = g ? [g.a, g.h] : [];
+  const p = A ? AN.findPlayer(A, c.player, teams) : null;
+  let stale = false;
+  if (p){
+    const G = (A.games || {})[p.t], O = G && A.teams[G.opp];
+    stale = !G || !O || (teams.length && !teams.includes(O.name));
+  }
+  const pj = p && !stale ? (p.pj || {})[c.stat] : null;
+  const lineVal = c.stat === TD ? null : c.plat === "kalshi" ? c.pt - 0.5 : c.pt;
+  const overP = c.stat === TD ? (OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) : null;
+  const v = AN.verdict(c.stat, c.side, lineVal, pj, overP);
+  const fl = p && !stale ? AN.flags(A, p, c.stat, c.side, c.prop_mv ? {mv:c.prop_mv} : null) : [];
+  const conf = AN.confidence(c.n, v, fl);
+  const sideText = lineText(c).replace(/<[^>]+>/g, "").replace("(anytime)", "").trim();
+  let whyText = AN.why(c, A, p, pj, v, lineVal, sideText);
+  if (p && stale) whyText = whyText.replace(/Stats: n\/a \([^)]*\)\.|Stats .*$/, "") + " Stats: n/a (the stats file is for week " + A.week + ", not this game; rerun the analytics job).";
+  return (c._ana = {p, pj, v, fl, conf, lineVal, whyText, stale});
+}
+const OVERSIDE = new Set(["Over", "Yes", "YES"]);
+const VWORD = {agree:"✓ Stats agree", neutral:"= Stats neutral", disagree:"✕ Stats disagree", "n/a":"Stats: n/a"};
+function anaHtml(c){
+  const a = anaFor(c);
+  let h = '<div class="why">' + esc(a.whyText) + '</div>';
+  h += '<div class="tags"><span class="tag conf-' + a.conf.level + '" title="' + esc(a.conf.why) + '">Confidence: ' + a.conf.level + '</span>' +
+    '<span class="tag ' + a.v.replace("/", "") + '">' + VWORD[a.v] + '</span></div>';
+  if (a.v === "disagree") h += '<div class="flag sev"><span class="fi" aria-hidden="true">⚠</span><span>Stats disagree with this pick: the projection points the other way. Hit chance is still the market number.</span></div>';
+  for (const f of a.fl) h += '<div class="flag' + (f.sev ? " sev" : "") + '"><span class="fi' + (f.sev ? "" : " info") + '" aria-hidden="true">' + (f.sev ? "⚠" : "i") + '</span><span>' + esc(f.text) + '</span></div>';
+  const open = openWhy.has(c.key);
+  h += '<button class="whybtn" type="button" data-why="' + esc(c.key) + '" aria-expanded="' + open + '" aria-controls="pn-' + esc(c.key) + '">Why this pick</button>' +
+    '<div class="panel" id="pn-' + esc(c.key) + '"' + (open ? "" : " hidden") + '>' + (open ? panelHtml(c) : "") + '</div>';
+  return h;
+}
+function term(key, text){ return '<button class="term" type="button" data-def="' + esc(key) + '">' + esc(text) + '</button>'; }
+function panelHtml(c){
+  const a = anaFor(c);
+  if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet (the weekly analytics job hasn't run).") + '</p>';
+  if (!a.p) return '<p class="src">Stats n/a: no nflverse play-by-play for ' + esc(c.player) + ' this season (rookie with no snaps yet, or a name we couldn\'t match).</p>';
+  if (a.stale) return '<p class="src">Stats n/a for this game: the stats file covers week ' + A.week + '. Rerun the analytics job for this week.</p>';
+  let h = '<div class="proj">';
+  if (a.pj){
+    const isTd = c.stat === TD, unit = {player_rush_yds:"rush yds", player_reception_yds:"rec yds", player_pass_yds:"pass yds", player_receptions:"catches", player_pass_tds:"pass TDs"}[c.stat];
+    h += '<div class="pv"><span class="pn">' + (isTd ? Math.round(a.pj.p * 100) + "%" : (Math.round(a.pj.med * 10) / 10).toFixed(1)) + '</span><span class="pl">' +
+      (isTd ? "stats chance to score vs " + Math.round((OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) * 100) + "% market" : unit + " stats projection (typical game) vs line " + fmtPt(a.lineVal)) + " · " + VWORD[a.v] + '</span></div>';
+    h += '<div class="ph">' + esc(AN.projText(c.stat, a.pj)) + '</div>';
+    h += '<div class="ph">Projection = usage × opponent-adjusted efficiency × game script, blended with last season while samples are small. It only checks the market; the hit chance above is still the books\' number.</div>';
+  } else h += '<div class="ph">Stats projection: n/a (not enough data to project this stat for him).</div>';
+  h += "</div>";
+  const p = a.p;
+  if (p.g < (A.consts || {}).small) h += '<div class="flag"><span class="fi info" aria-hidden="true">i</span><span>Small sample: ' + p.g + (p.g === 1 ? " game" : " games") + ' this season' + (p.prior ? "; projections lean on last season (" + p.prior.g + " games)" : "; no last-season data to lean on") + '.</span></div>';
+  for (const sct of AN.sections(A, p, c.stat)){
+    h += '<div class="sec"><h4>' + esc(sct.title) + '</h4><ul>' + sct.lines.map(l => '<li' + (l.na ? ' class="na"' : "") + '>' +
+      (AN.DEF[l.key] ? term(l.key, AN.DEF[l.key].t) + ": " : "") + esc(l.text) + '</li>').join("") + '</ul></div>';
+  }
+  h += '<p class="src">' + p.g + (p.g === 1 ? " game" : " games") + " of " + A.season + " data (weeks " + (p.wk || []).join(", ") + "). Percentiles are among players at his position with enough volume. Tap a dotted stat name for what it means.</p>";
+  return h;
+}
+function showDef(key, side, trigger){
+  const d = AN.DEF[key]; if (!d) return;
+  openSheet("def", trigger);
+  $("shTitle").textContent = d.t; $("shSub").textContent = "What this stat means";
+  $("shBody").innerHTML = '<p style="margin:6px 6px 0;font-size:16px;line-height:1.5">' + esc(d.d) + '</p><p class="defdir" style="margin:12px 6px">' + esc(AN.dirNote(key, side)) + '</p>';
+}
+
+function inSlip(key){ return slip.some(l => l.key === key); }
+function card(c){
+  const label = c.player + " " + lineText(c).replace(/<[^>]+>/g, "");
+  const added = inSlip(c.key);
+  const gap = c.hit - c.implied > 0.12
+    ? '<div class="gap">⚠ Big gap between this price and the other books: check injury news first</div>' : "";
+  const books = c.n + (c.n === 1 ? " book" : " books");
+  return '<li class="pick">' +
+    '<div><div class="who">' + esc(c.player) + '</div><div class="line">' + lineText(c) + '</div>' +
+    '<div class="price">' + priceText(c) + '</div>' +
+    '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
+    '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance</div></div>' +
+    '<div class="meter" aria-hidden="true"><div class="bar"><i style="width:' + pct(c.hit) + '%"></i></div>' +
+    '<span class="tier">' + tier(c.hit) + '</span></div>' +
+    '<div class="foot">' + valueHtml(c) +
+    '<button class="add" type="button" data-add="' + esc(c.key) + '" aria-pressed="' + added + '" aria-label="' +
+    (added ? "Remove from parlay: " : "Add to parlay: ") + esc(label) + '">' + (added ? "✓ In slip" : "+ Parlay") + '</button></div>' +
+    gap + anaHtml(c) + '<span class="sr">Based on ' + books + '.</span></li>';
+}
+
+/* ---------- render ---------- */
+function whereLabel(k){ return k === "best" ? "Best price anywhere" : bookName(k); }
 function render(){
-  if (!D || !D.updated) return;
-  const r = rows();
-  $("list").innerHTML = r.map(p => {
-    const line = p.stat === "player_anytime_td" ? p.label : esc(p.threshold) + "+ " + p.label;
-    const tag = p.net >= 0.06 ? "Strong" : p.net >= 0.03 ? "Good" : "Thin";
-    const big = p.edge > 0.12 ? '<div class="what stale">Big gap: check injury news first</div>' : "";
-    return '<li><div><div class="who">' + esc(p.player) + '</div><div class="what">' + line + ' in ' + esc(p.game) + '</div>' +
-      '<div class="buy">Buy <b>' + p.side + '</b> at <b>' + p.price + '¢</b>, hits about <b>' + Math.round(p.hit * 100) + '%</b></div>' + big + '</div>' +
-      '<div class="edge">+' + (p.net * 100).toFixed(1) + '%<small>' + tag + ', ' + p.nbooks + (p.nbooks === 1 ? ' book' : ' books') + '</small></div></li>';
-  }).join("");
-  $("empty").hidden = r.length > 0;
-  $("empty").textContent = "Nothing clears the bar for this filter right now.";
+  if (!D) return;
+  $("v-where").textContent = whereLabel(pref.where);
+  $("v-prop").textContent = pref.prop === "all" ? "All props" : (STAT[pref.prop] || {t:pref.prop}).t;
+  $("v-game").textContent = pref.game === "all" ? "All games" : gameName(pref.game);
+  $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
+  if (pref.where !== "kalshi") $("live").textContent = "";
+  const list = filtered(pref.where, pref.sort);
+  current = new Map(list.map(c => [c.key, c]));
+  $("list").innerHTML = list.slice(0, shown).map(card).join("");
+  $("more").hidden = list.length <= shown;
+  $("more").textContent = "Show " + Math.min(PAGE, list.length - shown) + " more";
+  $("count").textContent = list.length ? list.length + (list.length === 1 ? " pick" : " picks") + " · " + whereLabel(pref.where) : "";
+  const e = $("empty");
+  e.hidden = list.length > 0;
+  if (!list.length) e.textContent = emptyText();
+  renderSlipBar();
 }
-function fillMenus(){
-  const stats = {}, books = new Set();
-  D.universe.forEach(u => { stats[u.stat] = u.label; Object.keys(u.by_book).forEach(b => books.add(b)); });
-  $("prop").innerHTML = '<option value="all">All props</option>' + Object.entries(stats).map(([k, v]) => '<option value="' + k + '">' + esc(v) + '</option>').join("");
-  $("book").innerHTML = '<option value="all">All books combined</option>' + [...books].map(b => '<option value="' + b + '">' + esc(BOOKS[b] || b) + '</option>').join("");
-  for (const id of ["prop", "book", "sort"]){
-    const v = store.get("edge_" + id);
-    if (v && [...$(id).options].some(o => o.value === v)) $(id).value = v;
-    $(id).onchange = () => { store.set("edge_" + id, $(id).value); render(); };
+function emptyText(){
+  if (pref.where === "kalshi")
+    return (D.kalshi || []).length ? "No Kalshi contracts with a tight enough price for this filter right now."
+      : "The last scan didn't match any Kalshi contracts to sportsbook lines.";
+  const b = (D.books || []).find(x => x.k === pref.where);
+  if (b && !b.n) return "No " + b.name + " lines in the last scan." +
+    (b.paid ? " The Odds API only sends " + b.name + " on paid plans." : " Try another book or Best price anywhere.");
+  return "Nothing matches these filters. Try All props or All games.";
+}
+
+/* ---------- pickers (bottom sheet) ---------- */
+function opt(value, title, desc, checked, dim){
+  return '<button class="opt' + (dim ? " dim" : "") + '" type="button" role="radio" aria-checked="' + checked + '" data-v="' + esc(value) + '">' +
+    '<span class="dot" aria-hidden="true"></span><span class="o-x"><span class="o-t">' + esc(title) + '</span>' +
+    '<span class="o-d">' + esc(desc) + '</span></span></button>';
+}
+const PICKERS = {
+  where: {t:"Where I bet", d:"See each pick at your book's own line and odds", build(){
+    const props = D.props || [];
+    let h = opt("best", "Best price anywhere", "Each pick at whichever book pays the most", pref.where === "best");
+    h += '<div class="opt-sec">Sportsbooks</div>';
+    for (const b of D.books || []){
+      const desc = b.n ? b.n + " props in the last scan" : b.paid ? "No lines: The Odds API only sends this book on paid plans" : "No lines in the last scan";
+      h += opt(b.k, b.name, desc, pref.where === b.k, !b.n);
+    }
+    h += '<div class="opt-sec">Prediction market</div>';
+    h += opt("kalshi", "Kalshi", (D.kalshi || []).length ? "Prices in cents, refreshed live every 30 seconds" : "No contracts matched in the last scan", pref.where === "kalshi", !(D.kalshi || []).length);
+    return h;
+  }},
+  prop: {t:"Prop", d:"Which stat the bet is about", build(){
+    const have = new Set([...(D.props || []).map(p => p.stat), ...(D.kalshi || []).map(u => u.stat)]);
+    let h = opt("all", "All props", "Every player prop in the last scan", pref.prop === "all");
+    for (const k of Object.keys(STAT)) if (have.has(k)) h += opt(k, STAT[k].t, STAT[k].d, pref.prop === k);
+    return h;
+  }},
+  game: {t:"Game", d:"Show one game, handy for same-game parlays", build(){
+    const n = {};
+    for (const p of D.props || []) n[p.g] = (n[p.g] || 0) + 1;
+    let h = opt("all", "All games", "Every game in the last scan", pref.game === "all");
+    const ids = Object.keys(D.games || {}).sort((a, b) => kickMs(a) - kickMs(b));
+    for (const g of ids) h += opt(g, gameName(g), [kickText(g), n[g] ? n[g] + " props" : ""].filter(Boolean).join(" · "), pref.game === g);
+    return h;
+  }},
+  sort: {t:"Show first", d:"How the list is ordered", build(){
+    return SORTS.map(s => opt(s.k, s.t, s.d, pref.sort === s.k)).join("");
+  }},
+};
+let sheetMode = null;
+function openSheet(mode, trigger){
+  sheetMode = mode;
+  lastTrigger = trigger || document.activeElement;
+  const sh = $("sheet"), sc = $("scrim");
+  if (mode === "slip"){ $("shTitle").textContent = "Your parlay"; $("shSub").textContent = "Every leg has to win"; renderSlip(); }
+  else if (mode === "def"){ /* showDef fills it */ }
+  else {
+    const p = PICKERS[mode];
+    $("shTitle").textContent = p.t; $("shSub").textContent = p.d;
+    $("shBody").innerHTML = '<div role="radiogroup" aria-label="' + esc(p.t) + '">' + p.build() + "</div>";
   }
+  sh.hidden = false; sc.hidden = false;
+  requestAnimationFrame(() => { sh.classList.add("on"); sc.classList.add("on"); });
+  $("shBody").scrollTop = 0;
+  const first = sh.querySelector('[aria-checked="true"]') || sh.querySelector(".close");
+  setTimeout(() => { if (sheetMode === mode && first) first.focus({preventScroll:true}); }, 30);
+  document.body.style.overflow = "hidden";
 }
+function closeSheet(){
+  const sh = $("sheet"), sc = $("scrim");
+  if (sh.hidden) return;
+  sh.classList.remove("on"); sc.classList.remove("on");
+  sheetMode = null;
+  document.body.style.overflow = "";
+  setTimeout(() => { if (!sh.classList.contains("on")){ sh.hidden = true; sc.hidden = true; } }, 240);
+  if (lastTrigger && lastTrigger.focus) lastTrigger.focus({preventScroll:true});
+}
+$("scrim").onclick = closeSheet;
+document.addEventListener("keydown", e => {
+  if ($("sheet").hidden) return;
+  if (e.key === "Escape") closeSheet();
+  if (e.key === "Tab"){  // keep focus inside the open sheet
+    const f = [...$("sheet").querySelectorAll("button,input,[tabindex]")].filter(x => !x.disabled && x.offsetParent);
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]){ e.preventDefault(); f[0].focus(); }
+  }
+  if ((e.key === "ArrowDown" || e.key === "ArrowUp") && document.activeElement.classList.contains("opt")){
+    const o = [...$("sheet").querySelectorAll(".opt")], i = o.indexOf(document.activeElement);
+    const n = o[(i + (e.key === "ArrowDown" ? 1 : o.length - 1)) % o.length];
+    if (n){ e.preventDefault(); n.focus(); }
+  }
+});
+$("sheet").addEventListener("click", e => {
+  if (e.target.closest("[data-close]")) return closeSheet();
+  const o = e.target.closest(".opt");
+  if (o && sheetMode && PICKERS[sheetMode]){
+    pref[sheetMode] = o.dataset.v;
+    if (sheetMode !== "game") store.set("ps_" + sheetMode, o.dataset.v);
+    shown = PAGE;
+    closeSheet(); render();
+    if (pref.where === "kalshi") live();
+    return;
+  }
+  slipClick(e);
+});
+document.querySelectorAll("[data-picker]").forEach(b => b.onclick = () => openSheet(b.dataset.picker, b));
+
+/* ---------- parlay slip ---------- */
+function snapshot(c){
+  return {key:c.key, prop:c.prop, plat:c.plat, book:c.book, ticker:c.ticker, player:c.player, g:c.g, game:gameName(c.g),
+          stat:c.stat, m:c.m, pt:c.pt, side:c.side, hit:c.hit, dec:c.plat === "book" ? c.dec : null,
+          line:lineText(c).replace(/<[^>]+>/g, ""), price:priceText(c).replace(/<[^>]+>/g, "")};
+}
+function saveSlip(){ store.set("ps_slip", JSON.stringify(slip)); }
+function toggleLeg(c){
+  if (inSlip(c.key)) slip = slip.filter(l => l.key !== c.key);
+  else { slip = slip.filter(l => l.prop !== c.prop); slip.push(snapshot(c)); }  // one side per prop
+  saveSlip();
+}
+function refreshSlip(){
+  // re-price legs from the latest data (Kalshi live prices, a new scan); keep the old snapshot if a leg vanished
+  if (!D) return;
+  const pools = {};
+  for (const l of slip){
+    const w = l.plat === "kalshi" ? "kalshi" : l.book;
+    if (!pools[w]) pools[w] = new Map(picksFor(w).map(c => [c.key, c]));
+    const c = pools[w].get(l.key);
+    if (c) Object.assign(l, snapshot(c), {stale:false}); else l.stale = true;
+  }
+  saveSlip();
+}
+function renderSlipBar(){
+  const n = slip.length;
+  $("sbN").textContent = n;
+  if (!n){ $("sbT").textContent = "Parlay slip"; $("sbS").textContent = "Tap + Parlay on picks, or auto-build one"; return; }
+  const r = P.combine(slip);
+  $("sbT").textContent = n + (n === 1 ? " leg" : "-leg parlay") + " · " + pct(r.p) + "% to hit";
+  $("sbS").textContent = "Fair odds " + P.fmtAmerican(r.fairAmerican) + (r.samePlayer + r.sameGame ? " · linked legs, see slip" : "");
+}
+function renderSlip(){
+  const body = $("shBody"), n = slip.length, r = P.combine(slip);
+  let h = "";
+  if (n){
+    h += '<div class="combo"><div><div class="big">' + (r.p < .005 ? "<1" : pct(r.p)) + '<sup>%</sup></div></div>' +
+      '<div><div class="lbl">Chance all ' + n + " legs hit</div>" +
+      '<div class="sub">' + oneIn(r.p) + "</div></div>" +
+      '<div class="meter" style="grid-column:1/-1" aria-hidden="true"><div class="bar"><i style="width:' + pct(r.p) + '%"></i></div><span class="tier">' + tier(r.p) + "</span></div></div>";
+    h += '<dl class="kv"><dt>Fair odds</dt><dd>' + P.fmtAmerican(r.fairAmerican) + '</dd>' +
+      '<div class="hint">What this parlay is really worth. A payout better than this is good value.</div>';
+    const mult = P.multiplyOdds(slip);
+    if (mult) h += '<dt>If your book just multiplies the legs</dt><dd>' + P.fmtAmerican(P.decimalToAmerican(mult)) + '</dd>' +
+      '<div class="hint">' + (mult * r.p >= 1 ? "That would beat fair odds." : "That would be below fair odds.") +
+      " Same-game parlays usually pay less than this, so check the real price.</div>";
+    h += "</dl>";
+    if (r.samePlayer || r.sameGame){
+      h += '<div class="callout"><b>⚠ Linked legs.</b> ';
+      if (r.samePlayer) h += r.samePlayer + (r.samePlayer === 1 ? " pair is" : " pairs are") + " on the same player. ";
+      if (r.sameGame) h += r.sameGame + (r.sameGame === 1 ? " pair is" : " pairs are") + " from the same game. ";
+      h += "Results in one game move together, which can help or hurt, so we lowered the combined chance to be safe (" +
+        pct(r.raw) + "% → " + pct(r.p) + "%: " + [r.samePlayer ? "−" + Math.round((1 - P.SAME_PLAYER) * 100) + "% per same-player pair" : "",
+        r.sameGame ? "−" + Math.round((1 - P.SAME_GAME) * 100) + "% per same-game pair" : ""].filter(Boolean).join(", ") +
+        "). Some books only allow these as a same-game parlay.</div>";
+    }
+    h += '<ul class="legs">' + slip.map((l, i) =>
+      '<li><div class="l-x"><div class="l-t">' + esc(l.player) + '</div><div class="l-d">' + esc(l.line) + " · " + esc(l.price) +
+      (l.stale ? " · <b>not in the latest scan</b>" : "") + '</div><div class="l-d">' + esc(l.game) + '</div></div>' +
+      '<div class="l-p">' + pct(l.hit) + '%</div><button class="rm" type="button" data-rm="' + i + '" aria-label="Remove ' + esc(l.player) + '">✕</button></li>').join("") + "</ul>";
+    h += '<div class="field"><label for="odds">Odds your book offers for this parlay</label>' +
+      '<div class="row"><input id="odds" inputmode="text" autocomplete="off" placeholder="e.g. +450" value="' + esc(store.get("ps_odds") || "") + '"></div>' +
+      '<p class="verdict" id="verdict" aria-live="polite"></p></div>';
+  } else {
+    h += '<div class="callout info"><b>Your slip is empty.</b> Tap "+ Parlay" on any pick, or let auto-build pick the legs for you.</div>';
+  }
+  h += '<div class="auto"><h3>Auto-build</h3><p>Picks the highest hit chances from the list you\'re looking at (' + esc(whereLabel(pref.where)) +
+    ", " + esc(pref.prop === "all" ? "all props" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameName(pref.game)) +
+    "). One leg per player, no two legs from one game when it can avoid it, and it skips picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
+    '<div class="seg" role="radiogroup" aria-label="Number of legs">' + [2, 3, 4, 5, 6].map(k =>
+      '<button type="button" role="radio" aria-checked="' + (pref.legsN === k) + '" data-legs="' + k + '">' + k + "</button>").join("") + "</div>" +
+    '<button class="primary" type="button" data-auto>Build a ' + pref.legsN + "-leg parlay</button></div>";
+  h += '<div class="fine"><p><b>More legs, fewer wins.</b> Each leg you add multiplies in another chance to lose: three 60% legs hit together about 22% of the time, five about 8%.</p>' +
+    "<p><b>High hit chance is not the same as profitable.</b> If the payout is too small for the risk, you still lose money over time. Compare the book's odds to the fair odds above.</p>" +
+    (n ? '<p><button class="ghost" type="button" data-clear>Clear slip</button></p>' : "") + "</div>";
+  body.innerHTML = h;
+  const inp = $("odds");
+  if (inp){ inp.oninput = () => { store.set("ps_odds", inp.value); verdict(); }; verdict(); }
+}
+function verdict(){
+  const el = $("verdict"); if (!el) return;
+  const r = P.combine(slip), dec = P.parseOdds($("odds").value);
+  el.className = "verdict";
+  if (!$("odds").value.trim()){ el.textContent = "Type the parlay odds from your book to see if they beat fair odds (" + P.fmtAmerican(r.fairAmerican) + ")."; return; }
+  if (!dec){ el.textContent = "Use American odds like +450 or −120, or decimal odds like 5.5."; return; }
+  const ev = P.evPerDollar(r.p, dec);
+  if (ev >= 0){ el.className = "verdict good"; el.textContent = "✓ Beats fair odds. On average you'd win about " + money(ev).slice(1) + " per $1 bet."; }
+  else { el.className = "verdict bad"; el.textContent = "✕ Below fair odds. On average you'd lose about " + money(-ev).slice(1) + " per $1 bet."; }
+}
+function slipClick(e){
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.rm != null){ slip.splice(Number(t.dataset.rm), 1); saveSlip(); renderSlip(); render(); $("sheet").querySelector(".close").focus(); }
+  else if (t.dataset.legs){ pref.legsN = Number(t.dataset.legs); store.set("ps_legsN", pref.legsN); renderSlip(); $("sheet").querySelector('[data-legs="' + pref.legsN + '"]').focus(); }
+  else if (t.dataset.auto != null){
+    const pool = filtered(pref.where, "hit"), ok = pool.filter(c => anaFor(c).v !== "disagree");
+    const picks = P.autoBuild(ok.length >= pref.legsN ? ok : pool, pref.legsN);
+    if (!picks.length){ toast("No picks to build from. Change the filters."); return; }
+    slip = picks.map(snapshot); saveSlip(); renderSlip(); render(); $("shBody").scrollTop = 0;
+    toast(picks.length < pref.legsN ? "Only found " + picks.length + " legs with different players." : "Built a " + picks.length + "-leg parlay.");
+  }
+  else if (t.dataset.clear != null){ slip = []; saveSlip(); renderSlip(); render(); }
+}
+$("slipBtn").onclick = () => openSheet("slip", $("slipBtn"));
+$("list").addEventListener("click", e => {
+  const w = e.target.closest("[data-why]");
+  if (w){
+    const key = w.dataset.why, pn = document.getElementById("pn-" + key), c = current.get(key);
+    const open = w.getAttribute("aria-expanded") !== "true";
+    w.setAttribute("aria-expanded", open);
+    if (open){ openWhy.add(key); if (c) pn.innerHTML = panelHtml(c); pn.hidden = false; }
+    else { openWhy.delete(key); pn.hidden = true; }
+    return;
+  }
+  const t = e.target.closest("[data-def]");
+  if (t){ const c = current.get(t.closest(".panel").id.slice(3)); showDef(t.dataset.def, c ? c.side : "Over", t); return; }
+  const b = e.target.closest("[data-add]"); if (!b) return;
+  const c = current.get(b.dataset.add); if (!c) return;
+  toggleLeg(c); render();
+  const nb = $("list").querySelector('[data-add="' + CSS.escape(c.key) + '"]'); if (nb) nb.focus({preventScroll:true});
+});
+$("more").onclick = () => { shown += PAGE; render(); };
+let toastT = null;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); }
+
+/* ---------- theme ---------- */
+const THEMES = ["auto", "light", "dark"];
+function applyTheme(t){
+  if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
+  $("theme").textContent = {auto:"◐ Auto", light:"☀ Light", dark:"☾ Dark"}[t];
+  $("theme").setAttribute("aria-label", "Color theme: " + t + ". Tap to change.");
+}
+let theme = store.get("ps_theme") || "auto";
+applyTheme(theme);
+$("theme").onclick = () => { theme = THEMES[(THEMES.indexOf(theme) + 1) % 3]; store.set("ps_theme", theme); applyTheme(theme); };
+
+/* ---------- data ---------- */
 async function live(){
-  if (!D || !D.universe || !D.universe.length || document.hidden) return;
+  const needs = D && (D.kalshi || []).length && (pref.where === "kalshi" || slip.some(l => l.plat === "kalshi"));
+  if (!needs || document.hidden) return;
+  const tickers = D.kalshi.map(u => u.ticker), out = {};
   try{
-    const r = await fetch("/api/prices?tickers=" + D.universe.map(u => u.ticker).join(","), {cache:"no-store"});
-    if (!r.ok) throw new Error(r.status);
-    Q = await r.json();
-    render();
-    $("live").textContent = "Kalshi prices live as of " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"});
+    for (let i = 0; i < tickers.length; i += 100){
+      const r = await fetch("/api/prices?tickers=" + encodeURIComponent(tickers.slice(i, i + 100).join(",")), {cache:"no-store"});
+      if (!r.ok) throw new Error(r.status);
+      Object.assign(out, await r.json());
+    }
+    Q = out; liveAt = new Date();
+    refreshSlip(); render();
+    if (sheetMode === "slip") renderSlip();
+    $("live").textContent = pref.where === "kalshi" ? "Kalshi prices live as of " + liveAt.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"}) : "";
   }catch(e){
-    $("live").textContent = "Live prices unavailable, showing prices from the last scan.";
+    if (pref.where === "kalshi") $("live").textContent = "Live Kalshi prices unavailable, showing prices from the last scan.";
   }
+}
+function statusLine(){
+  const hrs = (Date.now() - new Date(D.updated)) / 36e5;
+  let h = (D.demo ? '<span class="demo">Demo data, made up</span>' : "") + "<span>Lines from " + ago(D.updated) + "</span>";
+  if (hrs > 72) h += '<span class="warnline">Old data: run a new scan</span>';
+  const older = Object.entries(D.markets_updated || {}).filter(([, t]) => t && (new Date(D.updated) - new Date(t)) > 6 * 36e5);
+  if (older.length) h += "<span>" + older.map(([m]) => (STAT[m] || {t:m}).t).join(", ") + " from " + ago(older[0][1]) + "</span>";
+  return h;
 }
 async function load(){
+  const demo = /[?&]demo\b/.test(location.search);
   try{
-    D = await (await fetch("data.json?t=" + Date.now(), {cache:"no-store"})).json();
-    if (!D.updated){ $("sub").textContent = "No scan has run yet."; $("empty").hidden = false; $("empty").textContent = "Run the workflow from the Actions tab on GitHub to get your first results."; return; }
-    const hrs = (Date.now() - new Date(D.updated)) / 36e5;
-    $("sub").innerHTML = "Sportsbook lines from " + ago(D.updated) + (hrs > 72 ? ' <span class="stale">(old: run a new scan)</span>' : "");
-    const by = (D.stats && D.stats.by_stat) || {};
-    $("diag").textContent = "Contracts scored in the last scan: " + (Object.entries(by).map(([k, v]) => v + " " + k).join(", ") || "none") + ".";
-    fillMenus();
-    render();
-    live();
-  }catch(e){ $("sub").textContent = "Couldn't load data.json."; }
+    D = await (await fetch((demo ? "demo-data.json" : "data.json") + "?t=" + Date.now(), {cache:"no-store"})).json();
+  }catch(e){ $("status").textContent = "Couldn't load data.json."; return; }
+  if (!D.updated || D.version !== 2){
+    $("status").textContent = D.updated ? "This data is from an older version of the scan." : "No scan has run yet.";
+    $("empty").hidden = false;
+    $("empty").textContent = "Run the workflow from the Actions tab on GitHub to get fresh picks.";
+    D = null; return;
+  }
+  const valid = new Set(["best", "kalshi", ...(D.books || []).map(b => b.k)]);
+  if (!valid.has(pref.where)) pref.where = "best";
+  if (pref.game !== "all" && !game(pref.game)) pref.game = "all";
+  $("status").innerHTML = statusLine();
+  const s = D.stats || {};
+  $("diag").textContent = (D.props || []).length + " sportsbook props across " + Object.keys(D.games || {}).length + " games. Kalshi: " +
+    (s.matched || 0) + " contracts matched to sportsbook lines, " + (D.kalshi || []).length + " shown." +
+    (s.credits_used != null ? " The last scan used " + s.credits_used + " Odds API credits." : "");
+  await loadAnalytics(demo);
+  refreshSlip();
+  render();
+  live();
 }
-$("refresh").onclick = load;
+async function loadAnalytics(demo){
+  A = null; aNote = "";
+  try{
+    const r = await fetch((demo ? "demo-analytics.json" : "analytics.json") + "?t=" + Date.now(), {cache:"no-store"});
+    if (!r.ok) throw new Error(r.status === 404 ? "analytics.json hasn't been generated yet (run the weekly analytics job)" : "HTTP " + r.status);
+    A = await r.json();
+    if (A.version !== 1) { aNote = "analytics.json is from a different version"; A = null; }
+  }catch(e){ aNote = String(e.message || e); A = null; }
+  const el = $("anaSrc");
+  if (!A){ el.innerHTML = "<b>Stats layer:</b> n/a (" + esc(aNote) + ")."; return; }
+  const src = Object.entries(A.sources || {}).map(([k, v]) => (v.ok ? "✓ " : "✕ ") + k + (v.ok ? "" : ": " + v.note)).join("<br>");
+  el.innerHTML = "<b>Stats layer:</b> nflverse data through week " + (A.played || []).slice(-1)[0] + " of " + A.season + ", built " + ago(A.generated) +
+    " for week " + A.week + ". Injury report: week " + A.inj_week + ".<br>" + (A.notes || []).map(esc).join("<br>") +
+    '<details style="margin-top:6px"><summary style="cursor:pointer;min-height:32px">Data sources</summary><p style="margin:6px 0 0">' + src + "</p></details>";
+}
+$("reload").onclick = load;
 setInterval(live, 30000);
 document.addEventListener("visibilitychange", live);
 load();

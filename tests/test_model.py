@@ -38,13 +38,23 @@ def test_end_to_end_flags_underpriced_contract():
     assert stats["scored"] == 2
 
 
-def test_universe_has_per_book_fair_and_uncertainty():
+def test_universe_has_fair_uncertainty_and_game():
     lines = [
         {"player": "Jaylen Warren", "market": "player_rush_yds", "book": b, "point": 65.5,
-         "prices": {"Over": -115, "Under": -105}, "game": "PIT @ CLE"}
+         "prices": {"Over": -115, "Under": -105}, "game": "PIT @ CLE", "game_id": "g1"}
         for b in ("draftkings", "fanduel")
     ]
     u = []
     run.evaluate(lines, [{"ticker": "T1", "title": "Jaylen Warren: 60+ rushing yards", "yes_bid": 40, "yes_ask": 43}], u)
-    assert set(u[0]["by_book"]) == {"draftkings", "fanduel"} and 0.02 <= u[0]["unc"] <= 0.08
-    assert u[0]["ask"] == 43
+    assert u[0]["books"] == 2 and 0.02 <= u[0]["unc"] <= 0.08
+    assert u[0]["ask"] == 43 and u[0]["g"] == "g1"
+
+
+def test_season_long_kalshi_markets_are_skipped():
+    # a real false match from an early scan: season rushing-TD leader read as an anytime-TD contract
+    leader = {"ticker": "KXLEADERNFLRUSHTDS-27-CMCCAFFREY23",
+              "title": "Will Christian McCaffrey have the most rushing touchdowns?"}
+    assert kalshi.parse_contract(leader) is None
+    assert kalshi.parse_contract({"ticker": "KXNFLSEASON-X", "title": "Bijan Robinson 1,500+ rushing yards this season"}) is None
+    assert kalshi.parse_contract({"ticker": "KXNFLTD-26OCT01PITCLE-CLEQJUDKINS10-1",
+                                  "title": "Will Quinshon Judkins score a touchdown?"})["stat"] == "player_anytime_td"

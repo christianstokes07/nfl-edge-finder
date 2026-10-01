@@ -241,6 +241,13 @@ to a single manual run with the `markets` box on the Run workflow screen.
 
 ## Live Kalshi prices
 
+**Kalshi refresh (free):** `.github/workflows/kalshi.yml` runs `python -m src.run --kalshi-only` every 3 hours from
+Thursday to Monday. It pulls Kalshi's current player-prop contracts and re-prices them against the sportsbook lines
+already stored in `data.json`, using 0 Odds API credits, so new Kalshi games and ladders show up between sportsbook
+scans. The scan fetches only Kalshi's player-prop series (rushing, receiving and passing yards, receptions, TDs).
+Kalshi lists 350+ NFL series, and downloading all of them got the scan rate-limited before the yardage series loaded,
+which is why earlier scans showed almost nothing but TDs.
+
 While you're on the Kalshi view, or have Kalshi legs in your slip, the page re-pulls Kalshi prices every
 30 seconds through `functions/api/prices.js`. That's a free Cloudflare Pages Function behind the same login,
 and it splits big ticker lists into batches of 100. Sportsbook numbers come from the last scan, since

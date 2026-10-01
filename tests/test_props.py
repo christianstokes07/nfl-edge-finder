@@ -157,3 +157,16 @@ def test_kalshi_ladder_rungs_far_from_line_are_priced():
     u = []
     run.evaluate(lines, [{"ticker": "R30", "title": "Jaylen Warren: 30+ rushing yards", "yes_bid": 80, "yes_ask": 82}], u)
     assert len(u) == 1 and u[0]["fair"] > 0.8 and u[0]["unc"] > 0.05
+
+
+def test_kalshi_refresh_reprices_without_odds_api(tmp_path, monkeypatch):
+    path = tmp_path / "data.json"
+    ps = _build([_ln("draftkings", 55.5, -110, -110), _ln("fanduel", 55.5, -110, -110)])
+    games = {"g1": {"a": "Pittsburgh Steelers", "h": "Cleveland Browns", "t": "2030-01-01T18:00:00Z"}}
+    old = run.site_data([], {}, [], ps, games, {}, datetime(2026, 10, 1, 13, tzinfo=timezone.utc))
+    run.write_site(old, str(path))
+    monkeypatch.setattr(run.odds, "event_props", lambda *a, **k: (_ for _ in ()).throw(AssertionError("Odds API called")))
+    mk = [{"ticker": "R40", "title": "Jaylen Warren: 40+ rushing yards", "yes_bid": 60, "yes_ask": 62}]
+    new = run.kalshi_refresh(str(path), markets=mk)
+    assert [u["ticker"] for u in new["kalshi"]] == ["R40"] and new["kalshi"][0]["stat"] == "player_rush_yds"
+    assert new["updated"] == old["updated"] and new["props"] == old["props"] and "kalshi_updated" in new

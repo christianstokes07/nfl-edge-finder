@@ -4,6 +4,7 @@ Kalshi's market titles aren't a fixed format, so instead of parsing the player n
 title we look for the sportsbook players' names inside the title text (see run.py)."""
 import math
 import re
+import time
 
 import requests
 
@@ -35,25 +36,41 @@ PLUS = re.compile(r"(\d+(?:\.\d+)?)\s*\+")
 OVER = re.compile(r"(?:over|at least)\s+(\d+(?:\.\d+)?)", re.I)
 
 
-def _get(path, params=None):
-    r = requests.get(f"{BASE}{path}", params=params or {}, timeout=30)
-    r.raise_for_status()
-    return r.json()
+def _get(path, params=None, tries=5):
+    """GET with polite retries: Kalshi answers 429 (Too Many Requests) if we go too fast."""
+    for i in range(tries):
+        r = requests.get(f"{BASE}{path}", params=params or {}, timeout=30)
+        if r.status_code == 429 and i < tries - 1:
+            time.sleep(float(r.headers.get("Retry-After") or 0) or 1.5 * (2 ** i))
+            continue
+        r.raise_for_status()
+        return r.json()
+
+
+# Single-game player-prop series we can price from sportsbook lines. Kalshi lists 350+ NFL series
+# (season wins, drafts, awards...); downloading all of them gets us rate-limited before the prop series
+# load, so only these are fetched. New prop series are picked up by title (PROP_SERIES_TITLE).
+PROP_SERIES = ("KXNFLRSHYDS", "KXNFLRECYDS", "KXNFLPASSYDS", "KXNFLREC", "KXNFLPASSTDS", "KXNFLTD", "KXNFLANYTD")
+PROP_SERIES_TITLE = re.compile(r"^pro football (player )?(rushing yards|receiving yards|passing yards|receptions|"
+                               r"player receptions|passing touchdowns|touchdowns|anytime touchdown)$", re.I)
+
+
+def is_prop_series(ticker, title):
+    t = (ticker or "").upper()
+    if SKIP_TICKER.search(t) or not t.startswith("KXNFL"):
+        return False
+    return t in PROP_SERIES or bool(PROP_SERIES_TITLE.match((title or "").strip()))
 
 
 def discover_nfl_series():
-    """Find NFL-related series tickers in the Sports category. Returns [] if the call fails."""
+    """NFL player-prop series tickers in the Sports category. Falls back to the known list if the call fails."""
     try:
         data = _get("/series", {"category": "Sports"})
     except Exception as e:  # noqa: BLE001
-        print(f"[kalshi] series discovery failed: {e}")
-        return []
-    out = []
-    for s in data.get("series", []):
-        ticker = s.get("ticker", "")
-        if ticker.upper().startswith("KXNFL") or NFL_SERIES_HINTS.search(s.get("title", "")):
-            out.append(ticker)
-    return out
+        print(f"[kalshi] series discovery failed ({e}); using the known prop series")
+        return list(PROP_SERIES)
+    out = [s["ticker"] for s in data.get("series", []) if is_prop_series(s.get("ticker"), s.get("title"))]
+    return out or list(PROP_SERIES)
 
 
 def fetch_open_markets(series_tickers, max_pages=20):

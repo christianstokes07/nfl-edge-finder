@@ -1,7 +1,8 @@
 """python -m src.run            -> scan and send results
 python -m src.run --dump-kalshi -> print raw Kalshi NFL market titles (for debugging matching)
 python -m src.run --no-send     -> scan and print only (no Discord, no log, no data.json)
-python -m src.run --estimate    -> print what a scan would cost in Odds API credits (uses 0 credits)"""
+python -m src.run --estimate    -> print what a scan would cost in Odds API credits (uses 0 credits)
+python -m src.run --kalshi-only -> re-price Kalshi from the last scan's sportsbook lines (uses 0 credits)"""
 import argparse
 import csv
 import json
@@ -354,12 +355,42 @@ def get_kalshi_markets():
     return kalshi.fetch_open_markets(series)
 
 
+def kalshi_refresh(path=None, markets=None, now=None):
+    """Rebuild the Kalshi section of data.json from fresh Kalshi markets and the sportsbook lines already
+    stored there. Free: no Odds API call. The sportsbook numbers and their timestamp stay as they were."""
+    prev = load_previous(path)
+    if not prev:
+        print("[kalshi-only] no version-2 data.json to work from; run a full scan first")
+        return None
+    now = now or datetime.now(timezone.utc)
+    lines = props.lines_from_props(prev.get("props", []), prev.get("games", {}))
+    markets = markets if markets is not None else get_kalshi_markets()
+    universe = []
+    picks, stats = evaluate(lines, markets, universe)
+    stats["credits_used"] = 0
+    prop_list = [{k: v for k, v in p.items() if k != "id"} for p in prev.get("props", [])]
+    data = site_data(picks, stats, universe, prop_list, prev.get("games"), prev.get("markets_updated"),
+                     datetime.fromisoformat(prev["updated"]))
+    data["kalshi_updated"] = now.isoformat(timespec="seconds")
+    write_site(data, path)
+    by = defaultdict(int)
+    for u in data["kalshi"]:
+        by[u["stat"]] += 1
+    print(f"[kalshi-only] {len(data['kalshi'])} Kalshi contracts from {len(lines)} stored book lines: {dict(by)}")
+    return data
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dump-kalshi", action="store_true")
     ap.add_argument("--no-send", action="store_true")
     ap.add_argument("--estimate", action="store_true")
+    ap.add_argument("--kalshi-only", action="store_true")
     args = ap.parse_args()
+
+    if args.kalshi_only:
+        kalshi_refresh()
+        return
 
     if args.estimate:
         if not C.ODDS_API_KEY:

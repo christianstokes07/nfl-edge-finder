@@ -58,3 +58,13 @@ def test_season_long_kalshi_markets_are_skipped():
     assert kalshi.parse_contract({"ticker": "KXNFLSEASON-X", "title": "Bijan Robinson 1,500+ rushing yards this season"}) is None
     assert kalshi.parse_contract({"ticker": "KXNFLTD-26OCT01PITCLE-CLEQJUDKINS10-1",
                                   "title": "Will Quinshon Judkins score a touchdown?"})["stat"] == "player_anytime_td"
+
+
+def test_only_player_prop_series_are_fetched():
+    # 350+ NFL series exist; fetching them all got the scan rate-limited before the yardage series loaded
+    assert kalshi.is_prop_series("KXNFLRECYDS", "Pro Football Receiving Yards")
+    assert kalshi.is_prop_series("KXNFLREC", "Pro Football Player Receptions")
+    assert kalshi.is_prop_series("KXNFLNEWPROP", "Pro Football Passing Yards")      # new ticker, known title
+    assert not kalshi.is_prop_series("KXNFLSEASONRECYDS", "Receiving Yards")         # season-long
+    assert not kalshi.is_prop_series("KXNFLWINS-NO", "Pro football wins New Orleans")
+    assert not kalshi.is_prop_series("KXNFLMOSTRECYDS", "Pro Football Most Receiving Yards")

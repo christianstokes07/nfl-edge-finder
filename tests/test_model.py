@@ -36,3 +36,15 @@ def test_end_to_end_flags_underpriced_contract():
     picks, stats = run.evaluate(lines, [cheap, fair])
     assert [p["ticker"] for p in picks] == ["T1"] and picks[0]["side"] == "YES"
     assert stats["scored"] == 2
+
+
+def test_universe_has_per_book_fair_and_uncertainty():
+    lines = [
+        {"player": "Jaylen Warren", "market": "player_rush_yds", "book": b, "point": 65.5,
+         "prices": {"Over": -115, "Under": -105}, "game": "PIT @ CLE"}
+        for b in ("draftkings", "fanduel")
+    ]
+    u = []
+    run.evaluate(lines, [{"ticker": "T1", "title": "Jaylen Warren: 60+ rushing yards", "yes_bid": 40, "yes_ask": 43}], u)
+    assert set(u[0]["by_book"]) == {"draftkings", "fanduel"} and 0.02 <= u[0]["unc"] <= 0.08
+    assert u[0]["ask"] == 43

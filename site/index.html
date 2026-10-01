@@ -14,19 +14,23 @@ html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
 main{max-width:560px;margin:0 auto;padding:20px 18px 40px}
 h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
-.sub{color:var(--mute);font-size:14px;margin:0 0 18px}
+.sub{color:var(--mute);font-size:14px;margin:0 0 4px}
 .stale{color:var(--warn)}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.filters label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--mute)}
+.filters label:last-child{grid-column:1/-1}
+select{font:inherit;font-size:16px;padding:9px 8px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+select:focus-visible,button:focus-visible{outline:2px solid var(--edge);outline-offset:2px}
 ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
 li{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
 .who{font-weight:650;font-size:17px}
 .what,.buy{color:var(--mute);font-size:14px;margin-top:2px}
 .buy b{color:var(--ink);font-weight:650}
-.edge{font-size:30px;font-weight:700;color:var(--edge);letter-spacing:-.02em;white-space:nowrap}
-.edge small{display:block;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0;text-align:right}
+.edge{font-size:30px;font-weight:700;color:var(--edge);letter-spacing:-.02em;white-space:nowrap;text-align:right}
+.edge small{display:block;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0}
 .empty{padding:28px 0;color:var(--mute)}
-.note{color:var(--mute);font-size:13px;margin-top:22px}
+.note{color:var(--mute);font-size:13px;margin-top:18px}
 button{font:inherit;margin-top:14px;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
-button:focus-visible{outline:2px solid var(--edge);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -34,14 +38,28 @@ button:focus-visible{outline:2px solid var(--edge);outline-offset:2px}
   <h1>Kalshi edges</h1>
   <p class="sub" id="sub">Loading…</p>
   <p class="sub" id="live"></p>
+  <div class="filters">
+    <label>Prop type<select id="prop"></select></label>
+    <label>Fair value from<select id="book"></select></label>
+    <label>Sort by<select id="sort">
+      <option value="value">Best value (edge after a safety margin)</option>
+      <option value="hit">Most likely to hit</option>
+      <option value="edge">Biggest raw edge</option>
+    </select></label>
+  </div>
   <ul id="list"></ul>
   <div class="empty" id="empty" hidden></div>
-  <p class="note">Edge is fair probability minus price and fees, using sportsbook consensus as fair value. Prices are from the last scan. Check Kalshi and the inactives before you buy.</p>
+  <p class="note">The big number is the edge after a safety margin for how rough the math is: fair probability minus price and fees, with sportsbook lines as fair value. Hit chance is the fair probability of the side you'd buy. Prices are live while this page is open. Check the inactives before you buy.</p>
+  <p class="note" id="diag"></p>
   <button id="refresh">Reload</button>
 </main>
 <script>
 const $ = id => document.getElementById(id);
-let D = null;
+const BOOKS = {draftkings:"DraftKings", fanduel:"FanDuel", betmgm:"BetMGM", caesars:"Caesars", pointsbetus:"PointsBet", espnbet:"ESPN Bet"};
+let D = null, Q = null;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { return null; } },
+               set:(k, v) => { try { localStorage.setItem(k, v); } catch(e) {} }};
 function ago(iso){
   const m = Math.round((Date.now() - new Date(iso)) / 60000);
   if (m < 2) return "just now";
@@ -49,38 +67,64 @@ function ago(iso){
   const h = Math.round(m / 60);
   return h < 36 ? h + " hr ago" : Math.round(h / 24) + " days ago";
 }
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function show(rows){
-  $("list").innerHTML = rows.map(p => {
-    const line = p.stat === "player_anytime_td" ? p.label : esc(p.threshold) + "+ " + p.label;
-    const big = p.edge > 0.12 ? '<div class="what stale">Big gap: check injury news first</div>' : "";
-    return '<li><div><div class="who">' + esc(p.player) + '</div><div class="what">' + line + ' in ' + esc(p.game) + '</div>' +
-      '<div class="buy">Buy <b>' + p.side + '</b> at <b>' + p.price + '¢</b>, fair ' + Math.round(p.fair * 100) + '¢</div>' + big + '</div>' +
-      '<div class="edge">+' + (p.edge * 100).toFixed(1) + '%<small>' + p.books + ' books</small></div></li>';
-  }).join("");
-  $("empty").hidden = rows.length > 0;
-  $("empty").textContent = "Nothing is mispriced by " + Math.round(D.min_edge * 100) + " points or more right now.";
-}
-function score(u, q){
+function score(fair, q){
   const P = D.params;
   if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P.max_spread) return null;
   const yc = q.ask / 100, nc = 1 - q.bid / 100, fee = c => P.fee * c * (1 - c);
-  const ey = u.fair - yc - fee(yc), en = (1 - u.fair) - nc - fee(nc);
-  return en > ey ? {side:"NO", price:Math.round(nc * 100), fair:1 - u.fair, edge:en}
-                 : {side:"YES", price:Math.round(yc * 100), fair:u.fair, edge:ey};
+  const ey = fair - yc - fee(yc), en = (1 - fair) - nc - fee(nc);
+  return en > ey ? {side:"NO", price:Math.round(nc * 100), hit:1 - fair, edge:en}
+                 : {side:"YES", price:Math.round(yc * 100), hit:fair, edge:ey};
+}
+function rows(){
+  const P = D.params, src = $("book").value, kind = $("prop").value, out = [];
+  for (const u of D.universe){
+    if (kind !== "all" && u.stat !== kind) continue;
+    let fair = u.fair, extra = 0;
+    if (src !== "all"){ if (u.by_book[src] == null) continue; fair = u.by_book[src]; extra = 0.02; }
+    const s = score(fair, (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask});
+    if (!s) continue;
+    const net = s.edge - u.unc - extra;
+    if (s.edge < (u.stat === "player_anytime_td" ? P.min_edge_td : P.min_edge) || net <= 0) continue;
+    out.push({...u, ...s, net, nbooks: src === "all" ? u.books : 1});
+  }
+  const key = {value:"net", hit:"hit", edge:"edge"}[$("sort").value];
+  return out.sort((a, b) => b[key] - a[key]).slice(0, 15);
+}
+function render(){
+  if (!D || !D.updated) return;
+  const r = rows();
+  $("list").innerHTML = r.map(p => {
+    const line = p.stat === "player_anytime_td" ? p.label : esc(p.threshold) + "+ " + p.label;
+    const tag = p.net >= 0.06 ? "Strong" : p.net >= 0.03 ? "Good" : "Thin";
+    const big = p.edge > 0.12 ? '<div class="what stale">Big gap: check injury news first</div>' : "";
+    return '<li><div><div class="who">' + esc(p.player) + '</div><div class="what">' + line + ' in ' + esc(p.game) + '</div>' +
+      '<div class="buy">Buy <b>' + p.side + '</b> at <b>' + p.price + '¢</b>, hits about <b>' + Math.round(p.hit * 100) + '%</b></div>' + big + '</div>' +
+      '<div class="edge">+' + (p.net * 100).toFixed(1) + '%<small>' + tag + ', ' + p.nbooks + (p.nbooks === 1 ? ' book' : ' books') + '</small></div></li>';
+  }).join("");
+  $("empty").hidden = r.length > 0;
+  $("empty").textContent = "Nothing clears the bar for this filter right now.";
+}
+function fillMenus(){
+  const stats = {}, books = new Set();
+  D.universe.forEach(u => { stats[u.stat] = u.label; Object.keys(u.by_book).forEach(b => books.add(b)); });
+  $("prop").innerHTML = '<option value="all">All props</option>' + Object.entries(stats).map(([k, v]) => '<option value="' + k + '">' + esc(v) + '</option>').join("");
+  $("book").innerHTML = '<option value="all">All books combined</option>' + [...books].map(b => '<option value="' + b + '">' + esc(BOOKS[b] || b) + '</option>').join("");
+  for (const id of ["prop", "book", "sort"]){
+    const v = store.get("edge_" + id);
+    if (v && [...$(id).options].some(o => o.value === v)) $(id).value = v;
+    $(id).onchange = () => { store.set("edge_" + id, $(id).value); render(); };
+  }
 }
 async function live(){
   if (!D || !D.universe || !D.universe.length || document.hidden) return;
   try{
     const r = await fetch("/api/prices?tickers=" + D.universe.map(u => u.ticker).join(","), {cache:"no-store"});
     if (!r.ok) throw new Error(r.status);
-    const q = await r.json();
-    const rows = D.universe.map(u => { const s = score(u, q[u.ticker]); return s && s.edge >= D.params.min_edge ? {...u, ...s} : null; })
-      .filter(Boolean).sort((a, b) => b.edge - a.edge).slice(0, D.params.top_n);
-    show(rows);
+    Q = await r.json();
+    render();
     $("live").textContent = "Kalshi prices live as of " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"});
   }catch(e){
-    $("live").textContent = "Live prices unavailable, showing the last scan.";
+    $("live").textContent = "Live prices unavailable, showing prices from the last scan.";
   }
 }
 async function load(){
@@ -89,7 +133,10 @@ async function load(){
     if (!D.updated){ $("sub").textContent = "No scan has run yet."; $("empty").hidden = false; $("empty").textContent = "Run the workflow from the Actions tab on GitHub to get your first results."; return; }
     const hrs = (Date.now() - new Date(D.updated)) / 36e5;
     $("sub").innerHTML = "Sportsbook lines from " + ago(D.updated) + (hrs > 72 ? ' <span class="stale">(old: run a new scan)</span>' : "");
-    show(D.picks);
+    const by = (D.stats && D.stats.by_stat) || {};
+    $("diag").textContent = "Contracts scored in the last scan: " + (Object.entries(by).map(([k, v]) => v + " " + k).join(", ") || "none") + ".";
+    fillMenus();
+    render();
     live();
   }catch(e){ $("sub").textContent = "Couldn't load data.json."; }
 }

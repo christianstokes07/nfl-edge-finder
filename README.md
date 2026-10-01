@@ -44,9 +44,20 @@ Cloudflare picks up the `functions/` folder automatically if it's at the repo ro
 
 ## Free-tier limits
 
-The Odds API free tier is 500 credits/month, and a run costs about (games x markets). The defaults
-(3 markets, ~2 runs a week) should fit, but if you add markets or runs you'll hit the cap. The script
-stops itself when credits fall under `CREDIT_RESERVE`.
+The Odds API free tier is 500 credits/month, and a run costs about (games x markets). Thursday's run
+scans the whole week's games with 4 markets (rushing, receiving, passing yards, anytime TD), about 64
+credits. Sunday's run scans only that day's games with 3 markets, about 42. That's roughly 450 a month,
+so there isn't much room to add markets or runs. Add `player_receptions` or `player_pass_tds` through
+`ODDS_MARKETS` only if you're willing to drop a run. The script stops itself under `CREDIT_RESERVE`.
+
+## Reading the page
+
+- **Prop type / Fair value from:** filter by prop, and choose whether fair value comes from all books
+  combined or one sportsbook's line. Your choices are remembered on your phone.
+- **Big number:** edge after a safety margin (bigger for rougher math like anytime TDs, and for
+  yardage thresholds far from the book line). Strong is 6+ points, Good is 3+, Thin is under 3.
+- **Hit chance:** fair probability that the side you'd buy wins.
+- **Sort:** best value (default), most likely to hit, or biggest raw edge.
 
 ## First run: check the matching
 

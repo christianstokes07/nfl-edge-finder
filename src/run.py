@@ -87,15 +87,25 @@ def evaluate(lines, markets, universe=None):
         )
         if fair is None or n < C.MIN_BOOKS:
             continue
+        bid, ask = kalshi.prices(m)
         if universe is not None and 0.05 < fair < 0.95:
+            by_book = {}
+            for b in sorted({l["book"] for l in book_lines}):
+                f1, _ = model.fair_probability(c["stat"], c["threshold"], [l for l in book_lines if l["book"] == b],
+                                               C.SIGMA, C.MAX_LINE_DISTANCE, C.ANYTIME_TD_VIG)
+                if f1 is not None:
+                    by_book[b] = round(f1, 3)
             universe.append({"ticker": m.get("ticker", ""), "player": book_lines[0]["player"],
                              "game": book_lines[0].get("game", ""), "stat": c["stat"],
                              "label": STAT_LABEL[c["stat"]], "threshold": c["threshold"],
-                             "fair": round(fair, 3), "books": n})
-        bid, ask = kalshi.prices(m)
+                             "fair": round(fair, 3), "books": n, "by_book": by_book,
+                             "unc": round(model.uncertainty(c["stat"], c["threshold"], book_lines, C.MAX_LINE_DISTANCE), 3),
+                             "bid": bid, "ask": ask})
         if not bid or not ask or ask >= 99 or (ask - bid) > C.MAX_SPREAD_CENTS:
             continue
         stats["scored"] += 1
+        by = stats.setdefault("by_stat", {})
+        by[STAT_LABEL[c["stat"]]] = by.get(STAT_LABEL[c["stat"]], 0) + 1
         yes_cost = ask / 100
         no_cost = 1 - bid / 100
         edge_yes = fair - yes_cost - model.kalshi_fee(yes_cost, C.KALSHI_FEE_RATE)
@@ -103,7 +113,7 @@ def evaluate(lines, markets, universe=None):
         side, edge, cost, p_win = ("YES", edge_yes, yes_cost, fair)
         if edge_no > edge_yes:
             side, edge, cost, p_win = ("NO", edge_no, no_cost, 1 - fair)
-        if edge < C.MIN_EDGE:
+        if edge < (C.MIN_EDGE_TD if c["stat"] == "player_anytime_td" else C.MIN_EDGE):
             continue
         picks.append(
             {
@@ -186,8 +196,8 @@ def write_site(picks, stats, universe=()):
         "min_edge": C.MIN_EDGE,
         "stats": stats,
         "params": {"fee": C.KALSHI_FEE_RATE, "max_spread": C.MAX_SPREAD_CENTS,
-                   "min_edge": C.MIN_EDGE, "top_n": C.TOP_N},
-        "universe": list(universe)[:80],  # every scored contract; the page re-prices these live
+                   "min_edge": C.MIN_EDGE, "min_edge_td": C.MIN_EDGE_TD, "top_n": C.TOP_N},
+        "universe": sorted(universe, key=lambda u: abs(u["fair"] - 0.5))[:120],  # the page ranks and re-prices these
         "picks": [
             {**p, "label": STAT_LABEL[p["stat"]], "fair": round(p["fair"], 3), "edge": round(p["edge"], 3)}
             for p in picks[: C.TOP_N]

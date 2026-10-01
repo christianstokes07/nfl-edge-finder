@@ -62,3 +62,15 @@ def fair_probability(stat, threshold, lines, sigma_map, max_dist, td_vig):
     if not probs:
         return None, 0
     return sum(probs) / len(probs), len(probs)
+
+
+def uncertainty(stat, threshold, lines, max_dist):
+    """Haircut (in probability points) for how much we trust the fair value. Bigger for the rougher
+    anytime-TD math and for yardage thresholds far from the book line. Rough heuristics, not science."""
+    if stat == "player_anytime_td":
+        return 0.04
+    if stat in DISCRETE:
+        return 0.02
+    pts = [l["point"] for l in lines if l.get("point")]
+    d = min((abs(threshold - x) / x for x in pts), default=max_dist)
+    return 0.02 + 0.06 * min(1.0, d / max_dist)

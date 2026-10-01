@@ -1,1 +1,950 @@
-{"updated": null, "min_edge": 0.05, "stats": {}, "picks": []}
+{
+ "updated": "2026-10-01T13:04:42+00:00",
+ "min_edge": 0.05,
+ "stats": {
+  "markets": 9409,
+  "parsed": 1443,
+  "matched": 603,
+  "scored": 328
+ },
+ "params": {
+  "fee": 0.07,
+  "max_spread": 8,
+  "min_edge": 0.05,
+  "top_n": 10
+ },
+ "universe": [
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEDWATSON4-1",
+   "player": "Deshaun Watson",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.202,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITARODGERS8-1",
+   "player": "Aaron Rodgers",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.063,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEDBOSTON12-1",
+   "player": "Denzel Boston",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.226,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEHFANNIN44-1",
+   "player": "Harold Fannin Jr.",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.255,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEJJEUDY3-1",
+   "player": "Jerry Jeudy",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.094,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEQJUDKINS10-1",
+   "player": "Quinshon Judkins",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.429,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITGBERNARD17-1",
+   "player": "Germie Bernard",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.086,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITPFREIERMUTH88-1",
+   "player": "Pat Freiermuth",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.199,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITDMETCALF4-1",
+   "player": "DK Metcalf",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.279,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITMPITTMAN11-1",
+   "player": "Michael Pittman Jr.",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.215,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITJWARREN30-1",
+   "player": "Jaylen Warren",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.492,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITDWASHINGTON80-1",
+   "player": "Darnell Washington",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.138,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITRWILSON14-1",
+   "player": "Roman Wilson",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.165,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLERSANDERS23-1",
+   "player": "Raheim Sanders",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.126,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-CLEBWHITEHEART86-1",
+   "player": "Blake Whiteheart",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.072,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITTHOMER21-1",
+   "player": "Travis Homer",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.08,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT01PITCLE-PITBSKOWRONEK15-1",
+   "player": "Ben Skowronek",
+   "game": "Pittsburgh Steelers @ Cleveland Browns",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.058,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASKALLEN31-1",
+   "player": "Kaytron Allen",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.244,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASDBROWN6-1",
+   "player": "Dyami Brown",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.107,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASTBURKS13-1",
+   "player": "Treylon Burks",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.084,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASJCROSKEYMERRITT22-1",
+   "player": "Jacory Croskey-Merritt",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.449,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASSDIGGS3-1",
+   "player": "Stefon Diggs",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.275,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASJLANE83-1",
+   "player": "Jaylin Lane",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.057,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASMMARIOTA8-1",
+   "player": "Marcus Mariota",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.207,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASTMCLAURIN17-1",
+   "player": "Terry McLaurin",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.282,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASBSINNOTT82-1",
+   "player": "Ben Sinnott",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.09,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASAWILLIAMS14-1",
+   "player": "Antonio Williams",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.14,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDMALIECOX81-1",
+   "player": "Mo Alie-Cox",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.087,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDKALLEN10-1",
+   "player": "Keenan Allen",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.246,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDJDOWNS2-1",
+   "player": "Josh Downs",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.337,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDDJONES17-1",
+   "player": "Daniel Jones",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.195,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDSMCGOWAN20-1",
+   "player": "Seth McGowan",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.114,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDJTAYLOR28-1",
+   "player": "Jonathan Taylor",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.694,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDLTREADWELL13-1",
+   "player": "Laquon Treadwell",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.167,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDTWARREN84-1",
+   "player": "Tyler Warren",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.356,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASJBATES87-1",
+   "player": "John Bates",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.096,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-WASRWHITE1-1",
+   "player": "Rachaad White",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.255,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDDSLAYTON11-1",
+   "player": "Darius Slayton",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.145,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDDOGLETREE85-1",
+   "player": "Drew Ogletree",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.074,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04INDWAS-INDDBURKS80-1",
+   "player": "Deion Burks",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.061,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGILIKELY9-1",
+   "player": "Isaiah Likely",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.264,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGMNABERS1-1",
+   "player": "Malik Nabers",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.313,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGCSKATTEBO44-1",
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.545,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIJLOVE4-1",
+   "player": "Jeremiyah Love",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.529,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARITMCBRIDE85-1",
+   "player": "Trey McBride",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.385,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIKBOURNE17-1",
+   "player": "Kendrick Bourne",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.154,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIJBRISSETT7-1",
+   "player": "Jacoby Brissett",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.148,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIMHARRISON18-1",
+   "player": "Marvin Harrison Jr.",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.212,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIMWILSON14-1",
+   "player": "Michael Wilson",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.313,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGBBERRIOS87-1",
+   "player": "Braxton Berrios",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.071,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGMFIELDS88-1",
+   "player": "Malachi Fields",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.183,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGNHARRIS23-1",
+   "player": "Najee Harris",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.215,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGTJOHNSON84-1",
+   "player": "Theo Johnson",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.116,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGDMOONEY17-1",
+   "player": "Darnell Mooney",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.145,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGJWINSTON19-1",
+   "player": "Jameis Winston",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.104,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARITALLGEIER22-1",
+   "player": "Tyler Allgeier",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.244,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-ARIEHIGGINS84-1",
+   "player": "Elijah Higgins",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.073,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04ARINYG-NYGDSINGLETARY26-1",
+   "player": "Devin Singletary",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.077,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUWMARKS4-1",
+   "player": "Woody Marks",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.309,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUDMONTGOMERY32-1",
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.56,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALJFERGUSON87-1",
+   "player": "Jake Ferguson",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.227,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALCLAMB88-1",
+   "player": "CeeDee Lamb",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.404,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALGPICKENS3-1",
+   "player": "George Pickens",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.349,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALJWILLIAMS33-1",
+   "player": "Javonte Williams",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.544,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUCSTROUD7-1",
+   "player": "C.J. Stroud",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.155,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALDPRESCOTT4-1",
+   "player": "Dak Prescott",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.13,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUKBOUTTE14-1",
+   "player": "Kayshon Boutte",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.21,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUXHUTCHINSON19-1",
+   "player": "Xavier Hutchinson",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.207,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUFMOREAU87-1",
+   "player": "Foster Moreau",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.106,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUJNOEL13-1",
+   "player": "Jaylin Noel",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.134,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUDSCHULTZ86-1",
+   "player": "Dalton Schultz",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.305,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUCSTOVER8-1",
+   "player": "Cade Stover",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.064,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-HOUJWAYNE17-1",
+   "player": "Jared Wayne",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.114,
+   "books": 2
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALRFLOURNOY19-1",
+   "player": "Ryan Flournoy",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.218,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALTGOODSON32-1",
+   "player": "Tyler Goodson",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.1,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALHLUEPKE30-1",
+   "player": "Hunter Luepke",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.075,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALLSCHOONMAKER86-1",
+   "player": "Luke Schoonmaker",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.06,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALBSPANNFORD89-1",
+   "player": "Brevyn Spann-Ford",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.08,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALKTURPIN9-1",
+   "player": "KaVontae Turpin",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.081,
+   "books": 3
+  },
+  {
+   "ticker": "KXNFLTD-26OCT04DALHOU-DALEDEMERCADO31-1",
+   "player": "Emari Demercado",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "label": "anytime TD",
+   "threshold": 1.0,
+   "fair": 0.076,
+   "books": 2
+  }
+ ],
+ "picks": [
+  {
+   "player": "Christian McCaffrey",
+   "game": "Denver Broncos @ San Francisco 49ers",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.624,
+   "edge": 0.602,
+   "books": 2,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CMCCAFFREY23",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Bijan Robinson",
+   "game": "Atlanta Falcons @ New Orleans Saints",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 7,
+   "fair": 0.65,
+   "edge": 0.576,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-BROBINSON7",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Chase Brown",
+   "game": "Jacksonville Jaguars @ Cincinnati Bengals",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.593,
+   "edge": 0.572,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CBROWN30",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Jonathan Taylor",
+   "game": "Indianapolis Colts @ Washington Commanders",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 12,
+   "fair": 0.694,
+   "edge": 0.567,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-JTAYLOR28",
+   "label": "anytime TD"
+  },
+  {
+   "player": "David Montgomery",
+   "game": "Dallas Cowboys @ Houston Texans",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 3,
+   "fair": 0.56,
+   "edge": 0.528,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-DMONTGOMERY5",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Cam Skattebo",
+   "game": "Arizona Cardinals @ New York Giants",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.545,
+   "edge": 0.523,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-CSKATTEBO44",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Jahmyr Gibbs",
+   "game": "Detroit Lions @ Carolina Panthers",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 20,
+   "fair": 0.728,
+   "edge": 0.517,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-JGIBBS0",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Kyren Williams",
+   "game": "Los Angeles Rams @ Philadelphia Eagles",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 2,
+   "fair": 0.524,
+   "edge": 0.502,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-KWILLIAMS23",
+   "label": "anytime TD"
+  },
+  {
+   "player": "Kenneth Walker III",
+   "game": "Kansas City Chiefs @ Las Vegas Raiders",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 10,
+   "fair": 0.594,
+   "edge": 0.488,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-KWALKER9",
+   "label": "anytime TD"
+  },
+  {
+   "player": "James Cook",
+   "game": "New England Patriots @ Buffalo Bills",
+   "stat": "player_anytime_td",
+   "threshold": 1.0,
+   "side": "YES",
+   "price": 5,
+   "fair": 0.52,
+   "edge": 0.467,
+   "books": 3,
+   "ticker": "KXLEADERNFLRUSHTDS-27-JCOOK4",
+   "label": "anytime TD"
+  }
+ ]
+}

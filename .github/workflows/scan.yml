@@ -13,7 +13,7 @@ on:
         required: false
         default: "110"
       markets:
-        description: "Odds API markets, comma-separated (blank = default 4). Each market costs ~1 credit per game"
+        description: "Odds API markets, comma-separated (blank = default 5). Each market costs ~1 credit per game"
         required: false
         default: ""
 
@@ -38,10 +38,11 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          # Sunday's scheduled run: only Sunday + Monday games (36h), and 3 markets. Passing yards are
-          # carried over from Thursday's scan (QB lines rarely move on inactives). See README for costs.
+          # Thursday: whole week, 5 markets (rushing, receiving, passing yards, receptions, anytime TD).
+          # Sunday: only Sunday + Monday games (36h) and the 2 markets inactives move most (rushing yards,
+          # anytime TD); the other 3 are carried over from Thursday's scan. See README for credit costs.
           WINDOW_HOURS: ${{ github.event.inputs.window_hours || (github.event.schedule == '15 16 * * 0' && '36' || '110') }}
-          ODDS_MARKETS: ${{ github.event.inputs.markets || (github.event.schedule == '15 16 * * 0' && 'player_rush_yds,player_reception_yds,player_anytime_td' || '') }}
+          ODDS_MARKETS: ${{ github.event.inputs.markets || (github.event.schedule == '15 16 * * 0' && 'player_rush_yds,player_anytime_td' || '') }}
         run: python -m src.run
       - name: Save pick log
         run: |

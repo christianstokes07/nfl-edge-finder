@@ -109,7 +109,7 @@ def test_site_data_lists_books_with_counts_and_stays_small():
 def test_bookmakers_fit_in_one_region():
     assert odds.region_units(C.BOOKMAKERS) == 1
     assert odds.region_units(",".join(f"b{i}" for i in range(11))) == 2
-    assert odds.run_cost(16, C.ODDS_MARKETS, C.BOOKMAKERS) == 64
+    assert odds.run_cost(16, C.ODDS_MARKETS, C.BOOKMAKERS) == 80   # 16 games x 5 markets x 1 region
 
 
 def test_line_moves_since_previous_scan():
@@ -140,3 +140,20 @@ def test_pick_log_records_analytics_verdict(tmp_path, monkeypatch):
     # a game the analytics file doesn't cover -> n/a, not a guess
     v, proj = run.analytics_check(a, "Jaylen Warren", {"Detroit Lions", "Green Bay Packers"}, "player_rush_yds", "Over", 60.5, None)
     assert (v, proj) == ("n/a", "")
+
+
+def test_kalshi_rows_capped_per_prop_type(monkeypatch):
+    # anytime-TD contracts (tight spreads) must not crowd yardage contracts off the page
+    monkeypatch.setattr(C, "KALSHI_ROWS_PER_STAT", 2)
+    uni = [{"ticker": f"TD{i}", "stat": "player_anytime_td", "g": "g1", "bid": 10, "ask": 11} for i in range(5)] + \
+          [{"ticker": f"RY{i}", "stat": "player_rush_yds", "g": "g1", "bid": 40, "ask": 40 + i + 2} for i in range(5)]
+    data = run.site_data([], {}, uni, [], {"g1": {}})
+    assert [u["ticker"] for u in data["kalshi"]] == ["TD0", "TD1", "RY0", "RY1"]
+
+
+def test_kalshi_ladder_rungs_far_from_line_are_priced():
+    # a 30+ rung vs a 55.5 line is 46% away: priced (with a bigger safety margin), not dropped
+    lines = [_ln(b, 55.5, -110, -110) for b in ("draftkings", "fanduel")]
+    u = []
+    run.evaluate(lines, [{"ticker": "R30", "title": "Jaylen Warren: 30+ rushing yards", "yes_bid": 80, "yes_ask": 82}], u)
+    assert len(u) == 1 and u[0]["fair"] > 0.8 and u[0]["unc"] > 0.05

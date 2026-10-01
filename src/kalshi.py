@@ -85,7 +85,7 @@ def _cents(m, field):
         return float(v)
     d = m.get(field + "_dollars")
     if d is not None:
-        return float(d) * 100
+        return round(float(d) * 100, 1)
     return None
 
 

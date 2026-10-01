@@ -76,7 +76,10 @@ details.how[open] summary::after{content:"Hide"}
 ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .pick{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 14px 12px;box-shadow:var(--shadow);
   display:grid;grid-template-columns:1fr auto;gap:2px 12px}
-.pick .who{font-size:18px;font-weight:750;line-height:1.2;letter-spacing:-.005em}
+.pick .who{font-size:18px;font-weight:750;line-height:1.2;letter-spacing:-.005em;display:flex;align-items:center;gap:10px}
+.av{position:relative;flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--sunk);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.02em}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
 .pick .line{font-size:16px;margin-top:3px;color:var(--ink)}
 .pick .line b{font-weight:750}
 .pick .price{font-size:15px;color:var(--ink2);margin-top:1px}
@@ -254,6 +257,11 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
       <div><dt>The odds</dt>
         <dd>−115 means you bet $115 to win $100. +140 means you bet $100 to win $140. On Kalshi, a 43¢ YES pays $1
         if it happens, so you pay 43¢ for a $1 ticket.</dd></div>
+      <div><dt>Best bets (the default order)</dt>
+        <dd>Picks with at least a 40% hit chance, ranked by value (how the price compares with the true odds, after a
+        safety margin), nudged up when they're more likely to hit and when the stats agree, and down when the stats
+        disagree. "No TD" bets and anything priced shorter than −400 are hidden everywhere: they almost always win
+        but pay almost nothing. Each player shows once per prop type, at the best line for the chosen order.</dd></div>
       <div><dt>Why most sportsbook picks sit near 50%</dt>
         <dd>Books set their main line (like Over/Under 65.5) so both sides are about even. Higher hit chances come
         from lower lines: "alternate lines" at a book (e.g. Over 39.5 at −300) or Kalshi's lower thresholds (e.g. 40+).
@@ -290,7 +298,7 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
   <div class="notes">
     <p id="diag"></p>
     <p id="anaSrc"></p>
-    <p>Picks priced shorter than −1000 (about 91¢ on Kalshi) are hidden: they barely change what a parlay pays.
+    <p>Picks priced shorter than −400 (about 80¢ on Kalshi) and "No TD" bets are hidden: they pay too little to matter.
     Sportsbook data from The Odds API. Kalshi prices refresh every 30 seconds while you're on the Kalshi view.
     Most bettors lose money over time. Only bet what you can afford to lose.</p>
   </div>
@@ -332,7 +340,8 @@ const STAT = {
   player_anytime_td:    {t:"Anytime TD",      u:"touchdown",       d:"Player scores at least once, running or catching"},
 };
 const SORTS = [
-  {k:"hit",   t:"Most likely to hit", d:"Safest single picks, best parlay legs"},
+  {k:"best",  t:"Best bets",          d:"Good chance to hit (40%+), priced fairly or better, and backed by the stats"},
+  {k:"hit",   t:"Most likely to hit", d:"Highest hit chance first (still hides \u201cNo TD\u201d and prices shorter than −400)"},
   {k:"value", t:"Best value",         d:"Biggest gap between the price and the true odds"},
   {k:"game",  t:"By kickoff",         d:"Earliest games first, then most likely to hit"},
 ];
@@ -341,7 +350,7 @@ const AN = window.Analytics;
 let A = null, aNote = "", openWhy = new Set();
 let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null;
 const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all",
-              game:store.get("ps_slate") || "all", sort:store.get("ps_sort") || "hit", legsN:Number(store.get("ps_legsN")) || 3};
+              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3};
 let slip = [];
 try { slip = JSON.parse(store.get("ps_slip") || "[]") || []; } catch(e) { slip = []; }
 
@@ -424,7 +433,7 @@ function oneIn(p){
   if (!(p > 0)) return "";
   return p >= 0.5 ? "Wins about " + Math.round(p * 10) + " times in 10" : "About 1 in " + Math.round(1 / p);
 }
-const MIN_DEC = 1.1;  // hide prices shorter than −1000: they barely move a parlay's payout
+const MIN_DEC = 1.25;  // hide prices shorter than −400 (about 80¢ on Kalshi): they barely pay anything
 
 /* ---------- picks for the chosen platform ---------- */
 function mk(c){
@@ -434,7 +443,7 @@ function mk(c){
   const who = P.norm(c.player);
   c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
   c.prop = who + "|" + c.m + "|" + c.pt;  // same prop, any side
-  c.group = (c.plat === "kalshi" || /_alternate$/.test(c.m)) ? c.prop : who + "|" + c.m;
+  c.group = who + "|" + c.stat;  // one pick per player and prop type: the best rung/line for the chosen sort
   return c;
 }
 function kalshiPicks(){
@@ -444,6 +453,7 @@ function kalshiPicks(){
     const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
     if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P2.max_spread) continue;
     for (const [side, hit, cost] of [["YES", u.fair, q.ask / 100], ["NO", 1 - u.fair, 1 - q.bid / 100]]){
+      if (side === "NO" && u.stat === TD) continue;  // "No TD" on a backup is a near-lock that pays nothing
       if (1 / (cost + fee(cost)) < MIN_DEC) continue;
       out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat,
                    pt:u.threshold, side, hit, unc:u.unc || .03, n:u.books, cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
@@ -462,6 +472,7 @@ function bookPicks(where){
         if (dec && (!best || dec > best.dec)) best = {b, a, dec};
       }
       if (!best || best.dec < MIN_DEC) continue;
+      if (p.stat === TD && s === 1) continue;        // hide "No TD" bets
       const side = p.stat === TD ? (s ? "No" : "Yes") : (s ? "Under" : "Over");
       out.push(mk({plat:"book", book:best.b, player:p.player, g:p.g, stat:p.stat, m:p.m, pt:p.pt, side,
                    hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec, prop_mv:p.mv || null}));
@@ -470,9 +481,16 @@ function bookPicks(where){
   return out;
 }
 function picksFor(where){ return where === "kalshi" ? kalshiPicks() : bookPicks(where); }
-const SORTKEY = {hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
+// Best bets: value after the safety margin, nudged toward likelier picks and toward what the stats back.
+// Picks under 40% to hit drop to the bottom (they're lottery tickets, not "best bets").
+const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};  // no stats behind it: small penalty
+function bestScore(c){
+  if (c.hit < 0.4) return -1 + c.hit;
+  return c.evSafe + 0.2 * (c.hit - 0.5) + VBONUS[anaFor(c).v];
+}
+const SORTKEY = {best:bestScore, hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
 function filtered(where, sortKey){
-  const key = SORTKEY[sortKey] || SORTKEY.hit, best = new Map();
+  const key = SORTKEY[sortKey] || SORTKEY.best, best = new Map();
   for (const c of picksFor(where)){
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
     if (!inGameFilter(c.g)) continue;
@@ -574,6 +592,11 @@ function showDef(key, side, trigger){
   $("shBody").innerHTML = '<p style="margin:6px 6px 0;font-size:16px;line-height:1.5">' + esc(d.d) + '</p><p class="defdir" style="margin:12px 6px">' + esc(AN.dirNote(key, side)) + '</p>';
 }
 
+function avatar(c){
+  const p = anaFor(c).p, ini = c.player.split(/\s+/).map(w => w[0]).filter(ch => /[A-Za-z]/.test(ch)).slice(0, 2).join("");
+  const src = p && p.img ? (/^https?:/.test(p.img) ? p.img : (A.img_base || "") + p.img) : null;
+  return '<span class="av" aria-hidden="true">' + esc(ini) + (src ? '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async" onerror="this.remove()">' : "") + '</span>';
+}
 function inSlip(key){ return slip.some(l => l.key === key); }
 function card(c){
   const label = c.player + " " + lineText(c).replace(/<[^>]+>/g, "");
@@ -582,7 +605,7 @@ function card(c){
     ? '<div class="gap">⚠ Big gap between this price and the other books: check injury news first</div>' : "";
   const books = c.n + (c.n === 1 ? " book" : " books");
   return '<li class="pick">' +
-    '<div><div class="who">' + esc(c.player) + '</div><div class="line">' + lineText(c) + '</div>' +
+    '<div><div class="who">' + avatar(c) + '<span>' + esc(c.player) + '</span></div><div class="line">' + lineText(c) + '</div>' +
     '<div class="price">' + priceText(c) + '</div>' +
     '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
     '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance</div></div>' +
@@ -716,7 +739,7 @@ $("sheet").addEventListener("click", e => {
   const o = e.target.closest(".opt");
   if (o && sheetMode && PICKERS[sheetMode]){
     pref[sheetMode] = o.dataset.v;
-    if (sheetMode !== "game") store.set("ps_" + sheetMode, o.dataset.v);
+    if (sheetMode !== "game") store.set("ps_" + (sheetMode === "sort" ? "sort2" : sheetMode), o.dataset.v);
     else store.set("ps_slate", o.dataset.v.startsWith("slate:") || o.dataset.v === "all" ? o.dataset.v : "");  // slates carry over to next week; single games don't
     shown = PAGE;
     closeSheet(); render();
@@ -795,7 +818,7 @@ function renderSlip(){
   }
   h += '<div class="auto"><h3>Auto-build</h3><p>Picks the highest hit chances from the list you\'re looking at (' + esc(whereLabel(pref.where)) +
     ", " + esc(pref.prop === "all" ? "all props" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameFilterLabel()) +
-    "). One leg per player, no two legs from one game when it can avoid it, and it skips picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
+    "). One leg per player, no two legs from one game when it can avoid it, and it skips poor-value picks and picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
     '<div class="seg" role="radiogroup" aria-label="Number of legs">' + [2, 3, 4, 5, 6].map(k =>
       '<button type="button" role="radio" aria-checked="' + (pref.legsN === k) + '" data-legs="' + k + '">' + k + "</button>").join("") + "</div>" +
     '<button class="primary" type="button" data-auto>Build a ' + pref.legsN + "-leg parlay</button></div>";
@@ -821,7 +844,7 @@ function slipClick(e){
   if (t.dataset.rm != null){ slip.splice(Number(t.dataset.rm), 1); saveSlip(); renderSlip(); render(); $("sheet").querySelector(".close").focus(); }
   else if (t.dataset.legs){ pref.legsN = Number(t.dataset.legs); store.set("ps_legsN", pref.legsN); renderSlip(); $("sheet").querySelector('[data-legs="' + pref.legsN + '"]').focus(); }
   else if (t.dataset.auto != null){
-    const pool = filtered(pref.where, "hit"), ok = pool.filter(c => anaFor(c).v !== "disagree");
+    const pool = filtered(pref.where, "hit"), ok = pool.filter(c => anaFor(c).v !== "disagree" && c.ev >= -0.06);
     const picks = P.autoBuild(ok.length >= pref.legsN ? ok : pool, pref.legsN);
     if (!picks.length){ toast("No picks to build from. Change the filters."); return; }
     slip = picks.map(snapshot); saveSlip(); renderSlip(); render(); $("shBody").scrollTop = 0;

@@ -23,7 +23,8 @@ DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
 # Free tier = 500 credits/month. Cost per game = (markets returned) x (regions), and every group of
 # up to 10 bookmakers counts as ONE region. So 10 books cost the same as 1: don't go past 10.
 # Adding a market (including an *_alternate one) adds about 1 credit per game.
-ODDS_MARKETS = _list("ODDS_MARKETS", "player_rush_yds,player_reception_yds,player_pass_yds,player_anytime_td")
+ODDS_MARKETS = _list("ODDS_MARKETS",
+                     "player_rush_yds,player_reception_yds,player_pass_yds,player_receptions,player_anytime_td")
 # Odds API keys. Caesars is "williamhill_us". Caesars and Fanatics only return data on paid Odds API
 # plans; they're listed so they show up if you upgrade, and they cost nothing extra while <= 10 books.
 BOOKMAKERS = os.environ.get(
@@ -42,7 +43,10 @@ CREDIT_RESERVE = _i("CREDIT_RESERVE", 15)  # stop calling the API if credits dro
 
 # --- model assumptions --------------------------------------------------------
 MIN_BOOKS = _i("MIN_BOOKS", 2)             # books that must agree before a contract is scored
-MAX_LINE_DISTANCE = _f("MAX_LINE_DISTANCE", 0.25)  # ignore Kalshi thresholds >25% away from the book line
+MAX_LINE_DISTANCE = _f("MAX_LINE_DISTANCE", 0.25)  # sportsbook main lines: books within 25% of each other
+# Kalshi ladders (30+, 40+, 50+ ...) sit far from the book line; price rungs up to 50% away. The safety
+# margin grows with the distance (model.uncertainty), so far rungs need a bigger edge to look good.
+KALSHI_LINE_DISTANCE = _f("KALSHI_LINE_DISTANCE", 0.5)
 ALT_LINE_DISTANCE = _f("ALT_LINE_DISTANCE", 0.5)   # alternate sportsbook lines may sit further from the main line
 PROP_MIN_BOOKS = _i("PROP_MIN_BOOKS", 1)   # sportsbook picks: books needed for a hit chance (count is shown)
 ANYTIME_TD_VIG = _f("ANYTIME_TD_VIG", 0.12)  # rough vig removed from one-sided anytime-TD prices
@@ -59,7 +63,7 @@ MIN_EDGE = _f("MIN_EDGE", 0.05)                # 5 points after fees
 MIN_EDGE_TD = _f("MIN_EDGE_TD", 0.08)          # anytime-TD fair values are rougher, so demand more
 MAX_SPREAD_CENTS = _i("MAX_SPREAD_CENTS", 8)   # skip illiquid contracts
 TOP_N = _i("TOP_N", 10)
-KALSHI_MAX_ROWS = _i("KALSHI_MAX_ROWS", 300)   # Kalshi contracts written to the page (live-priced there)
+KALSHI_ROWS_PER_STAT = _i("KALSHI_ROWS_PER_STAT", 150)   # Kalshi contracts per prop type written to the page
 LOG_PATH = os.environ.get("LOG_PATH", "data/picks_log.csv")
 SITE_DATA_PATH = os.environ.get("SITE_DATA_PATH", "site/data.json")
 ANALYTICS_PATH = os.environ.get("ANALYTICS_PATH", "site/analytics.json")

@@ -167,13 +167,13 @@ list is free.
 
 | Run | Games | Markets | Credits |
 |---|---|---|---|
-| Thursday (scheduled, 110h window) | Thu + Sun + Mon, 13–16 games | 4: rushing, receiving, passing yards, anytime TD | **52–64** |
-| Sunday (scheduled, 36h window) | Sun + Mon, 12–15 games | 3: rushing, receiving, anytime TD | **36–45** |
-| Manual, one night game (`window_hours` = 6) | 1 | 4 | **4** |
+| Thursday (scheduled, 110h window) | Thu + Sun + Mon, 13–16 games | 5: rushing, receiving, passing yards, receptions, anytime TD | **65–80** |
+| Sunday (scheduled, 36h window) | Sun + Mon, 12–15 games | 2: rushing yards, anytime TD | **24–30** |
+| Manual, one night game (`window_hours` = 6) | 1 | 5 | **5** |
 
-On Sunday, passing yards are carried over from Thursday's scan for games that haven't started (QB lines
-barely move on inactives), and the page labels them with their age. That's about **90–110 credits a week, or
-390–470 a month**. Weeks without byes (early and late season) are the tight ones, so leave room before
+On Sunday, receiving yards, passing yards and receptions are carried over from Thursday's scan for games that
+haven't started, and the page labels them with their age. Sunday refreshes the two markets inactives move most:
+rushing yards (backfield splits) and anytime TD. That's about **90–110 credits a week, or 390–470 a month**. Weeks without byes (early and late season) are the tight ones, so leave room before
 running extra manual scans. The script stops itself if credits drop under `CREDIT_RESERVE` (15).
 
 Check before you spend: `python -m src.run --estimate` uses only the free `/events` call and prints what a
@@ -194,7 +194,7 @@ to a single manual run with the `markets` box on the Run workflow screen.
   extra while there are 10 or fewer books). On the free plan the page shows "No lines: The Odds API only
   sends this book on paid plans" for them.
 - **Kalshi:** read from Kalshi's public API (free, no key). It doesn't use Odds API credits.
-- **Polymarket: not included.** I checked its public API (gamma-api.polymarket.com) on 2026-10-01.
+- **Polymarket: not included.** I checked its public API (gamma-api.polymarket.com) twice on 2026-10-01.
   Its NFL markets are season-long (MVP, stat leaders, season rushing totals) and team-level game markets
   (spread, totals, team touchdowns). There are no single-game player props to price, so there's nothing to compare.
 
@@ -205,6 +205,12 @@ to a single manual run with the `markets` box on the Run workflow screen.
   Slates come from each game's kickoff day and time in US Eastern, so they follow every week's schedule. A
   chosen slate is remembered for next week; a single game isn't.
 
+- **Show first:** **Best bets** (the default) ranks picks with at least a 40% hit chance by value after a
+  safety margin, nudged up for likelier picks and when the stats agree, and down when they disagree or there are no
+  stats. **Most likely to hit** is pure hit chance, **Best value** is pure value, and **By kickoff** is game order.
+- **Hidden everywhere:** "No TD" bets, and prices shorter than −400 (about 80¢ on Kalshi). They almost always
+  win but pay almost nothing. Each player shows once per prop type, at the best line or Kalshi rung for the chosen order.
+- **Player photos** come from nflverse's headshot links (NFL's image CDN). Players without stats show initials.
 - **Hit chance (big %):** how often the pick should win, from all books' prices with their cut removed.
 - **Line and odds:** "Over 65.5" wins at 66 or more. −115 means bet $115 to win $100, +140 means bet
   $100 to win $140. On Kalshi a 43¢ YES pays $1 if it happens.
@@ -215,7 +221,9 @@ to a single manual run with the `markets` box on the Run workflow screen.
   consensus. It usually means news the scan doesn't know about.
 - **Why most sportsbook picks sit near 50%:** books set main lines so both sides are about even. Higher
   hit chances come from alternate lines or Kalshi's lower thresholds, which pay less.
-- Picks priced shorter than −1000 (about 91¢ on Kalshi) are hidden, because they barely change a parlay's payout.
+- **Kalshi ladders:** rungs up to 50% away from the sportsbook line are priced (e.g. 30+ rushing yards vs a 55.5 line). The
+  safety margin grows with the distance, so far rungs need a bigger edge to be called good value. The page keeps up to
+  150 contracts per prop type (tightest markets first), so TD contracts can't crowd out yardage ones.
 
 ## Parlay slip
 

@@ -122,7 +122,7 @@ def evaluate(lines, markets, universe=None):
             continue
         stats["matched"] += 1
         fair, n = model.fair_probability(
-            c["stat"], c["threshold"], book_lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ANYTIME_TD_VIG
+            c["stat"], c["threshold"], book_lines, C.SIGMA, C.KALSHI_LINE_DISTANCE, C.ANYTIME_TD_VIG
         )
         if fair is None or n < C.MIN_BOOKS:
             continue
@@ -130,9 +130,9 @@ def evaluate(lines, markets, universe=None):
         if universe is not None and 0.03 < fair < 0.97:
             universe.append({"ticker": m.get("ticker", ""), "player": book_lines[0]["player"],
                              "g": props.game_id(book_lines[0]), "stat": c["stat"],
-                             "label": STAT_LABEL[c["stat"]], "threshold": c["threshold"],
+                             "threshold": c["threshold"],
                              "fair": round(fair, 3), "books": n,
-                             "unc": round(model.uncertainty(c["stat"], c["threshold"], book_lines, C.MAX_LINE_DISTANCE), 3),
+                             "unc": round(model.uncertainty(c["stat"], c["threshold"], book_lines, C.KALSHI_LINE_DISTANCE), 3),
                              "bid": bid, "ask": ask})
         if not bid or not ask or ask >= 99 or (ask - bid) > C.MAX_SPREAD_CENTS:
             continue
@@ -316,7 +316,11 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
     books = [{"k": b, "name": C.BOOK_NAMES.get(b, b), "n": counts.get(b, 0), "paid": b in C.PAID_ONLY_BOOKS}
              for b in configured + sorted(set(counts) - set(configured))]
     used = {p["g"] for p in prop_list} | {u.get("g") for u in universe}
-    kalshi_rows = sorted(universe, key=_spread)[: C.KALSHI_MAX_ROWS]
+    # cap per prop type (tightest markets first) so anytime-TD contracts can't crowd out yardage ones
+    by_stat = defaultdict(list)
+    for u in sorted(universe, key=_spread):
+        by_stat[u["stat"]].append(u)
+    kalshi_rows = [u for rows in by_stat.values() for u in rows[: C.KALSHI_ROWS_PER_STAT]]
     return {
         "version": 2,
         "updated": now.isoformat(timespec="seconds"),

@@ -45,6 +45,16 @@ SHOW = {
 SHOW["TE"] = SHOW["WR"]
 
 
+IMG_BASE = "https://static.www.nfl.com/image/upload/"
+
+
+def short_img(url):
+    """Headshot URLs from nflverse player stats; the common NFL CDN prefix is stored once (img_base)."""
+    if not url:
+        return None
+    return url[len(IMG_BASE):] if url.startswith(IMG_BASE) else url
+
+
 def r3(x, nd=3):
     return None if x is None else round(float(x), nd)
 
@@ -183,8 +193,10 @@ def build(d, sources, now=None, odds_key=None):
     info = {}
     for df in (d["ps_prior"], d["ps"]):
         if df is not None:
-            for r in df.select(["player_id", "player_display_name", "position", "team"]).iter_rows(named=True):
-                info[r["player_id"]] = {"name": r["player_display_name"], "pos": r["position"], "team": r["team"]}
+            cols = ["player_id", "player_display_name", "position", "team"] + (["headshot_url"] if "headshot_url" in df.columns else [])
+            for r in df.select(cols).iter_rows(named=True):
+                img = r.get("headshot_url") or (info.get(r["player_id"]) or {}).get("img")
+                info[r["player_id"]] = {"name": r["player_display_name"], "pos": r["position"], "team": r["team"], "img": img}
     positions = {k: v["pos"] for k, v in info.items() if v["pos"] in ("WR", "TE", "RB", "QB")}
 
     rz = M.redzone_drives(pbp)
@@ -421,6 +433,7 @@ def build(d, sources, now=None, odds_key=None):
         out_players.append({
             "n": (info.get(pid) or {}).get("name"),
             "id": pid, "pos": pos, "t": team, "g": p["games"], "wk": p["weeks"],
+            "img": short_img((info.get(pid) or {}).get("img")),
             "qual": qualifies(pos, raw), "m": pm, "pj": projs,
             "prior": {"g": p["prior"]["games"]} if p["prior"] else None,
             "inj": [injr["status"], injr["injury"], injr["practice"]] if injr and (injr["status"] or injr["practice"]) else None,
@@ -468,7 +481,7 @@ def build(d, sources, now=None, odds_key=None):
         "mf": {k: {"factor": r3(v["factor"]), "n": v["n"]} for k, v in medf.items()},
         "league": {k: r3(v) for k, v in league.items()},
         "league_pos": {p: {k: r3(v) for k, v in x.items()} for p, x in league_pos.items()},
-        "mk": SHOW, "nteams": len(teams_p),
+        "mk": SHOW, "nteams": len(teams_p), "img_base": IMG_BASE,
         "pop": {pos: sum(1 for pid, (p_, _) in disp.items() if p_ == pos and qualifies(pos, players_p[pid]["raw"]))
                 for pos in M.POSITIONS},
         "td_split": {k: r3(v) for k, v in split.items()},

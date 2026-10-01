@@ -132,8 +132,11 @@
   }
   function findPlayer(A, name, gameTeams) {
     if (!A || !A.players) return null;
-    const k = P.norm(name);
-    const hits = A.players.filter(p => P.norm(p.n) === k);
+    if (!A._byName) {  // built once per file: the page looks players up thousands of times per render
+      A._byName = new Map();
+      for (const p of A.players) { const k = P.norm(p.n); A._byName.set(k, (A._byName.get(k) || []).concat(p)); }
+    }
+    const hits = A._byName.get(P.norm(name)) || [];
     if (hits.length <= 1) return hits[0] || null;
     const abbrs = (gameTeams || []).map(t => teamAbbr(A, t)).filter(Boolean);
     return hits.find(p => abbrs.includes(p.t)) || hits[0];

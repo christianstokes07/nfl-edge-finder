@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Kalshi edges</title>
+<style>
+:root{--bg:#f4f6f3;--ink:#16221b;--mute:#5d6b62;--line:#d9dfd8;--edge:#0c7a43;--warn:#9a5b00;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1511;--ink:#e8efe9;--mute:#97a69c;--line:#26332b;--edge:#4fd18b;--warn:#e0a84a}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums}
+main{max-width:560px;margin:0 auto;padding:20px 18px 40px}
+h1{font-size:22px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--mute);font-size:14px;margin:0 0 18px}
+.stale{color:var(--warn)}
+ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+li{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.who{font-weight:650;font-size:17px}
+.what,.buy{color:var(--mute);font-size:14px;margin-top:2px}
+.buy b{color:var(--ink);font-weight:650}
+.edge{font-size:30px;font-weight:700;color:var(--edge);letter-spacing:-.02em;white-space:nowrap}
+.edge small{display:block;font-size:12px;font-weight:500;color:var(--mute);letter-spacing:0;text-align:right}
+.empty{padding:28px 0;color:var(--mute)}
+.note{color:var(--mute);font-size:13px;margin-top:22px}
+button{font:inherit;margin-top:14px;padding:10px 16px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink)}
+button:focus-visible{outline:2px solid var(--edge);outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Kalshi edges</h1>
+  <p class="sub" id="sub">Loading…</p>
+  <p class="sub" id="live"></p>
+  <ul id="list"></ul>
+  <div class="empty" id="empty" hidden></div>
+  <p class="note">Edge is fair probability minus price and fees, using sportsbook consensus as fair value. Prices are from the last scan. Check Kalshi and the inactives before you buy.</p>
+  <button id="refresh">Reload</button>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+let D = null;
+function ago(iso){
+  const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (m < 2) return "just now";
+  if (m < 60) return m + " min ago";
+  const h = Math.round(m / 60);
+  return h < 36 ? h + " hr ago" : Math.round(h / 24) + " days ago";
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function show(rows){
+  $("list").innerHTML = rows.map(p => {
+    const line = p.stat === "player_anytime_td" ? p.label : esc(p.threshold) + "+ " + p.label;
+    const big = p.edge > 0.12 ? '<div class="what stale">Big gap: check injury news first</div>' : "";
+    return '<li><div><div class="who">' + esc(p.player) + '</div><div class="what">' + line + ' in ' + esc(p.game) + '</div>' +
+      '<div class="buy">Buy <b>' + p.side + '</b> at <b>' + p.price + '¢</b>, fair ' + Math.round(p.fair * 100) + '¢</div>' + big + '</div>' +
+      '<div class="edge">+' + (p.edge * 100).toFixed(1) + '%<small>' + p.books + ' books</small></div></li>';
+  }).join("");
+  $("empty").hidden = rows.length > 0;
+  $("empty").textContent = "Nothing is mispriced by " + Math.round(D.min_edge * 100) + " points or more right now.";
+}
+function score(u, q){
+  const P = D.params;
+  if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P.max_spread) return null;
+  const yc = q.ask / 100, nc = 1 - q.bid / 100, fee = c => P.fee * c * (1 - c);
+  const ey = u.fair - yc - fee(yc), en = (1 - u.fair) - nc - fee(nc);
+  return en > ey ? {side:"NO", price:Math.round(nc * 100), fair:1 - u.fair, edge:en}
+                 : {side:"YES", price:Math.round(yc * 100), fair:u.fair, edge:ey};
+}
+async function live(){
+  if (!D || !D.universe || !D.universe.length || document.hidden) return;
+  try{
+    const r = await fetch("/api/prices?tickers=" + D.universe.map(u => u.ticker).join(","), {cache:"no-store"});
+    if (!r.ok) throw new Error(r.status);
+    const q = await r.json();
+    const rows = D.universe.map(u => { const s = score(u, q[u.ticker]); return s && s.edge >= D.params.min_edge ? {...u, ...s} : null; })
+      .filter(Boolean).sort((a, b) => b.edge - a.edge).slice(0, D.params.top_n);
+    show(rows);
+    $("live").textContent = "Kalshi prices live as of " + new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"});
+  }catch(e){
+    $("live").textContent = "Live prices unavailable, showing the last scan.";
+  }
+}
+async function load(){
+  try{
+    D = await (await fetch("data.json?t=" + Date.now(), {cache:"no-store"})).json();
+    if (!D.updated){ $("sub").textContent = "No scan has run yet."; $("empty").hidden = false; $("empty").textContent = "Run the workflow from the Actions tab on GitHub to get your first results."; return; }
+    const hrs = (Date.now() - new Date(D.updated)) / 36e5;
+    $("sub").innerHTML = "Sportsbook lines from " + ago(D.updated) + (hrs > 72 ? ' <span class="stale">(old: run a new scan)</span>' : "");
+    show(D.picks);
+    live();
+  }catch(e){ $("sub").textContent = "Couldn't load data.json."; }
+}
+$("refresh").onclick = load;
+setInterval(live, 30000);
+document.addEventListener("visibilitychange", live);
+load();
+</script>
+</body>
+</html>

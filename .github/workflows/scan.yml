@@ -1,0 +1,40 @@
+name: NFL edge scan
+
+on:
+  schedule:
+    # Thursday ~noon ET: whole week's slate. Sunday ~12:15pm ET: after inactives, before 1pm kickoffs.
+    # (GitHub cron is UTC and can run a few minutes late.)
+    - cron: "0 16 * * 4"
+    - cron: "15 16 * * 0"
+  workflow_dispatch:
+    inputs:
+      window_hours:
+        description: "Only scan games starting within this many hours (use 6 for a single night game)"
+        required: false
+        default: "110"
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Run scan
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          WINDOW_HOURS: ${{ github.event.inputs.window_hours || '110' }}
+        run: python -m src.run
+      - name: Save pick log
+        run: |
+          git config user.name "edge-bot"
+          git config user.email "edge-bot@users.noreply.github.com"
+          git add -A site data
+          git diff --cached --quiet || (git commit -m "log picks" && git push)

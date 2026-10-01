@@ -61,12 +61,13 @@ def test_alternate_lines_priced_off_main_consensus():
     assert abs(main["p"] - 0.5) < 1e-6
 
 
-def test_receptions_need_matching_points():
+def test_receptions_priced_across_points():
     lines = [_ln("draftkings", 4.5, -120, 100, market="player_receptions"),
              _ln("fanduel", 4.5, -115, -105, market="player_receptions"),
              _ln("betmgm", 5.5, 130, -160, market="player_receptions")]
     ps = {p["pt"]: p for p in _build(lines)}
-    assert ps[4.5]["n"] == 2 and ps[5.5]["n"] == 1
+    # receptions are priced like yards now: every book's line moves to each point
+    assert ps[4.5]["n"] == 3 and ps[5.5]["n"] == 3 and ps[5.5]["p"] < ps[4.5]["p"]
 
 
 def test_lines_from_props_round_trip():
@@ -109,7 +110,7 @@ def test_site_data_lists_books_with_counts_and_stays_small():
 def test_bookmakers_fit_in_one_region():
     assert odds.region_units(C.BOOKMAKERS) == 1
     assert odds.region_units(",".join(f"b{i}" for i in range(11))) == 2
-    assert odds.run_cost(16, C.ODDS_MARKETS, C.BOOKMAKERS) == 80   # 16 games x 5 markets x 1 region
+    assert odds.run_cost(16, C.ODDS_MARKETS, C.BOOKMAKERS) == 96   # 16 games x 6 markets x 1 region
 
 
 def test_line_moves_since_previous_scan():

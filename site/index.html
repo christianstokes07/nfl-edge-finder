@@ -70,6 +70,8 @@ details.how[open] summary::after{content:"Hide"}
 
 .live{font-size:13px;color:var(--mute);margin:0 0 8px}
 .live:empty{display:none}
+.filternote{margin:0 0 10px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);font-size:14px}
+.linkbtn{font:inherit;font-weight:700;color:var(--accent);background:none;border:0;padding:6px 2px;min-height:32px;text-decoration:underline;cursor:pointer}
 .count{font-size:13px;color:var(--mute);margin:0 0 8px;font-weight:600;letter-spacing:.02em}
 
 /* picks */
@@ -79,6 +81,7 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .pick .who{font-size:18px;font-weight:750;line-height:1.2;letter-spacing:-.005em;display:flex;align-items:center;gap:10px}
 .av{position:relative;flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--sunk);border:1px solid var(--line);
   display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--mute);letter-spacing:.02em}
+.av.tm{background:var(--ink);color:var(--bg);border-color:var(--ink);font-size:12px;letter-spacing:.04em}
 .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
 .pick .line{font-size:16px;margin-top:3px;color:var(--ink)}
 .pick .line b{font-weight:750}
@@ -290,6 +293,7 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
   </details>
 
   <p class="live" id="live" aria-live="polite"></p>
+  <p class="filternote" id="filterNote" hidden></p>
   <p class="count" id="count"></p>
   <ol class="picks" id="list"></ol>
   <div class="empty" id="empty" hidden></div>
@@ -298,6 +302,7 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
   <div class="notes">
     <p id="diag"></p>
     <p id="anaSrc"></p>
+    <p id="build"></p>
     <p>Picks priced shorter than −400 (about 80¢ on Kalshi) and "No TD" bets are hidden: they pay too little to matter.
     Sportsbook data from The Odds API. Kalshi prices refresh every 30 seconds while you're on the Kalshi view.
     Most bettors lose money over time. Only bet what you can afford to lose.</p>
@@ -338,7 +343,23 @@ const STAT = {
   player_receptions:    {t:"Receptions",      u:"catches",         d:"How many passes a player catches"},
   player_pass_tds:      {t:"Passing TDs",     u:"passing TDs",     d:"Touchdown passes a quarterback throws"},
   player_anytime_td:    {t:"Anytime TD",      u:"touchdown",       d:"Player scores at least once, running or catching"},
+  player_rush_reception_yds: {t:"Rush + rec yards", u:"rushing + receiving yards", d:"Rushing and receiving yards added together"},
+  player_pass_attempts: {t:"Passing attempts", u:"pass attempts",   d:"Passes a quarterback throws, complete or not"},
+  player_pass_completions: {t:"Completions",   u:"completions",     d:"Passes a quarterback completes"},
+  player_pass_interceptions: {t:"Interceptions thrown", u:"interceptions", d:"Passes a quarterback throws that get picked off"},
+  player_rush_attempts: {t:"Rushing attempts", u:"carries",         d:"How many times a player runs the ball"},
+  game_ml:     {t:"Moneyline",  u:"", d:"Pick the team that wins the game", game:true},
+  game_spread: {t:"Spread",     u:"", d:"Favorite must win by more than the spread; underdog can lose by less", game:true},
+  game_total:  {t:"Game total", u:"total points", d:"Both teams' points added up, over or under the line", game:true},
 };
+const TEAM_ABBR = {"Arizona Cardinals":"ARI","Atlanta Falcons":"ATL","Baltimore Ravens":"BAL","Buffalo Bills":"BUF","Carolina Panthers":"CAR",
+  "Chicago Bears":"CHI","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE","Dallas Cowboys":"DAL","Denver Broncos":"DEN","Detroit Lions":"DET",
+  "Green Bay Packers":"GB","Houston Texans":"HOU","Indianapolis Colts":"IND","Jacksonville Jaguars":"JAX","Kansas City Chiefs":"KC",
+  "Las Vegas Raiders":"LV","Los Angeles Chargers":"LAC","Los Angeles Rams":"LAR","Miami Dolphins":"MIA","Minnesota Vikings":"MIN",
+  "New England Patriots":"NE","New Orleans Saints":"NO","New York Giants":"NYG","New York Jets":"NYJ","Philadelphia Eagles":"PHI",
+  "Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF","Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN",
+  "Washington Commanders":"WAS"};
+const BUILD = "2026-10-01 · game lines";
 const SORTS = [
   {k:"best",  t:"Best bets",          d:"Good chance to hit (40%+), priced fairly or better, and backed by the stats"},
   {k:"hit",   t:"Most likely to hit", d:"Highest hit chance first (still hides \u201cNo TD\u201d and prices shorter than −400)"},
@@ -443,7 +464,8 @@ function mk(c){
   const who = P.norm(c.player);
   c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
   c.prop = who + "|" + c.m + "|" + c.pt;  // same prop, any side
-  c.group = who + "|" + c.stat;  // one pick per player and prop type: the best rung/line for the chosen sort
+  // one pick per player and prop type (per game and market for game lines): the best line/rung for the chosen sort
+  c.group = c.game ? c.g + "|" + c.stat : who + "|" + c.stat;
   return c;
 }
 function kalshiPicks(){
@@ -452,11 +474,13 @@ function kalshiPicks(){
   for (const u of D.kalshi || []){
     const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
     if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P2.max_spread) continue;
-    for (const [side, hit, cost] of [["YES", u.fair, q.ask / 100], ["NO", 1 - u.fair, 1 - q.bid / 100]]){
-      if (side === "NO" && u.stat === TD) continue;  // "No TD" on a backup is a near-lock that pays nothing
+    const fair = u.km ? (q.bid + q.ask) / 200 : u.fair;   // Kalshi-only stats: Kalshi's own (live) mid price
+    for (const [side, hit, cost] of [["YES", fair, q.ask / 100], ["NO", 1 - fair, 1 - q.bid / 100]]){
+      if (side === "NO" && (u.stat === TD || u.stat === "game_ml")) continue;  // "No TD" pays nothing; "NO on team A" = team B's contract
       if (1 / (cost + fee(cost)) < MIN_DEC) continue;
-      out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat,
-                   pt:u.threshold, side, hit, unc:u.unc || .03, n:u.books, cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
+      out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat, game:!!STAT[u.stat] && !!STAT[u.stat].game,
+                   team:u.team || null, km:!!u.km, pt:u.threshold, side, hit, unc:u.km ? 0.03 : (u.unc || .03), n:u.books,
+                   cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
     }
   }
   return out;
@@ -478,6 +502,24 @@ function bookPicks(where){
                    hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec, prop_mv:p.mv || null}));
     }
   }
+  // game lines: moneyline / spread / total
+  for (const p of D.lines || []){
+    const gm = game(p.g); if (!gm) continue;
+    const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
+    for (const s of [0, 1]){
+      let best = null;
+      for (const b of books){
+        const a = p.b[b][s], dec = a == null ? null : P.americanToDecimal(a);
+        if (dec && (!best || dec > best.dec)) best = {b, a, dec};
+      }
+      if (!best || best.dec < MIN_DEC) continue;
+      const team = p.m === "totals" ? null : (s ? gm.a : gm.h);
+      const side = p.m === "totals" ? (s ? "Under" : "Over") : team;
+      const pt = p.m === "spreads" ? (s ? -p.pt : p.pt) : p.pt;
+      out.push(mk({plat:"book", game:true, book:best.b, player:team || "Game total", team, g:p.g, stat:p.stat, m:p.m, pt, side,
+                   hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec}));
+    }
+  }
   return out;
 }
 function picksFor(where){ return where === "kalshi" ? kalshiPicks() : bookPicks(where); }
@@ -486,7 +528,8 @@ function picksFor(where){ return where === "kalshi" ? kalshiPicks() : bookPicks(
 const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};  // no stats behind it: small penalty
 function bestScore(c){
   if (c.hit < 0.4) return -1 + c.hit;
-  return c.evSafe + 0.2 * (c.hit - 0.5) + VBONUS[anaFor(c).v];
+  // Kalshi-only stats have no outside price, so no measured value: rank them by hit chance and stats only
+  return (c.km ? -0.02 : c.evSafe) + 0.2 * (c.hit - 0.5) + VBONUS[anaFor(c).v];
 }
 const SORTKEY = {best:bestScore, hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
 function filtered(where, sortKey){
@@ -504,8 +547,19 @@ function filtered(where, sortKey){
 }
 
 /* ---------- text for a pick ---------- */
+function sgnPt(x){ return (x > 0 ? "+" : x < 0 ? "−" : "") + fmtPt(Math.abs(x)); }
 function lineText(c){
   const s = STAT[c.stat] || {u:c.stat};
+  if (c.game){
+    const tn = c.team ? esc(teamShort(c.team)) : "";
+    if (c.stat === "game_ml") return "<b>" + tn + "</b> to win";
+    if (c.stat === "game_spread"){
+      if (c.plat === "kalshi") return (c.side === "YES" ? "<b>" + tn + " win by " : "<b>" + tn + " don't win by ") + (Math.floor(c.pt) + 1) + "+</b>";
+      return "<b>" + tn + " " + (c.pt === 0 ? "pick'em" : sgnPt(c.pt)) + "</b> (spread)";
+    }
+    if (c.plat === "kalshi") return "<b>" + (c.side === "YES" ? "Over " : "Under ") + fmtPt(c.pt) + "</b> total points";
+    return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> total points";
+  }
   if (c.stat === TD) return (c.side === "Yes" || c.side === "YES") ? "<b>Scores a TD</b> (anytime)" : "<b>No TD</b>";
   if (c.plat === "kalshi") return c.side === "YES" ? "<b>" + fmtPt(c.pt) + "+</b> " + s.u : "<b>Under " + fmtPt(c.pt) + "</b> " + s.u;
   return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> " + s.u;
@@ -516,6 +570,8 @@ function priceText(c){
 }
 function valueHtml(c){
   const k = c.plat === "kalshi";
+  if (c.km) return '<div class="value"><span class="ic" aria-hidden="true">?</span><span class="txt">Value: n/a' +
+    '<small>Only Kalshi prices this stat, so there\'s no outside price to compare</small></span></div>';
   if (c.evSafe >= 0)
     return '<div class="value good"><span class="ic" aria-hidden="true">✓</span><span class="txt">Good value: ' +
       (k ? "Kalshi's price is below what it's worth" : "this book pays more than it's worth") +
@@ -530,6 +586,14 @@ function valueHtml(c){
 function anaFor(c){
   if (c._ana !== undefined) return c._ana;
   const g = game(c.g), teams = g ? [g.a, g.h] : [];
+  if (c.game){
+    const sideText = lineText(c).replace(/<[^>]+>/g, "").trim();
+    const fl = A && g ? AN.gameFlags(A, g.h, g.a, c.stat, c.side) : [];
+    const head = "Why " + Math.round(c.hit * 100) + "%: " + (c.n > 1 ? c.n + " sportsbooks' prices" : "one sportsbook's price") +
+      ", with the books' cut removed, give \u201c" + sideText + "\u201d a " + Math.round(c.hit * 100) + "% chance.";
+    return (c._ana = {p:null, pj:null, v:"n/a", fl, conf:AN.confidence(c.n, "n/a", fl), lineVal:c.pt, stale:false,
+      whyText: head + " Stats: we don't project game results; the panel compares each offense with the other defense."});
+  }
   const p = A ? AN.findPlayer(A, c.player, teams) : null;
   let stale = false;
   if (p){
@@ -564,6 +628,16 @@ function anaHtml(c){
 function term(key, text){ return '<button class="term" type="button" data-def="' + esc(key) + '">' + esc(text) + '</button>'; }
 function panelHtml(c){
   const a = anaFor(c);
+  if (c.game){
+    const gm = game(c.g);
+    if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet.") + '</p>';
+    const secs = gm ? AN.gameSections(A, gm.h, gm.a) : [];
+    if (!secs.length) return '<p class="src">Stats n/a: these teams aren\'t in the stats file.</p>';
+    let h = '<div class="proj"><div class="ph">The hit chance is the sportsbooks\' consensus. There\'s no stats projection for game results here; these are the team numbers behind the matchup.</div></div>';
+    for (const sct of secs) h += '<div class="sec"><h4>' + esc(sct.title) + '</h4><ul>' + sct.lines.map(l => '<li' + (l.na ? ' class="na"' : "") + '>' +
+      (l.key && AN.DEF[l.key] ? term(l.key, AN.DEF[l.key].t) + ": " : "") + esc(l.text) + '</li>').join("") + '</ul></div>';
+    return h;
+  }
   if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet (the weekly analytics job hasn't run).") + '</p>';
   if (!a.p) return '<p class="src">Stats n/a: no nflverse play-by-play for ' + esc(c.player) + ' this season (rookie with no snaps yet, or a name we couldn\'t match).</p>';
   if (a.stale) return '<p class="src">Stats n/a for this game: the stats file covers week ' + A.week + '. Rerun the analytics job for this week.</p>';
@@ -593,6 +667,10 @@ function showDef(key, side, trigger){
 }
 
 function avatar(c){
+  if (c.game){
+    const lab = c.team ? (TEAM_ABBR[c.team] || teamShort(c.team).slice(0, 3).toUpperCase()) : "O/U";
+    return '<span class="av tm" aria-hidden="true">' + esc(lab) + '</span>';
+  }
   const p = anaFor(c).p, ini = c.player.split(/\s+/).map(w => w[0]).filter(ch => /[A-Za-z]/.test(ch)).slice(0, 2).join("");
   const src = p && p.img ? (/^https?:/.test(p.img) ? p.img : (A.img_base || "") + p.img) : null;
   return '<span class="av" aria-hidden="true">' + esc(ini) + (src ? '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async" onerror="this.remove()">' : "") + '</span>';
@@ -605,7 +683,7 @@ function card(c){
     ? '<div class="gap">⚠ Big gap between this price and the other books: check injury news first</div>' : "";
   const books = c.n + (c.n === 1 ? " book" : " books");
   return '<li class="pick">' +
-    '<div><div class="who">' + avatar(c) + '<span>' + esc(c.player) + '</span></div><div class="line">' + lineText(c) + '</div>' +
+    '<div><div class="who">' + avatar(c) + '<span>' + esc(c.game ? gameName(c.g) : c.player) + '</span></div><div class="line">' + lineText(c) + '</div>' +
     '<div class="price">' + priceText(c) + '</div>' +
     '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
     '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance</div></div>' +
@@ -622,7 +700,10 @@ function whereLabel(k){ return k === "best" ? "Best price anywhere" : bookName(k
 function render(){
   if (!D) return;
   $("v-where").textContent = whereLabel(pref.where);
-  $("v-prop").textContent = pref.prop === "all" ? "All props" : (STAT[pref.prop] || {t:pref.prop}).t;
+  $("v-prop").textContent = pref.prop === "all" ? "Everything" : (STAT[pref.prop] || {t:pref.prop}).t;
+  const fn = $("filterNote");
+  fn.hidden = pref.prop === "all";
+  if (pref.prop !== "all") fn.innerHTML = 'Showing only <b>' + esc((STAT[pref.prop] || {t:pref.prop}).t) + '</b> · <button type="button" class="linkbtn" id="showAll">Show everything</button>';
   $("v-game").textContent = gameFilterLabel();
   $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
   if (pref.where !== "kalshi") $("live").textContent = "";
@@ -670,8 +751,11 @@ const PICKERS = {
   }},
   prop: {t:"Prop", d:"Which stat the bet is about", build(){
     const have = new Set([...(D.props || []).map(p => p.stat), ...(D.kalshi || []).map(u => u.stat)]);
-    let h = opt("all", "All props", "Every player prop in the last scan", pref.prop === "all");
-    for (const k of Object.keys(STAT)) if (have.has(k)) h += opt(k, STAT[k].t, STAT[k].d, pref.prop === k);
+    for (const p of D.lines || []) have.add(p.stat);
+    let h = opt("all", "Everything", "Game lines and every player prop in the last scan", pref.prop === "all");
+    const gl = Object.keys(STAT).filter(k => STAT[k].game && have.has(k)), pp = Object.keys(STAT).filter(k => !STAT[k].game && have.has(k));
+    if (gl.length) h += '<div class="opt-sec">Game lines</div>' + gl.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
+    if (pp.length) h += '<div class="opt-sec">Player props</div>' + pp.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
     return h;
   }},
   game: {t:"Game / slate", d:"One slate (like Sunday Night) or one game. Updates with each week's schedule", build(){
@@ -817,7 +901,7 @@ function renderSlip(){
     h += '<div class="callout info"><b>Your slip is empty.</b> Tap "+ Parlay" on any pick, or let auto-build pick the legs for you.</div>';
   }
   h += '<div class="auto"><h3>Auto-build</h3><p>Picks the highest hit chances from the list you\'re looking at (' + esc(whereLabel(pref.where)) +
-    ", " + esc(pref.prop === "all" ? "all props" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameFilterLabel()) +
+    ", " + esc(pref.prop === "all" ? "everything" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameFilterLabel()) +
     "). One leg per player, no two legs from one game when it can avoid it, and it skips poor-value picks and picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
     '<div class="seg" role="radiogroup" aria-label="Number of legs">' + [2, 3, 4, 5, 6].map(k =>
       '<button type="button" role="radio" aria-checked="' + (pref.legsN === k) + '" data-legs="' + k + '">' + k + "</button>").join("") + "</div>" +
@@ -871,6 +955,7 @@ $("list").addEventListener("click", e => {
   const nb = $("list").querySelector('[data-add="' + CSS.escape(c.key) + '"]'); if (nb) nb.focus({preventScroll:true});
 });
 $("more").onclick = () => { shown += PAGE; render(); };
+$("filterNote").addEventListener("click", e => { if (e.target.id === "showAll"){ pref.prop = "all"; store.set("ps_prop", "all"); shown = PAGE; render(); } });
 let toastT = null;
 function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); }
 
@@ -891,8 +976,8 @@ async function live(){
   if (!needs || document.hidden) return;
   const tickers = D.kalshi.map(u => u.ticker), out = {};
   try{
-    for (let i = 0; i < tickers.length; i += 100){
-      const r = await fetch("/api/prices?tickers=" + encodeURIComponent(tickers.slice(i, i + 100).join(",")), {cache:"no-store"});
+    for (let i = 0; i < tickers.length; i += 400){   // the Function splits these into Kalshi-sized batches
+      const r = await fetch("/api/prices?tickers=" + encodeURIComponent(tickers.slice(i, i + 400).join(",")), {cache:"no-store"});
       if (!r.ok) throw new Error(r.status);
       Object.assign(out, await r.json());
     }
@@ -952,6 +1037,7 @@ async function loadAnalytics(demo){
     '<details style="margin-top:6px"><summary style="cursor:pointer;min-height:32px">Data sources</summary><p style="margin:6px 0 0">' + src + "</p></details>";
 }
 $("reload").onclick = load;
+$("build").textContent = "Page version " + BUILD + ".";
 setInterval(live, 30000);
 document.addEventListener("visibilitychange", live);
 load();

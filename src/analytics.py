@@ -21,10 +21,13 @@ from . import project
 from .model import norm_name
 
 OUT = os.environ.get("ANALYTICS_PATH", "site/analytics.json")
+# order matters: rush+rec yards is built from the rushing and receiving projections before it
 STATS_BY_POS = {
-    "QB": ("player_pass_yds", "player_pass_tds", "player_rush_yds", "player_anytime_td"),
-    "RB": ("player_rush_yds", "player_reception_yds", "player_receptions", "player_anytime_td"),
-    "WR": ("player_reception_yds", "player_receptions", "player_anytime_td", "player_rush_yds"),
+    "QB": ("player_pass_yds", "player_pass_tds", "player_pass_attempts", "player_pass_completions",
+           "player_pass_interceptions", "player_rush_yds", "player_rush_attempts", "player_anytime_td"),
+    "RB": ("player_rush_yds", "player_rush_attempts", "player_reception_yds", "player_receptions",
+           "player_rush_reception_yds", "player_anytime_td"),
+    "WR": ("player_reception_yds", "player_receptions", "player_anytime_td", "player_rush_yds", "player_rush_reception_yds"),
     "TE": ("player_reception_yds", "player_receptions", "player_anytime_td"),
 }
 
@@ -40,7 +43,8 @@ SHOW = {
            "td_per_touch", "tds", "touches_pg", "rec_yds_pg", "carries_pg", "ypc", "rush_yds_pg"),
     "QB": ("db_share", "dropbacks_pg", "epa_db", "cpoe", "ypa", "ypa_adj", "ttt", "sack_rate", "pressure_faced",
            "pass_yds_pg", "carries_pg", "carry_share", "rz_carries", "rz_carry_share", "gl_carries", "ypc", "rush_yds_pg",
-           "tds", "gl_opp_share", "explosive_rate", "snap_share", "ryoe_att", "ybc", "stuff_rate"),
+           "tds", "gl_opp_share", "explosive_rate", "snap_share", "ryoe_att", "ybc", "stuff_rate",
+           "comp_pct", "int_rate", "attempts_pg"),
 }
 SHOW["TE"] = SHOW["WR"]
 
@@ -232,6 +236,8 @@ def build(d, sources, now=None, odds_key=None):
     tdpp = M.td_per_point(pl.concat([x for x in (tg_prior, tg) if x is not None and x.height]), sched_all)
     medf = M.median_factors(pg_prior)
     split = M.td_split([pbp_prior, pbp])
+    sigmas = M.stat_sigmas(pg_prior)
+    gsd = M.game_spreads(sched_all)
     snaps = snap_info(d["snaps"], d["rosters"], tg)
     inj, inj_week = injury_map(d["inj"], week)
 
@@ -310,7 +316,7 @@ def build(d, sources, now=None, odds_key=None):
                 t_out[t]["dp"].setdefault(pos, {})[k] = [r3(vals[t]), r3(adjv[t]) if k == "ypt" else None, ranks.get(t)]
             for t in teams_p:
                 t_out[t]["dp"][pos]["n"] = (pos_allowed.get(t, {}).get(pos) or {}).get("targets")
-    for k in ("plays_pg", "proe", "pass_rate"):
+    for k in ("plays_pg", "proe", "pass_rate", "db_epa", "run_epa", "ypa", "ypc", "sack_rate"):
         vals = {t: v["off"].get(k) for t, v in teams_p.items()}
         ranks = M.rank_desc(vals)
         for t in teams_p:
@@ -368,6 +374,7 @@ def build(d, sources, now=None, odds_key=None):
             "tds": p["raw"]["rush_tds"] + p["raw"]["rec_tds"], "touches_pg": M.safe_div(p["raw"]["carries"] + p["raw"]["receptions"], n),
             "db_share": rr["db_share"], "dropbacks_pg": M.safe_div(p["raw"]["dropbacks"], n), "epa_db": rr["epa_db"],
             "cpoe": rr["cpoe"], "ypa": rr["ypa"], "ypa_adj": p["adj"]["ypa"], "sack_rate": rr["sack_rate"],
+            "comp_pct": rr["comp_pct"], "int_rate": rr["int_rate"], "attempts_pg": M.safe_div(p["raw"]["attempts"], n),
             "snap_share": (sum(s["off"]) / len(s["off"])) if s.get("off") else None,
             "yprr_proxy": M.safe_div(p["raw"]["rec_yds"], s.get("pass_snaps")) if s.get("pass_snaps") else None,
             "tprr_proxy": M.safe_div(p["raw"]["targets"], s.get("pass_snaps")) if s.get("pass_snaps") else None,
@@ -410,13 +417,13 @@ def build(d, sources, now=None, odds_key=None):
         opp = g["opp"]
         projs = {}
         for stat in STATS_BY_POS[pos]:
-            if stat == "player_rush_yds" and pos == "WR" and raw["carries"] < 5:
+            if stat in ("player_rush_yds", "player_rush_reception_yds") and pos == "WR" and raw["carries"] < 5:
                 continue
             pr = project.project_player(
                 stat, p, g["vol"] and {k: g["vol"][k] for k in g["vol"]}, teams_p.get(opp, {}).get("def_proj", {}),
                 (pos_allowed.get(opp) or {}).get(pos if pos in ("WR", "TE", "RB") else "WR"), league,
                 league_pos.get(pos if pos in ("WR", "TE", "RB") else "WR"), pos, medf.get(stat),
-                {"team_tds": g["tds"], "implied": g["implied"], "split": split})
+                {"team_tds": g["tds"], "implied": g["implied"], "split": split, "parts": projs})
             if pr:
                 projs[stat] = {k: (r3(v, 3) if not isinstance(v, dict) else {a: r3(b, 3) for a, b in v.items()})
                                for k, v in pr.items()}
@@ -485,6 +492,8 @@ def build(d, sources, now=None, odds_key=None):
         "pop": {pos: sum(1 for pid, (p_, _) in disp.items() if p_ == pos and qualifies(pos, players_p[pid]["raw"]))
                 for pos in M.POSITIONS},
         "td_split": {k: r3(v) for k, v in split.items()},
+        "sigma": {k: r3(v["sigma"]) for k, v in sigmas.items()}, "sigma_n": {k: v["n"] for k, v in sigmas.items()},
+        "game_sd": {"margin": r3(gsd["margin"], 2), "total": r3(gsd["total"], 2), "n": gsd["n"]},
         "sources": sources, "notes": notes, "games": games, "teams": t_out, "players": out_players,
         "consts": {"recency": M.RECENCY, "prior_games": M.PRIOR_GAMES, "small": M.SMALL_SAMPLE},
     }

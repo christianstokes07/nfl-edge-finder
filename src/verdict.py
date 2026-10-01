@@ -8,7 +8,9 @@ RECEPTIONS_ABS = 0.5    # half a catch
 PASS_TDS_ABS = 0.25
 TD_PROB_ABS = 0.05      # 5 percentage points vs the market's anytime-TD chance
 
-YARDS = {"player_rush_yds", "player_reception_yds", "player_pass_yds"}
+YARDS = {"player_rush_yds", "player_reception_yds", "player_pass_yds", "player_rush_reception_yds",
+         "player_pass_attempts", "player_pass_completions", "player_rush_attempts"}   # 7%-of-the-line rule
+INTS_ABS = 0.2
 OVER_SIDES = {"Over", "Yes", "YES"}
 
 
@@ -29,6 +31,8 @@ def lean(stat, line, proj, market_p=None):
         big = abs(d) >= YARDS_REL * max(line, 1)
     elif stat == "player_receptions":
         big = abs(d) >= RECEPTIONS_ABS
+    elif stat == "player_pass_interceptions":
+        big = abs(d) >= INTS_ABS
     else:
         big = abs(d) >= PASS_TDS_ABS
     return "neutral" if not big else ("over" if d > 0 else "under")

@@ -22,7 +22,13 @@ def test_parse_contract():
     m = {"title": "Jaylen Warren: 60+ rushing yards"}
     assert kalshi.parse_contract(m) == {"stat": "player_rush_yds", "threshold": 60.0}
     assert kalshi.parse_contract({"title": "Will X score a touchdown?"})["stat"] == "player_anytime_td"
-    assert kalshi.parse_contract({"title": "X 70+ rushing and receiving yards"}) is None
+    assert kalshi.parse_contract({"title": "X 70+ rushing and receiving yards"})["stat"] == "player_rush_reception_yds"
+    assert kalshi.parse_contract({"title": "X: 24+ passing attempts"}) == {"stat": "player_pass_attempts", "threshold": 24.0}
+    assert kalshi.parse_contract({"title": "X: 19+ passing completions"})["stat"] == "player_pass_completions"
+    assert kalshi.parse_contract({"title": "X: 14+ rushing attempts"})["stat"] == "player_rush_attempts"
+    assert kalshi.parse_contract({"title": "X: 1+ passing interceptions"})["stat"] == "player_pass_interceptions"
+    assert kalshi.parse_contract({"title": "X: 2+ passing touchdowns"})["stat"] == "player_pass_tds"
+    assert kalshi.parse_contract({"ticker": "KXNFLGAME-26OCT01PITCLE-CLE", "title": "Cleveland wins"}) is None
 
 
 def test_end_to_end_flags_underpriced_contract():

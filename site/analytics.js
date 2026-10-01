@@ -6,7 +6,9 @@
 
   // ---- verdict rules: keep in sync with src/verdict.py ---------------------------------------------
   const YARDS_REL = 0.07, RECEPTIONS_ABS = 0.5, PASS_TDS_ABS = 0.25, TD_PROB_ABS = 0.05;
-  const YARDS = new Set(["player_rush_yds", "player_reception_yds", "player_pass_yds"]);
+  const YARDS = new Set(["player_rush_yds", "player_reception_yds", "player_pass_yds", "player_rush_reception_yds",
+    "player_pass_attempts", "player_pass_completions", "player_rush_attempts"]);   // 7%-of-the-line rule
+  const INTS_ABS = 0.2;
   const OVER = new Set(["Over", "Yes", "YES"]);
   function lean(stat, line, proj, marketP) {
     if (!proj) return null;
@@ -18,7 +20,8 @@
     if (proj.med == null || line == null) return null;
     const d = proj.med - line;
     const big = YARDS.has(stat) ? Math.abs(d) >= YARDS_REL * Math.max(line, 1)
-      : stat === "player_receptions" ? Math.abs(d) >= RECEPTIONS_ABS : Math.abs(d) >= PASS_TDS_ABS;
+      : stat === "player_receptions" ? Math.abs(d) >= RECEPTIONS_ABS
+      : stat === "player_pass_interceptions" ? Math.abs(d) >= INTS_ABS : Math.abs(d) >= PASS_TDS_ABS;
     return !big ? "neutral" : d > 0 ? "over" : "under";
   }
   function verdict(stat, side, line, proj, marketP) {
@@ -90,6 +93,13 @@
     pass_yds_pg: {t: "Passing yards per game", d: "Season average.", up: true},
     rush_yds_pg: {t: "Rushing yards per game", d: "Season average.", up: true},
     rec_yds_pg: {t: "Receiving yards per game", d: "Season average.", up: true},
+    comp_pct: {t: "Completion %", d: "Completed passes ÷ pass attempts (sacks not counted).", up: true},
+    int_rate: {t: "Interception rate", d: "Interceptions ÷ pass attempts. For an interceptions Over, higher is better; for passing props it's a red flag.", up: true},
+    attempts_pg: {t: "Pass attempts per game", d: "Passes thrown per game (sacks and scrambles not counted).", up: true},
+    o_db_epa: {t: "Pass offense EPA", d: "Expected points added per dropback by this offense. Higher = the passing game is working.", up: true},
+    o_run_epa: {t: "Run offense EPA", d: "Expected points added per run by this offense.", up: true},
+    d_int_rate: {t: "Interceptions forced", d: "Interceptions per opponent pass attempt.", up: true},
+    d_comp_pct: {t: "Completion % allowed", d: "Share of pass attempts against this defense that are completed.", up: true},
     // defense (opponent) metrics: "up" = does a higher number help the offensive player's Over?
     d_ypc: {t: "Yards per carry allowed", d: "Rushing yards the defense gives up per carry. 'Adjusted' corrects for the offenses it faced.", up: true},
     d_run_epa: {t: "Rush EPA allowed", d: "Expected points added per run against this defense. Higher = runs work better against them.", up: true},
@@ -203,6 +213,9 @@
       case "pass_yds_pg": return line(key, d1(v) + " passing yards per game" + pt);
       case "rush_yds_pg": return line(key, d1(v) + " rushing yards per game" + pt);
       case "rec_yds_pg": return line(key, d1(v) + " receiving yards per game" + pt);
+      case "comp_pct": return line(key, "Completes " + pct(v) + " of his passes" + pt);
+      case "int_rate": return line(key, "Intercepted on " + d1(v * 100) + "% of attempts" + pt);
+      case "attempts_pg": return line(key, d1(v) + " pass attempts per game" + pt);
     }
     return null;
   }
@@ -230,6 +243,8 @@
       case "cov_ypt": return line(k, opp + " defenders allow " + d1(v) + " yards per target in coverage" + rk);
       case "cov_rating": return line(k, opp + " defenders allow a " + d1(v) + " passer rating in coverage" + rk);
       case "missed_tackle_pct": return line(k, opp + " miss " + pct(v) + " of tackle attempts" + rkHigh);
+      case "int_rate": return line(k, opp + " intercept " + d1(v * 100) + "% of passes" + a + rkHigh);
+      case "comp_pct": return line(k, opp + " allow " + pct(v) + " of passes to be completed" + a + rk);
     }
     return null;
   }
@@ -278,6 +293,16 @@
     player_pass_yds: {u: ["db_share", "dropbacks_pg", "pass_yds_pg"], e: ["epa_db", "cpoe", "ypa", "ttt", "pressure_faced"],
       d: ["db_epa", "ypa", "pressure_rate", "sack_rate", "cov_rating"]},
     player_pass_tds: {u: ["db_share", "dropbacks_pg"], e: ["epa_db", "cpoe", "ypa", "sack_rate"], d: ["db_epa", "rz_td_pct", "pressure_rate", "cov_rating"]},
+    player_pass_attempts: {u: ["db_share", "attempts_pg", "dropbacks_pg"], e: ["sack_rate", "ttt", "pressure_faced", "epa_db"],
+      d: ["db_epa", "pressure_rate", "sack_rate"]},
+    player_pass_completions: {u: ["attempts_pg", "db_share", "dropbacks_pg"], e: ["comp_pct", "cpoe", "ttt", "pressure_faced"],
+      d: ["comp_pct", "db_epa", "pressure_rate", "cov_rating"]},
+    player_pass_interceptions: {u: ["attempts_pg", "dropbacks_pg"], e: ["int_rate", "cpoe", "pressure_faced", "epa_db"],
+      d: ["int_rate", "pressure_rate", "cov_rating"]},
+    player_rush_attempts: {u: ["carry_share", "carries_pg", "snap_share", "rz_carries"], e: ["ypc", "stuff_rate", "explosive_rate"],
+      d: ["ypc", "run_epa", "stuff_rate"]},
+    player_rush_reception_yds: {u: ["carry_share", "target_share", "touches_pg", "snap_share"], e: ["ypc", "ypt", "yprr_proxy", "explosive_rate"],
+      d: ["ypc", "run_epa", "db_epa", "missed_tackle_pct"]},
     player_anytime_td: {u: ["rz_opp_share", "gl_opp_share", "rz_carries", "rz_targets", "touches_pg"], e: ["td_per_touch", "tds", "ypc", "ypt"],
       d: ["rz_td_pct", "ypc", "db_epa"]},
   };
@@ -307,7 +332,9 @@
 
   // ---- projection text, flags, confidence, one-line "why" -------------------------------------------
   const UNIT = {player_rush_yds: "rushing yards", player_reception_yds: "receiving yards", player_pass_yds: "passing yards",
-                player_receptions: "catches", player_pass_tds: "passing TDs"};
+                player_receptions: "catches", player_pass_tds: "passing TDs", player_pass_attempts: "pass attempts",
+                player_pass_completions: "completions", player_rush_attempts: "carries", player_pass_interceptions: "interceptions",
+                player_rush_reception_yds: "rushing + receiving yards"};
   function projText(stat, pj) {
     if (!pj) return null;
     const i = pj.in || {};
@@ -320,6 +347,11 @@
     if (stat === "player_receptions") return d1(i.targets) + " targets × " + pct(i.catch) + " catch rate × " + d2(i.opp) + " defense factor = " + d1(pj.mean) + " on average." + typical;
     if (stat === "player_pass_yds") return d1(i.attempts) + " attempts × " + d1(i.ypa) + " yards per attempt × " + d2(i.opp) + " defense factor = " + d1(pj.mean) + " on average." + typical;
     if (stat === "player_pass_tds") return d1(i.attempts) + " attempts × " + pct(i.td_rate) + " TD rate × " + d2(i.opp) + " defense factor = " + d2(pj.mean) + ".";
+    if (stat === "player_pass_attempts") return pct(i.share) + " of " + d1(i.team_att) + " expected team pass attempts (" + d1(i.plays) + " plays × " + pct(i.pass_rate) + " pass rate) = " + d1(pj.mean) + " on average." + typical;
+    if (stat === "player_pass_completions") return d1(i.attempts) + " attempts × " + pct(i.comp) + " completion rate × " + d2(i.opp) + " defense factor = " + d1(pj.mean) + " on average." + typical;
+    if (stat === "player_pass_interceptions") return d1(i.attempts) + " attempts × " + d1(i.int_rate * 100) + "% interception rate × " + d2(i.opp) + " defense factor = " + d2(pj.mean) + " expected interceptions.";
+    if (stat === "player_rush_attempts") return pct(i.share) + " of " + d1(i.team_carries) + " expected team carries = " + d1(pj.mean) + " on average." + typical;
+    if (stat === "player_rush_reception_yds") return d1(i.rush) + " rushing + " + d1(i.rec) + " receiving yards = " + d1(pj.mean) + " on average." + typical;
     return null;
   }
 
@@ -366,8 +398,10 @@
   }
 
   function why(c, A, p, pj, v, lineVal, sideText) {
-    const head = "Why " + Math.round(c.hit * 100) + "%: " + (c.n > 1 ? c.n + " sportsbooks' prices" : "one sportsbook's price") +
-      ", with the books' cut removed, give \u201c" + sideText + "\u201d a " + Math.round(c.hit * 100) + "% chance.";
+    const head = c.km
+      ? "Why " + Math.round(c.hit * 100) + "%: that's Kalshi's own price for \u201c" + sideText + "\u201d. No sportsbook line for this stat was bought, so there's no outside price to check it against."
+      : "Why " + Math.round(c.hit * 100) + "%: " + (c.n > 1 ? c.n + " sportsbooks' prices" : "one sportsbook's price") +
+        ", with the books' cut removed, give \u201c" + sideText + "\u201d a " + Math.round(c.hit * 100) + "% chance.";
     if (!A) return head + " Stats: n/a (analytics haven't loaded).";
     if (!p) return head + " Stats: n/a (no nflverse stats for this player this season).";
     if (!pj) return head + " Stats: n/a (not enough data to project this stat).";
@@ -380,6 +414,11 @@
       const dp = O && (O.dp[p.pos] || {}).ypt;
       driver = pct(M.target_share.v) + " target share" + (dp && dp[0] != null ? "; " + opp + " allow " + d1(dp[0]) + " yards per target to " + POSN[p.pos] + ", " + rk(dp[2]) : "");
     } else if (c.stat === "player_pass_yds" && M.ypa) driver = d1(M.ypa.v) + " yards per attempt" + (O && O.d.ypa && O.d.ypa[2] ? "; " + opp + " allow " + d1(O.d.ypa[0]) + " yards per attempt, " + rk(O.d.ypa[2]) : "");
+    else if ((c.stat === "player_pass_attempts" || c.stat === "player_pass_completions") && M.attempts_pg)
+      driver = d1(M.attempts_pg.v) + " attempts per game" + (M.comp_pct && c.stat === "player_pass_completions" ? ", " + pct(M.comp_pct.v) + " completed" : "");
+    else if (c.stat === "player_pass_interceptions" && M.int_rate) driver = d1(M.int_rate.v * 100) + "% interception rate";
+    else if (c.stat === "player_rush_attempts" && M.carry_share) driver = pct(M.carry_share.v) + " carry share";
+    else if (c.stat === "player_rush_reception_yds" && M.touches_pg) driver = d1(M.touches_pg.v) + " touches per game";
     else if (c.stat === "player_anytime_td" && M.rz_opp_share) driver = pct(M.rz_opp_share.v) + " of the team's red-zone touches; team expected to score " + d1(G.implied) + " points";
     const projStr = c.stat === "player_anytime_td" ? pct(pj.p) + " to score" : d1(pj.med) + " " + (UNIT[c.stat] || "");
     const vs = c.stat === "player_anytime_td" ? "" : " vs the " + fmt(lineVal) + " line";
@@ -387,7 +426,44 @@
     return head + " " + word + ": projection " + projStr + vs + (driver ? " (" + driver + ")" : "") + ".";
   }
 
-  const api = {lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
+  // ---- game picks (moneyline / spread / total): team context, no game-result model -------------------
+  function gameSections(A, homeName, awayName) {
+    const h = teamAbbr(A, homeName), a = teamAbbr(A, awayName), nT = A.nteams || 32;
+    if (!h || !a) return [];
+    const sec = (off, def) => {
+      const O = A.teams[off] || {o: {}}, Dd = A.teams[def] || {d: {}}, on = nick(O.name || off), dn = nick(Dd.name || def), out = [];
+      const o = O.o || {}, d = Dd.d || {};
+      const rkO = r => r ? ", " + rankText(r, nT, "highest", "lowest") : "";
+      if (o.db_epa && o.db_epa[0] != null) out.push(line("o_db_epa", on + " pass offense: " + sgn(o.db_epa[0], d2) + " EPA per dropback" + rkO(o.db_epa[1])));
+      if (o.run_epa && o.run_epa[0] != null) out.push(line("o_run_epa", on + " run offense: " + sgn(o.run_epa[0], d2) + " EPA per run" + rkO(o.run_epa[1])));
+      out.push(defLine("db_epa", Dd, dn, nT), defLine("run_epa", Dd, dn, nT));
+      if (o.plays_pg && o.plays_pg[0] != null) out.push(line("pace", on + " run " + d1(o.plays_pg[0]) + " plays per game, " + rankText(o.plays_pg[1], nT, "most", "fewest")));
+      return {title: on + " offense vs " + dn + " defense", lines: out.filter(Boolean).slice(0, 5)};
+    };
+    const G = (A.games || {})[h], ctx = [];
+    if (G) {
+      if (G.spread != null) ctx.push(line("implied", nick(A.teams[h].name) + " expected to score " + d1(G.implied) + ", " + nick(A.teams[a].name) + " " +
+        d1((A.games[a] || {}).implied) + " (spread " + (G.spread > 0 ? "+" : "") + d1(G.spread) + " for the home team, total " + d1(G.total) + ")"));
+      ctx.push(weatherLine(G));
+      if (G.rest != null && G.opp_rest != null) ctx.push(line("rest", nick(A.teams[h].name) + " " + G.rest + " days of rest, " + nick(A.teams[a].name) + " " + G.opp_rest));
+      const outs = [...(A.teams[h].out || []), ...(A.teams[a].out || [])].filter(x => x.side === "off");
+      if (outs.length) ctx.push(line(null, "Out: " + outs.map(x => x.pos + " " + x.n + " (" + x.s + ")").join(", ")));
+    } else ctx.push(line(null, "n/a (this game isn't in the stats file's week " + A.week + ")", true));
+    return [sec(h, a), sec(a, h), {title: "Game context", lines: ctx}];
+  }
+  function gameFlags(A, homeName, awayName, stat, side) {
+    const h = teamAbbr(A, homeName), G = h && (A.games || {})[h], out = [];
+    if (!G) return out;
+    if (stat === "game_total" && G.wx && G.roof !== "indoors" && G.wx.wind > 15) {
+      const over = side === "Over" || side === "YES";
+      out.push({k: "weather", sev: over ? 1 : 0, text: "Wind " + int(G.wx.wind) + " mph forecast: strong wind tends to lower scoring" + (over ? " (works against this Over)" : "")});
+    }
+    for (const t of [h, teamAbbr(A, awayName)]) for (const x of ((A.teams[t] || {}).out || [])) if (x.side === "off" && /QB/.test(x.pos))
+      out.push({k: "injury", sev: 1, text: nick(A.teams[t].name) + " QB " + x.n + " is " + x.s + (x.i ? " (" + x.i + ")" : "")});
+    return out;
+  }
+
+  const api = {gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
                YARDS_REL, RECEPTIONS_ABS, PASS_TDS_ABS, TD_PROB_ABS};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Analytics = api;

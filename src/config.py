@@ -23,8 +23,10 @@ DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "")
 # Free tier = 500 credits/month. Cost per game = (markets returned) x (regions), and every group of
 # up to 10 bookmakers counts as ONE region. So 10 books cost the same as 1: don't go past 10.
 # Adding a market (including an *_alternate one) adds about 1 credit per game.
-ODDS_MARKETS = _list("ODDS_MARKETS",
-                     "player_rush_yds,player_reception_yds,player_pass_yds,player_receptions,player_anytime_td")
+# Default fits 500 credits in every month of the 2026 schedule (see README). "none" = no player props
+# this run (the Sunday run only refreshes game lines and carries the props over).
+ODDS_MARKETS = [m for m in _list("ODDS_MARKETS", "player_rush_yds,player_reception_yds,player_receptions,"
+                                 "player_pass_yds,player_pass_completions,player_anytime_td") if m != "none"]
 # Odds API keys. Caesars is "williamhill_us". Caesars and Fanatics only return data on paid Odds API
 # plans; they're listed so they show up if you upgrade, and they cost nothing extra while <= 10 books.
 BOOKMAKERS = os.environ.get(
@@ -50,12 +52,24 @@ KALSHI_LINE_DISTANCE = _f("KALSHI_LINE_DISTANCE", 0.5)
 ALT_LINE_DISTANCE = _f("ALT_LINE_DISTANCE", 0.5)   # alternate sportsbook lines may sit further from the main line
 PROP_MIN_BOOKS = _i("PROP_MIN_BOOKS", 1)   # sportsbook picks: books needed for a hit chance (count is shown)
 ANYTIME_TD_VIG = _f("ANYTIME_TD_VIG", 0.12)  # rough vig removed from one-sided anytime-TD prices
-# Spread of a player's yardage (lognormal sigma). Rough guesses: tune after you have results logged.
+# Spread of a player's game-to-game output (lognormal sigma), used to price lines/rungs away from the
+# book line. The weekly analytics job measures these from last season's games (site/analytics.json
+# "sigma") and the scan uses those when present; these defaults are only the fallback.
 SIGMA = {
     "player_rush_yds": _f("SIGMA_RUSH", 0.60),
     "player_reception_yds": _f("SIGMA_REC", 0.65),
     "player_pass_yds": _f("SIGMA_PASS", 0.28),
+    "player_rush_reception_yds": _f("SIGMA_RUSH_REC", 0.50),
+    "player_receptions": _f("SIGMA_RECEPTIONS", 0.50),
+    "player_pass_completions": _f("SIGMA_COMPLETIONS", 0.25),
+    "player_pass_attempts": _f("SIGMA_ATTEMPTS", 0.20),
+    "player_rush_attempts": _f("SIGMA_RUSH_ATT", 0.40),
 }
+# Game lines: how far final margins / totals land from the closing spread / total (standard deviation,
+# points). Measured from 903 nflverse games, 2023-2026: 12.7 and 13.0. The analytics job re-measures them.
+MARGIN_SD = _f("MARGIN_SD", 12.7)
+TOTAL_SD = _f("TOTAL_SD", 13.0)
+GAME_LINES = os.environ.get("GAME_LINES", "1") != "0"   # moneyline/spread/total: one bulk call, 3 credits
 
 # --- Kalshi / output ----------------------------------------------------------
 KALSHI_FEE_RATE = _f("KALSHI_FEE_RATE", 0.07)  # taker fee ~ rate * p * (1-p) per contract; verify on Kalshi
@@ -63,7 +77,7 @@ MIN_EDGE = _f("MIN_EDGE", 0.05)                # 5 points after fees
 MIN_EDGE_TD = _f("MIN_EDGE_TD", 0.08)          # anytime-TD fair values are rougher, so demand more
 MAX_SPREAD_CENTS = _i("MAX_SPREAD_CENTS", 8)   # skip illiquid contracts
 TOP_N = _i("TOP_N", 10)
-KALSHI_ROWS_PER_STAT = _i("KALSHI_ROWS_PER_STAT", 150)   # Kalshi contracts per prop type written to the page
+KALSHI_ROWS_PER_STAT = _i("KALSHI_ROWS_PER_STAT", 100)   # Kalshi contracts per prop type written to the page
 LOG_PATH = os.environ.get("LOG_PATH", "data/picks_log.csv")
 SITE_DATA_PATH = os.environ.get("SITE_DATA_PATH", "site/data.json")
 ANALYTICS_PATH = os.environ.get("ANALYTICS_PATH", "site/analytics.json")

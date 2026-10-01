@@ -193,6 +193,7 @@ TEAM_RATES = {
     "db_epa": ("db_epa", "dropbacks"),
     "comp_pct": ("completions", "attempts"),
     "pass_td_rate": ("pass_tds", "attempts"),
+    "int_rate": ("ints", "attempts"),
 }
 
 
@@ -209,7 +210,7 @@ def by_team(df, col):
 
 
 # ---------------------------------------------------------------- team profiles ---------------------
-DEF_MULT = ("ypc", "stuff_rate", "explosive_run_rate", "ypa", "comp_pct", "pass_td_rate", "sack_rate")
+DEF_MULT = ("ypc", "stuff_rate", "explosive_run_rate", "ypa", "comp_pct", "pass_td_rate", "sack_rate", "int_rate")
 DEF_ADD = ("run_epa", "db_epa")
 
 
@@ -358,6 +359,43 @@ def td_per_point(tg, schedules):
     return safe_div(tds, pts)
 
 
+def stat_sigmas(pg_prior, min_games=8):
+    """Game-to-game spread of each stat as a lognormal sigma, from last season: for each regular player,
+    sigma = sqrt(ln(1 + CV^2)) with CV = sd / mean of his games; the median across players. Used to price
+    lines and Kalshi rungs away from the sportsbook line."""
+    out = {}
+    if pg_prior is None or not pg_prior.height:
+        return out
+    df = pg_prior.with_columns(scrim_yds=pl.col("rush_yds") + pl.col("rec_yds"))
+    for stat, col, vol, floor in (("player_rush_yds", "rush_yds", "carries", 8), ("player_reception_yds", "rec_yds", "targets", 4),
+                                  ("player_pass_yds", "pass_yds", "attempts", 20), ("player_receptions", "receptions", "targets", 4),
+                                  ("player_pass_completions", "completions", "attempts", 20),
+                                  ("player_pass_attempts", "attempts", "attempts", 20), ("player_rush_attempts", "carries", "carries", 8),
+                                  ("player_rush_reception_yds", "scrim_yds", "carries", 8)):
+        sig = []
+        for _, rows in by_team(df.filter(pl.col(vol) > 0), "player_id").items():
+            vals = [r[col] for r in rows]
+            if len(vals) < min_games:
+                continue
+            mean = sum(vals) / len(vals)
+            if mean < floor:
+                continue  # part-timers' spread isn't the starters' spread
+            var = sum((v - mean) ** 2 for v in vals) / (len(vals) - 1)
+            sig.append(math.sqrt(math.log(1 + var / mean ** 2)))
+        out[stat] = {"sigma": median(sig) if sig else None, "n": len(sig)}
+    return out
+
+
+def game_spreads(schedules):
+    """How far final margins and totals land from the closing spread / total (standard deviation), over
+    completed games in the schedules given."""
+    done = schedules.filter(pl.col("result").is_not_null() & pl.col("spread_line").is_not_null() & pl.col("total_line").is_not_null())
+    m = [r["result"] - r["spread_line"] for r in done.iter_rows(named=True)]
+    t = [r["total"] - r["total_line"] for r in done.iter_rows(named=True)]
+    sd = lambda xs: math.sqrt(sum((x - sum(xs) / len(xs)) ** 2 for x in xs) / (len(xs) - 1)) if len(xs) > 1 else None
+    return {"margin": sd(m), "total": sd(t), "n": len(m)}
+
+
 def td_split(pbp_list):
     """League-wide shape of offensive touchdowns, from play-by-play: the share that are rushing TDs, and
     for rushing and receiving TDs, the share scored on plays starting inside the opponent's 20."""
@@ -404,6 +442,8 @@ def player_games(pbp):
                pass_yds=pl.when((pl.col("pass_attempt") == 1) & (pl.col("sack") == 0))
                .then(pl.col("passing_yards")).otherwise(0).fill_null(0).sum(),
                pass_tds=(pl.col("pass_touchdown") == 1).sum(), sacks=(pl.col("sack") == 1).sum(),
+               completions=((pl.col("pass_attempt") == 1) & (pl.col("sack") == 0) & (pl.col("complete_pass") == 1)).sum(),
+               ints=(pl.col("interception") == 1).sum(),
                cpoe_sum=pl.col("cpoe").fill_null(0).sum(), cpoe_n=pl.col("cpoe").is_not_null().sum()))
     rush, rec, qb = (x.with_columns(pl.col("player_id").cast(pl.Utf8)) for x in (rush, rec, qb))
     out = rush.join(rec, on=keys + ["player_id"], how="full", coalesce=True)
@@ -416,7 +456,7 @@ def player_games(pbp):
 PLAYER_SUMS = ("carries", "rush_yds", "rush_tds", "rz_carries", "gl_carries", "explosive", "stuffed", "designed",
                "designed_yds", "targets", "receptions", "rec_yds", "air_yards", "rec_tds", "rz_targets",
                "gl_targets", "cp_sum", "cp_n", "caught_cp", "dropbacks", "qb_epa", "attempts", "pass_yds",
-               "pass_tds", "sacks", "cpoe_sum", "cpoe_n")
+               "pass_tds", "sacks", "cpoe_sum", "cpoe_n", "completions", "ints")
 TEAM_SUMS = ("plays", "dropbacks", "carries", "targets", "air_yards", "attempts", "rz_carries", "rz_targets",
              "gl_carries", "gl_targets")
 
@@ -453,6 +493,9 @@ def player_rates(p, t):
         "ypa": safe_div(p["pass_yds"], p["attempts"]),
         "sack_rate": safe_div(p["sacks"], p["dropbacks"]),
         "pass_td_rate": safe_div(p["pass_tds"], p["attempts"]),
+        "comp_pct": safe_div(p["completions"], p["attempts"]),
+        "int_rate": safe_div(p["ints"], p["attempts"]),
+        "att_per_db": safe_div(p["attempts"], p["dropbacks"]),
     }
 
 
@@ -507,9 +550,14 @@ def median_factors(pg_prior, min_games=8):
     if pg_prior is None or not pg_prior.height:
         return out
     for stat, col, vol in (("player_rush_yds", "rush_yds", "carries"), ("player_reception_yds", "rec_yds", "targets"),
-                           ("player_receptions", "receptions", "targets"), ("player_pass_yds", "pass_yds", "attempts")):
+                           ("player_receptions", "receptions", "targets"), ("player_pass_yds", "pass_yds", "attempts"),
+                           ("player_pass_completions", "completions", "attempts"), ("player_pass_attempts", "attempts", "attempts"),
+                           ("player_rush_attempts", "carries", "carries"), ("player_rush_reception_yds", "scrim_yds", "carries")):
         ratios = []
-        for _, rows in by_team(pg_prior.filter(pl.col(vol) > 0), "player_id").items():
+        df = pg_prior.with_columns(scrim_yds=pl.col("rush_yds") + pl.col("rec_yds")) if "rec_yds" in pg_prior.columns else pg_prior
+        if col not in df.columns:
+            continue
+        for _, rows in by_team(df.filter(pl.col(vol) > 0), "player_id").items():
             if len(rows) < min_games:
                 continue
             mean = sum(r[col] for r in rows) / len(rows)

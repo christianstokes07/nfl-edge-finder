@@ -11,7 +11,8 @@ from . import model
 
 TD = "player_anytime_td"
 STATS = {"player_rush_yds", "player_reception_yds", "player_pass_yds", "player_pass_tds",
-         "player_receptions", "player_anytime_td"}
+         "player_receptions", "player_anytime_td", "player_pass_completions", "player_pass_attempts",
+         "player_rush_attempts", "player_pass_interceptions", "player_rush_reception_yds"}
 
 
 def base_stat(market):

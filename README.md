@@ -167,14 +167,20 @@ list is free.
 
 | Run | Games | Markets | Credits |
 |---|---|---|---|
-| Thursday (scheduled, 110h window) | Thu + Sun + Mon, 13–16 games | 5: rushing, receiving, passing yards, receptions, anytime TD | **65–80** |
-| Sunday (scheduled, 36h window) | Sun + Mon, 12–15 games | 2: rushing yards, anytime TD | **24–30** |
-| Manual, one night game (`window_hours` = 6) | 1 | 5 | **5** |
+| Thursday (scheduled, 110h window) | Thu + Sun + Mon, 13–16 games | 6 player markets: rushing, receiving, passing yards, receptions, completions, anytime TD | **78–96** |
+| | all of them | moneyline + spread + total in one bulk call | **3** |
+| Sunday (scheduled, 36h window) | Sun + Mon | game lines only (after inactives); player props carried over from Thursday | **3** |
+| Kalshi refresh (every 3h Thu–Mon) | all | Kalshi only | **0** |
+| Manual, one night game (`window_hours` = 6) | 1 | 6 + game lines | **9** |
 
-On Sunday, receiving yards, passing yards and receptions are carried over from Thursday's scan for games that
-haven't started, and the page labels them with their age. Sunday refreshes the two markets inactives move most:
-rushing yards (backfield splits) and anytime TD. That's about **90–110 credits a week, or 390–470 a month**. Weeks without byes (early and late season) are the tight ones, so leave room before
-running extra manual scans. The script stops itself if credits drop under `CREDIT_RESERVE` (15).
+Checked against the real 2026 schedule (five-Thursday months are the expensive ones): about **300 (Sep),
+468 (Oct), 366 (Nov), 492 (Dec), 102 (Jan)**. That fits the 500 every month, with little room for manual scans in
+October and December. The old plan (5 markets Thursday + 2 on Sunday) would have hit 519 in December.
+
+**Want more sportsbook categories?** Passing attempts, passing TDs, interceptions, rushing attempts and rush + receiving
+yards are each about 1 credit per game per scan (roughly 60–80 a month each), which doesn't fit the free plan on top
+of the six above. Add them to a single manual run with the `markets` box, or put them in `ODDS_MARKETS` on a paid plan.
+Kalshi still shows all of them for free (see "Kalshi-only picks" below).
 
 Check before you spend: `python -m src.run --estimate` uses only the free `/events` call and prints what a
 scan would cost right now.
@@ -193,12 +199,29 @@ to a single manual run with the `markets` box on the Run workflow screen.
   **Caesars and Fanatics only return data on paid Odds API plans.** They're still listed (they cost nothing
   extra while there are 10 or fewer books). On the free plan the page shows "No lines: The Odds API only
   sends this book on paid plans" for them.
-- **Kalshi:** read from Kalshi's public API (free, no key). It doesn't use Odds API credits.
+- **Kalshi:** read from Kalshi's public API (free, no key). It doesn't use Odds API credits. Series used: rushing,
+  receiving and passing yards, rush + receiving yards, receptions, passing attempts, completions, rushing attempts,
+  passing TDs, interceptions, anytime TD, plus game winner, "wins by over X" and total-points ladders.
 - **Polymarket: not included.** I checked its public API (gamma-api.polymarket.com) twice on 2026-10-01.
   Its NFL markets are season-long (MVP, stat leaders, season rushing totals) and team-level game markets
   (spread, totals, team touchdowns). There are no single-game player props to price, so there's nothing to compare.
 
 ## Reading the page
+
+- **Prop** picker: **Everything**, **Game lines** (Moneyline, Spread, Game total) and **Player props** (rushing, receiving,
+  passing yards, rush + rec yards, receptions, completions, passing attempts, rushing attempts, passing TDs,
+  interceptions, anytime TD). Only categories in the last scan or on Kalshi are listed. When a single category is
+  picked, a "Showing only X · Show everything" bar appears above the list.
+- **Game picks:** "Bills −6.5", "Bills to win", "Over 48.5 total points", each at your book's line and odds. The hit
+  chance is the books' no-vig consensus, and books on a different spread or total are moved to your book's number
+  with a normal model of final margins and totals. The width of that model is measured from nflverse results
+  (12.4 points for margins, 13.4 for totals over 2025–26; re-measured weekly). The "Why this pick" panel compares each
+  offense with the other defense (EPA per play, pace) plus spread, implied totals, weather, rest and QB injuries.
+  There's no stats verdict for game results.
+- **Kalshi-only picks:** Kalshi lists more categories than the free Odds API plan can cover. For those (e.g. passing
+  attempts) the hit chance is **Kalshi's own price**, labeled as such, and value shows "n/a: only Kalshi prices this".
+  The stats check still runs. Kalshi game contracts are shown the same way until a scan has bought game lines.
+- **Page version** is printed at the bottom of the page, so you can tell whether your phone has the latest deploy.
 
 - **Game / slate:** pick a slate (Thursday Night, Sunday main slate, Sunday early or late, Sunday Night,
   Monday Night, plus Saturday, Friday or international games when they're on the schedule) or a single game.

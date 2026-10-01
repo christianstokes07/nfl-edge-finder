@@ -95,6 +95,40 @@ def project_player(stat, player, vol, opp_def, opp_pos, league, league_pos, pos,
         f = factor(opp_def.get("pass_td_rate"), league.get("pass_td_rate"))
         mean = att * rate * f
         return {"mean": mean, "med": mean, "in": {"attempts": att, "td_rate": rate, "opp": f}}
+    if stat in ("player_pass_attempts", "player_pass_completions", "player_pass_interceptions"):
+        share = r.get("db_share")
+        if not share:
+            return None
+        att = share * vol["attempts"]
+        if stat == "player_pass_attempts":
+            return {"mean": att, "med": att * mf, "in": {"share": share, "team_att": vol["attempts"],
+                    "pass_rate": vol["pass_rate"], "plays": vol["plays"], "mf": mf}}
+        if stat == "player_pass_completions":
+            cp = r.get("comp_pct")
+            if cp is None:
+                return None
+            f = factor(opp_def.get("comp_pct"), league.get("comp_pct"))
+            mean = att * min(cp * f, 0.9)
+            return {"mean": mean, "med": mean * mf, "in": {"attempts": att, "comp": cp, "opp": f, "mf": mf}}
+        ir = r.get("int_rate")
+        if ir is None:
+            return None
+        f = factor(opp_def.get("int_rate"), league.get("int_rate"))
+        mean = att * ir * f
+        return {"mean": mean, "med": mean, "in": {"attempts": att, "int_rate": ir, "opp": f}}
+    if stat == "player_rush_attempts":
+        share = r.get("carry_share")
+        if not share:
+            return None
+        carries = share * vol["carries"]
+        return {"mean": carries, "med": carries * mf, "in": {"share": share, "team_carries": vol["carries"], "mf": mf}}
+    if stat == "player_rush_reception_yds":
+        parts = (td_inputs or {}).get("parts") or {}
+        rush, rec = parts.get("player_rush_yds"), parts.get("player_reception_yds")
+        if not rush and not rec:
+            return None
+        mean = (rush or {}).get("mean", 0) + (rec or {}).get("mean", 0)
+        return {"mean": mean, "med": mean * mf, "in": {"rush": (rush or {}).get("mean", 0), "rec": (rec or {}).get("mean", 0), "mf": mf}}
     if stat == "player_anytime_td":
         # Expected team TDs (implied total x league TDs per point), split into rushing and receiving TDs
         # by the league mix, then credited by the player's share of red-zone and other carries/targets.

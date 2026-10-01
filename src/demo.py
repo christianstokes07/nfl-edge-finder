@@ -15,7 +15,8 @@ import shutil
 from datetime import datetime, timedelta, timezone
 
 from . import config as C
-from . import model, props, run
+from . import games as games_mod
+from . import model, props, run, teams
 
 ALT_BOOKS = {"draftkings", "fanduel"}
 BOOKS = ["draftkings", "fanduel", "betmgm", "espnbet", "betrivers", "hardrockbet", "betparx", "ballybet"]
@@ -156,6 +157,56 @@ def fake_kalshi(prop_list, rng):
     return markets
 
 
+def fake_game_lines(games, analytics, rng):
+    """Per-book moneyline / spread / total around the real nflverse spread and total for each game
+    (fixed defaults when there's no analytics file). Prices are made up."""
+    out = []
+    for gid, g in games.items():
+        ah = teams.abbr(g["h"])
+        ga = ((analytics or {}).get("games") or {}).get(ah) or {}
+        spread_home = ga.get("spread") if ga.get("spread") is not None else -3.0   # home team's spread
+        total = ga.get("total") or 45.5
+        p_home = model._N.cdf(-spread_home / C.MARGIN_SD)
+        for book in BOOKS[:6]:
+            sh = spread_home + rng.choice([-0.5, 0, 0, 0.5])
+            tt = total + rng.choice([-0.5, 0, 0, 0.5])
+            ph = min(max(p_home + rng.uniform(-0.02, 0.02), 0.05), 0.95)
+            out.append({"g": gid, "market": "h2h", "book": book, "point": None,
+                        "prices": [_american(ph * 1.045), _american((1 - ph) * 1.045)]})
+            out.append({"g": gid, "market": "spreads", "book": book, "point": sh, "prices": list(_two_way(rng, 0.5))})
+            out.append({"g": gid, "market": "totals", "book": book, "point": tt, "prices": list(_two_way(rng, 0.5))})
+    return out
+
+
+def fake_kalshi_games(games, gprops, rng):
+    """Kalshi-style game contracts (winner, wins by over X, total over X) priced near the book consensus."""
+    markets = []
+    for gid, g in games.items():
+        a, h = teams.abbr(g["a"]), teams.abbr(g["h"])
+        sub = f"{a} vs {h} (demo)"
+        ml = next((p for p in gprops if p["g"] == gid and p["m"] == "h2h"), None)
+        if ml:
+            for team, code, p in ((g["h"], h, ml["p"]), (g["a"], a, 1 - ml["p"])):
+                mid = min(max(p * 100 + rng.uniform(-4, 4), 3), 96)
+                markets.append({"ticker": f"KXNFLGAME-DEMO{a}{h}-{code}", "title": f"{team.rsplit(' ', 1)[0]} wins",
+                                "_sub_title": sub, "yes_bid": round(mid - 1), "yes_ask": round(mid + 1)})
+        tot = next((p for p in gprops if p["g"] == gid and p["m"] == "totals"), None)
+        if tot:
+            for x in (tot["pt"] - 7, tot["pt"] - 3, tot["pt"] + 3):
+                mid = min(max(100 * model.normal_p_over(x, tot["pt"], 0.5, C.TOTAL_SD) + rng.uniform(-5, 5), 3), 96)
+                markets.append({"ticker": f"KXNFLTOTAL-DEMO{a}{h}-{int(x)}", "title": f"Full Game: over {x:g} points scored?",
+                                "_sub_title": sub, "yes_bid": round(mid - 1), "yes_ask": round(mid + 1)})
+        sp = next((p for p in gprops if p["g"] == gid and p["m"] == "spreads"), None)
+        if sp:
+            fav, code = (g["h"], h) if sp["pt"] <= 0 else (g["a"], a)
+            for x in (2.5, 6.5, 10.5):
+                mid = rng.uniform(20, 70)
+                markets.append({"ticker": f"KXNFLSPREAD-DEMO{a}{h}-{code}{int(x) + 1}",
+                                "title": f"{code} {fav.rsplit(' ', 1)[1]} wins by over {x} points?", "_sub_title": sub,
+                                "yes_bid": round(mid - 1), "yes_ask": round(mid + 1)})
+    return markets
+
+
 def build(now=None, seed=7, analytics=None):
     now = now or datetime.now(timezone.utc)
     rng = random.Random(seed)
@@ -163,13 +214,19 @@ def build(now=None, seed=7, analytics=None):
     lines, games = fake_lines(now, rng, spec or None)
     prop_list = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE,
                                   C.ANYTIME_TD_VIG, C.PROP_MIN_BOOKS)
+    game_lines = fake_game_lines(games, analytics, rng)
+    gprops = games_mod.build_game_props(game_lines, C.MARGIN_SD, C.TOTAL_SD)
+    km = [{"ticker": f"KXNFLPASSATT-DEMO-{i}", "title": f"{p['player']}: {t}+ passing attempts", "yes_bid": b, "yes_ask": b + 1}
+          for i, (p, t, b) in enumerate((p, t, b) for p in prop_list if p["stat"] == "player_pass_yds" and len(p["b"]) >= 4
+                                        for t, b in ((25, 72), (30, 48), (35, 22)))]
     universe = []
-    picks, stats = run.evaluate(lines, fake_kalshi(prop_list, rng), universe)
+    picks, stats = run.evaluate(lines, fake_kalshi(prop_list, rng) + fake_kalshi_games(games, gprops, rng) + km,
+                                universe, game_lines, games)
     stamp = (now - timedelta(hours=3)).isoformat(timespec="seconds")
     data = run.site_data(picks, stats, universe, prop_list, games,
                          {m: stamp for m in ("player_rush_yds", "player_reception_yds", "player_pass_yds",
                                              "player_anytime_td", "player_receptions")},
-                         now - timedelta(hours=3))
+                         now - timedelta(hours=3), gprops)
     data["demo"] = True
     return data
 

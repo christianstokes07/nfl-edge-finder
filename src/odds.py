@@ -42,6 +42,12 @@ def upcoming_events(api_key, window_hours):
     return out, remaining
 
 
+def game_odds(api_key, bookmakers):
+    """Moneyline, spread and total for every upcoming game in ONE call: 3 markets x 1 region = 3 credits."""
+    return _get("/odds", {"apiKey": api_key, "markets": "h2h,spreads,totals", "bookmakers": bookmakers,
+                          "oddsFormat": "american"})
+
+
 def event_props(api_key, event_id, markets, bookmakers):
     """Returns (lines, credits_remaining). Each line:
     {player, market, book, point, prices: {'Over': -115, 'Under': -105} or {'Yes': 120}}"""

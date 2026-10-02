@@ -14,11 +14,44 @@ Everything runs in the cloud. Nothing runs on your computer.
 **It does not predict games.** It treats the sportsbooks' combined prices as the true odds. A high hit
 chance doesn't make a bet profitable: the price still matters, and the page shows both.
 
+## Tools for betting smarter (custom lines, bankroll, my bets, track record)
+
+- **Custom picks and changing a line.** "Try another line" on any pick, or "+ Custom pick", prices any player or game at
+  any line: Over 52.5 instead of 65.5, Bills −3.5 instead of −6.5, total 44.5. In the slip, − and + move a leg's line.
+  The hit chance comes from the same no-vig sportsbook consensus as the list, moved to your line with the same model.
+  `site/model.js` mirrors the Python math, and a test checks the two agree to 0.001 percentage points. Lines more than
+  about 50% from the books' line (2 units for catches and attempts) aren't priced: that far out the model isn't reliable,
+  and the page says so. Type your book's odds to see whether that line is good value.
+- **Over / Under filter.** Overs only (over a line, YES on Kalshi, scores a TD) or unders only. Moneylines and spreads are
+  hidden while it's on.
+- **Bankroll and stakes.** Set a bankroll (money only for betting) and every value pick shows a suggested stake:
+  fractional Kelly on the hit chance after the safety margin (1/4 by default), capped per bet (2% by default; parlays
+  half that). Picks without an edge say "No bet". It's deliberately conservative: even with a real edge, losing streaks of
+  5 to 10 bets are normal.
+- **My bets.** Save a slip with your stake and odds. Finished games are graded automatically from final scores and player
+  game logs in `analytics.json` (a player who didn't play shows as void). You get your record, profit, return, and wins
+  vs. what the hit chances predicted. Stored only in your browser; export to CSV.
+- **Track record.** The weekly stats job grades every logged pick in `data/picks_log.csv` against final stats. It shows
+  hit rate vs. predicted, by stats verdict (does "Stats agree" really hit more?), by source, and calibration (do 60% picks
+  hit about 60% of the time?). Week 4's Thursday game gave the first 40 graded picks, far too few to trust yet.
+- **Better price elsewhere.** On a single-book view, a pick shows when another book pays clearly more for the same line.
+- **Desktop.** At 1180px+ the page is three panes: filters on the left, picks in a grid, and the parlay slip always open
+  on the right. Tablets get two columns of picks; phones keep the single column and bottom sheets.
+
+Honest note: no tool makes sports betting a dependable income. Books keep a cut on every bet, and most bettors lose
+over time. What this page can do is point you to fair-or-better prices, show the evidence, keep stakes small, and
+track whether any of it is working. Never bet money you need for bills.
+
 ## Stats layer: "Why this pick"
 
-Every pick now carries a one-line **"Why 58%"** explanation, a **confidence tag**, a **stats verdict**
-(agree / neutral / disagree), warnings, and a **Why this pick** panel with four sections: Usage,
-Efficiency, Matchup and Game context. Each section has 3 to 5 lines with real numbers, ranks and sample sizes.
+Every pick carries a one-line **"Why 58%"** explanation, a **confidence tag**, a **stats verdict**
+(agree / neutral / disagree), warnings, and a **Why this pick** panel. The panel leads with **The short version**: up to
+five points ranked by how much they should move you, each marked ▲ helps this pick, ▼ hurts it, or • context (injury
+status, projection vs. the line, recent hit rate on this exact line, usage, the matchup's rank, scheme edges, weather).
+Then come the projection math and **Recent form** (game-by-game results with ✓/✕ against the line, home vs. away, last
+season's average). After that: **Matchup**, **Scheme matchup**, **Usage**, **Efficiency**, **Injuries** (both teams,
+with each player's role) and **Game context**. Percentiles read as "top 11% of running backs" and ranks as
+"6th most" or "4th fewest".
 Every stat name is tappable for a plain-English definition and a note on whether higher is better for that pick.
 
 **The hit chance does not change.** It is still the sportsbook consensus. The stats only check it:
@@ -68,13 +101,27 @@ why (e.g. "Next Gen Stats only lists runners with enough carries", "not found in
 | Snap counts | `load_snap_counts` | snap share, pass-play snaps estimate |
 | Next Gen Stats | `load_nextgen_stats` (receiving, passing, rushing) | separation, cushion, time to throw, rush yards over expected |
 | PFR advanced stats | `load_pfr_advstats` (def, rush, pass) | pressures generated and faced, yards before contact, team coverage (yards/target, rating), missed tackles |
-| Injuries | `load_injuries` | player, teammate and opposing-defense flags |
+| Injuries | `load_injuries` | player, teammate and opposing-defense flags; the panel's injury report for both teams |
+| Participation, last season | `load_participation` (2025) | coverage type per pass play (Cover 1/2/3/4/6, man/zone): team tendencies and receiver splits |
+| FTN charting, this season | `load_ftn_charting` | blitz rate and 8+-man boxes (team tendencies, QB vs. blitz, RB vs. stacked boxes) |
 | Schedules | `load_schedules` | spread, total, implied totals, roof, rest days |
 | Rosters, player stats, teams | `load_rosters_weekly`, `load_player_stats`, `load_teams` | IDs, positions, names |
 | Weather | Open-Meteo forecast API (free, no key) | kickoff temperature, wind, rain chance for open-air and retractable-roof stadiums |
 
 Checked for the 2026 season on 2026-10-01 (weeks 1–3 played): everything above is published except **participation**.
-`load_participation` only covers 2016–2025, so per-play on-field data isn't available.
+`load_participation` only covers 2016–2025, so this season's per-play on-field and coverage data isn't available
+(last season's is used for coverage tendencies, labeled as such).
+
+### Scheme matchups (coverage, blitz, stacked boxes)
+
+- **Coverage:** nflverse participation charts every pass play's coverage (Cover 0/1/2/3/4/6, 2-Man, man vs. zone), but
+  it's only published through **last season**. The panel shows the opponent's most-used coverage last season with its
+  rank, and the receiver's yards per target against that coverage vs. his overall rate. 15%+ better is a "good matchup",
+  15%+ worse a "tough matchup", and splits need 8+ targets. It's clearly labeled as 2025 data: coaching changes can shift a
+  defense's scheme.
+- **Blitz (QBs) and stacked boxes (RBs):** from FTN charting, published for **this season**. The opponent's blitz rate and
+  8+-in-the-box rate with ranks, and the QB's EPA per dropback when blitzed vs. not, or the RB's yards per carry vs.
+  8+ in the box vs. lighter boxes.
 
 ### What's a proxy, and what's missing
 

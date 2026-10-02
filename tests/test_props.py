@@ -171,3 +171,13 @@ def test_kalshi_refresh_reprices_without_odds_api(tmp_path, monkeypatch):
     new = run.kalshi_refresh(str(path), markets=mk)
     assert [u["ticker"] for u in new["kalshi"]] == ["R40"] and new["kalshi"][0]["stat"] == "player_rush_yds"
     assert new["updated"] == old["updated"] and new["props"] == old["props"] and "kalshi_updated" in new
+
+
+def test_kalshi_refresh_keeps_data_when_kalshi_is_down(tmp_path):
+    path = tmp_path / "data.json"
+    old = run.site_data([], {}, [{"ticker": "R40", "stat": "player_rush_yds", "g": "g1", "bid": 60, "ask": 62}],
+                        [], {"g1": {"a": "A", "h": "B", "t": "2030-01-01T18:00:00Z"}}, {}, datetime(2026, 10, 1, 13, tzinfo=timezone.utc))
+    run.write_site(old, str(path))
+    before = path.read_text()
+    assert run.kalshi_refresh(str(path), markets=[]) is None
+    assert path.read_text() == before

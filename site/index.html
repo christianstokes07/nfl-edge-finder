@@ -34,7 +34,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--font);f
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
 button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:10px}
-main{max-width:620px;margin:0 auto;padding:calc(18px + var(--safe-t)) calc(16px + var(--safe-r)) calc(120px + var(--safe-b)) calc(16px + var(--safe-l))}
+
 
 /* masthead */
 .mast{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:3px solid var(--ink);padding-bottom:10px}
@@ -228,27 +228,112 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .fine p{margin:8px 0}
 .toast{position:fixed;left:50%;bottom:calc(92px + var(--safe-b));transform:translateX(-50%);background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:12px;font-weight:650;font-size:14px;z-index:60;max-width:calc(100% - 32px);text-align:center}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- layout: phone first, 2 columns of picks on tablets, 3-pane on desktop ---------- */
+.app{max-width:640px;margin:0 auto;padding:calc(18px + var(--safe-t)) calc(16px + var(--safe-r)) calc(120px + var(--safe-b)) calc(16px + var(--safe-l))}
+.tools{display:flex;gap:8px;overflow-x:auto;margin:12px -16px 0;padding:2px 16px 4px;scrollbar-width:none}
+.tools::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:42px;padding:0 15px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;color:var(--ink)}
+.chip.ink{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip .n{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:12px}
+.chip .n[hidden]{display:none}
+.sec .sv li{padding-left:0}
+.sec .sv li::before{display:none}
+.form label .hint{display:inline}
+.slipcol{display:none}
+@media (min-width:760px){
+  .app{max-width:1120px;padding-left:24px;padding-right:24px}
+  .tools{margin:12px 0 0;padding:2px 0 4px}
+  .controls{grid-template-columns:repeat(3,1fr)}
+  .pk.wide{grid-column:auto}
+  ol.picks{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));align-items:start;gap:14px}
+}
+@media (min-width:1180px){
+  .app{max-width:1760px;display:grid;grid-template-columns:270px minmax(0,1fr) 370px;grid-template-areas:"top top top" "side feed slip";
+    gap:0 20px;padding:24px 28px 48px}
+  ol.picks{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+  .top{grid-area:top}
+  .side{grid-area:side;position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;padding-right:4px}
+  .side .controls{grid-template-columns:1fr;margin-top:0}
+  .feed{grid-area:feed;min-width:0}
+  .slipcol{grid-area:slip;display:block;position:sticky;top:16px;align-self:start;max-height:calc(100vh - 32px);overflow:auto;
+    background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:6px 10px 12px;box-shadow:var(--shadow)}
+  .slipcol h2{margin:10px 6px 0;font-size:22px;font-weight:850;font-stretch:75%;text-transform:uppercase}
+  .slipbar{display:none}
+  .toast{bottom:28px}
+  h1{font-size:46px}
+}
+
+/* ---------- pick cards: extras ---------- */
+.price .alt{color:var(--good);font-weight:650}
+.cap .ten{display:block;text-transform:none;letter-spacing:0;font-weight:650;font-size:12.5px;color:var(--ink2);margin-top:2px}
+.tag.stake{border-color:var(--accent);color:var(--accent)}
+.tag.nobet{border-style:dashed}
+.foot .btns{display:flex;flex-direction:column;align-items:flex-end;gap:2px;flex:none}
+.mini{font:inherit;font-size:13px;font-weight:700;color:var(--accent);background:none;border:0;padding:6px 4px;min-height:32px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* short version + recent form */
+.sv{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sv li{display:grid;grid-template-columns:22px 1fr;gap:6px;font-size:15px;line-height:1.4}
+.sv .ar{font-weight:900;font-size:13px;line-height:1.6;text-align:center}
+.sv .up{color:var(--good)} .sv .dn{color:var(--warn)} .sv .nt{color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 2px}
+.lc{font-size:13px;padding:5px 9px;border-radius:9px;background:var(--sunk);border:1.5px solid transparent;font-weight:600}
+.lc.hit{border-color:var(--good)} .lc.miss{color:var(--ink2)}
+.lc b{font-weight:800}
+
+/* forms (custom pick, bankroll, log bet) */
+.form{display:grid;gap:12px;padding:8px 6px}
+.form label{display:grid;gap:5px;font-weight:700;font-size:14px}
+.form input,.form select{font:inherit;font-size:17px;font-weight:600;min-height:48px;padding:0 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .hint{font-size:13px;color:var(--mute);font-weight:500}
+.out{border:1.5px solid var(--line);border-radius:14px;padding:12px;background:var(--bg);min-height:72px}
+.out .big{font-size:44px;line-height:.9;font-weight:900;font-stretch:70%}
+.out .sub{font-size:14px;color:var(--ink2);margin-top:6px}
+.leg-ed{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center}
+.leg-ed button{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);font-weight:800;font-size:18px;cursor:pointer}
+.leg-ed input{width:84px;min-height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700;padding:0 8px;text-align:center}
+.leg-ed input.l-odds{width:110px;text-align:left}
+.custom-tag{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-left:6px}
+.bet{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;background:var(--bg)}
+.bet .bh{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.bet .bl{font-size:14px;color:var(--ink2);margin-top:4px}
+.bet .acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.bet .acts button{min-height:36px;padding:0 10px;border-radius:9px;border:1px solid var(--line);background:var(--surface);font-weight:650;font-size:13px;cursor:pointer}
+.res{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:7px;background:var(--sunk)}
+.res.won{background:var(--good);color:var(--bg)} .res.lost{background:var(--warn);color:var(--bg)}
+table.tr{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 10px}
+table.tr th,table.tr td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
+table.tr td.r,table.tr th.r{text-align:right}
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <p class="kicker">NFL player props</p>
+<div class="app">
+  <header class="top">
+    <p class="kicker">NFL player props &amp; game lines</p>
     <div class="mast">
       <h1>Prop<span>/</span>Sheet</h1>
       <button class="theme" id="theme" type="button" aria-label="Color theme">Auto</button>
     </div>
     <p class="status" id="status">Loading…</p>
+    <nav class="tools" aria-label="Tools">
+      <button class="chip ink" type="button" data-open="custom">+ Custom pick</button>
+      <button class="chip" type="button" data-open="bets">My bets<span class="n" id="betsN" hidden></span></button>
+      <button class="chip" type="button" data-open="bank" id="bankChip">Set bankroll</button>
+      <button class="chip" type="button" data-open="track">Track record</button>
+    </nav>
   </header>
 
-  <div class="controls">
-    <button class="pk wide" type="button" data-picker="where"><small>Where I bet</small><b id="v-where">…</b></button>
-    <button class="pk" type="button" data-picker="prop"><small>Prop</small><b id="v-prop">All props</b></button>
-    <button class="pk" type="button" data-picker="game"><small>Game / slate</small><b id="v-game">All games</b></button>
-    <button class="pk wide" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Most likely to hit</b></button>
-  </div>
-
-  <details class="how" id="how">
+  <aside class="side" aria-label="Filters">
+    <div class="controls">
+      <button class="pk wide" type="button" data-picker="where"><small>Where I bet</small><b id="v-where">…</b></button>
+      <button class="pk" type="button" data-picker="prop"><small>Prop</small><b id="v-prop">Everything</b></button>
+      <button class="pk" type="button" data-picker="side"><small>Over / Under</small><b id="v-side">Overs and unders</b></button>
+      <button class="pk" type="button" data-picker="game"><small>Game / slate</small><b id="v-game">All games</b></button>
+      <button class="pk" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Best bets</b></button>
+    </div>
+    <details class="how" id="how">
     <summary>How to read this</summary>
     <dl>
       <div><dt>Hit chance (the big %)</dt>
@@ -283,6 +368,19 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
       <div><dt>"Big gap: check injury news"</dt>
         <dd>When one price is far from all the others, the usual reason is news (an injury, a benched player) that
         our last scan doesn't know about. Check before betting.</dd></div>
+      <div><dt>Custom picks and changing a line</dt>
+        <dd>Tap "Try another line" on any pick, or "+ Custom pick", to price any player or game at any line (say Over 52.5
+        instead of 65.5). In the slip, use − and + on a leg to move its line. The hit chance comes from the same sportsbook
+        consensus as the list, moved to your line with the same model. Type your book's odds to see whether it's good value.</dd></div>
+      <div><dt>Over / Under filter</dt>
+        <dd>Show only overs (over a line, YES on Kalshi, scores a TD) or only unders. Moneylines and spreads have no over or
+        under, so they're hidden while the filter is on.</dd></div>
+      <div><dt>Bankroll and stakes</dt>
+        <dd>Set a bankroll (money only for betting) and value picks show a suggested stake: a fraction of the Kelly formula,
+        capped per bet. Picks without an edge say "No bet". Small, steady stakes are what survive losing streaks.</dd></div>
+      <div><dt>My bets and Track record</dt>
+        <dd>Save bets from the slip; finished games are graded from final stats, with your record, profit and return.
+        Track record shows how the logged picks have actually done, so you can see whether "Stats agree" picks hit more.</dd></div>
       <div><dt>Parlays</dt>
         <dd>Every leg must win. The chances multiply, so three 60% legs hit together only about 22% of the time.
         Tap "+ Parlay" on a pick to add it to your slip at the bottom.</dd></div>
@@ -291,29 +389,36 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
         news, weather or lineup changes.</dd></div>
     </dl>
   </details>
+  </aside>
 
-  <p class="live" id="live" aria-live="polite"></p>
-  <p class="filternote" id="filterNote" hidden></p>
-  <p class="count" id="count"></p>
-  <ol class="picks" id="list"></ol>
-  <div class="empty" id="empty" hidden></div>
-  <button class="more" id="more" type="button" hidden>Show more</button>
+  <main class="feed">
+    <p class="live" id="live" aria-live="polite"></p>
+    <p class="filternote" id="filterNote" hidden></p>
+    <p class="count" id="count"></p>
+    <ol class="picks" id="list"></ol>
+    <div class="empty" id="empty" hidden></div>
+    <button class="more" id="more" type="button" hidden>Show more</button>
+    <div class="notes">
+      <p id="diag"></p>
+      <p id="anaSrc"></p>
+      <p id="build"></p>
+      <p>Picks priced shorter than −400 (about 80¢ on Kalshi) and "No TD" bets are hidden: they pay too little to matter.
+      Sportsbook data from The Odds API. Kalshi prices refresh every 30 seconds while you're on the Kalshi view.
+      Sports betting is risky and most bettors lose money over time. Never bet money you need for bills.</p>
+    </div>
+    <button class="ghost" id="reload" type="button">Reload data</button>
+  </main>
 
-  <div class="notes">
-    <p id="diag"></p>
-    <p id="anaSrc"></p>
-    <p id="build"></p>
-    <p>Picks priced shorter than −400 (about 80¢ on Kalshi) and "No TD" bets are hidden: they pay too little to matter.
-    Sportsbook data from The Odds API. Kalshi prices refresh every 30 seconds while you're on the Kalshi view.
-    Most bettors lose money over time. Only bet what you can afford to lose.</p>
-  </div>
-  <button class="ghost" id="reload" type="button">Reload data</button>
-</main>
+  <aside class="slipcol" aria-label="Parlay slip">
+    <h2>Your parlay</h2>
+    <div id="slipBody"></div>
+  </aside>
+</div>
 
 <div class="slipbar" id="slipbar">
   <button type="button" id="slipBtn" aria-haspopup="dialog">
     <span class="sb-n" id="sbN">0</span>
-    <span class="sb-t"><b id="sbT">Parlay slip</b><span id="sbS">Tap + Parlay on picks, or auto-build one</span></span>
+    <span class="sb-t"><b id="sbT">Parlay slip</b><span id="sbS">Tap + Parlay on picks, add a custom pick, or auto-build</span></span>
     <span class="sb-go">Open</span>
   </button>
 </div>
@@ -326,721 +431,9 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="parlay.js"></script>
-<script src="analytics.js"></script>
-<script>
-"use strict";
-const $ = id => document.getElementById(id);
-const P = window.Parlay;
-const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { return null; } },
-               set:(k, v) => { try { localStorage.setItem(k, v); } catch(e) {} }};
-const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const TD = "player_anytime_td";
-const STAT = {
-  player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
-  player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
-  player_pass_yds:      {t:"Passing yards",   u:"passing yards",   d:"Yards a quarterback throws for"},
-  player_receptions:    {t:"Receptions",      u:"catches",         d:"How many passes a player catches"},
-  player_pass_tds:      {t:"Passing TDs",     u:"passing TDs",     d:"Touchdown passes a quarterback throws"},
-  player_anytime_td:    {t:"Anytime TD",      u:"touchdown",       d:"Player scores at least once, running or catching"},
-  player_rush_reception_yds: {t:"Rush + rec yards", u:"rushing + receiving yards", d:"Rushing and receiving yards added together"},
-  player_pass_attempts: {t:"Passing attempts", u:"pass attempts",   d:"Passes a quarterback throws, complete or not"},
-  player_pass_completions: {t:"Completions",   u:"completions",     d:"Passes a quarterback completes"},
-  player_pass_interceptions: {t:"Interceptions thrown", u:"interceptions", d:"Passes a quarterback throws that get picked off"},
-  player_rush_attempts: {t:"Rushing attempts", u:"carries",         d:"How many times a player runs the ball"},
-  game_ml:     {t:"Moneyline",  u:"", d:"Pick the team that wins the game", game:true},
-  game_spread: {t:"Spread",     u:"", d:"Favorite must win by more than the spread; underdog can lose by less", game:true},
-  game_total:  {t:"Game total", u:"total points", d:"Both teams' points added up, over or under the line", game:true},
-};
-const TEAM_ABBR = {"Arizona Cardinals":"ARI","Atlanta Falcons":"ATL","Baltimore Ravens":"BAL","Buffalo Bills":"BUF","Carolina Panthers":"CAR",
-  "Chicago Bears":"CHI","Cincinnati Bengals":"CIN","Cleveland Browns":"CLE","Dallas Cowboys":"DAL","Denver Broncos":"DEN","Detroit Lions":"DET",
-  "Green Bay Packers":"GB","Houston Texans":"HOU","Indianapolis Colts":"IND","Jacksonville Jaguars":"JAX","Kansas City Chiefs":"KC",
-  "Las Vegas Raiders":"LV","Los Angeles Chargers":"LAC","Los Angeles Rams":"LAR","Miami Dolphins":"MIA","Minnesota Vikings":"MIN",
-  "New England Patriots":"NE","New Orleans Saints":"NO","New York Giants":"NYG","New York Jets":"NYJ","Philadelphia Eagles":"PHI",
-  "Pittsburgh Steelers":"PIT","San Francisco 49ers":"SF","Seattle Seahawks":"SEA","Tampa Bay Buccaneers":"TB","Tennessee Titans":"TEN",
-  "Washington Commanders":"WAS"};
-const BUILD = "2026-10-01 · game lines";
-const SORTS = [
-  {k:"best",  t:"Best bets",          d:"Good chance to hit (40%+), priced fairly or better, and backed by the stats"},
-  {k:"hit",   t:"Most likely to hit", d:"Highest hit chance first (still hides \u201cNo TD\u201d and prices shorter than −400)"},
-  {k:"value", t:"Best value",         d:"Biggest gap between the price and the true odds"},
-  {k:"game",  t:"By kickoff",         d:"Earliest games first, then most likely to hit"},
-];
-const PAGE = 40;
-const AN = window.Analytics;
-let A = null, aNote = "", openWhy = new Set();
-let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null;
-const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all",
-              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3};
-let slip = [];
-try { slip = JSON.parse(store.get("ps_slip") || "[]") || []; } catch(e) { slip = []; }
-
-/* ---------- helpers ---------- */
-const pct = p => Math.round(p * 100);
-function teamShort(n){ const w = String(n || "").trim().split(/\s+/); return w[w.length - 1] || ""; }
-function game(gid){ return (D && D.games && D.games[gid]) || null; }
-function gameName(gid){ const g = game(gid); return g ? teamShort(g.a) + " @ " + teamShort(g.h) : ""; }
-function kickText(gid){
-  const g = game(gid); if (!g || !g.t) return "";
-  const d = new Date(g.t);
-  return d.toLocaleDateString([], {weekday:"short"}) + " " + d.toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
-}
-/* slates, from kickoff day and hour in US Eastern time (so they follow each week's schedule) */
-const SLATES = [
-  {k:"thu", t:"Thursday Night"}, {k:"fri", t:"Friday"}, {k:"sat", t:"Saturday"},
-  {k:"sun_main", t:"Sunday main slate", d:"all Sunday daytime games"},
-  {k:"sun_intl", t:"Sunday morning (international)"}, {k:"sun_early", t:"Sunday early (1pm ET)"},
-  {k:"sun_late", t:"Sunday late (4pm ET)"}, {k:"snf", t:"Sunday Night"}, {k:"mnf", t:"Monday Night"},
-  {k:"other", t:"Other days"},
-];
-function etParts(iso){
-  const p = {};
-  for (const x of new Intl.DateTimeFormat("en-US", {timeZone:"America/New_York", weekday:"short", hour:"numeric", hourCycle:"h23"}).formatToParts(new Date(iso))) p[x.type] = x.value;
-  return {day:p.weekday, hour:Number(p.hour)};
-}
-function slateOf(gid){
-  const g = game(gid); if (!g || !g.t) return "other";
-  const {day, hour} = etParts(g.t);
-  if (day === "Thu") return "thu";
-  if (day === "Fri") return "fri";
-  if (day === "Sat") return "sat";
-  if (day === "Sun") return hour < 12 ? "sun_intl" : hour < 16 ? "sun_early" : hour < 19 ? "sun_late" : "snf";
-  if (day === "Mon") return "mnf";
-  return "other";
-}
-function slateList(ids){
-  const by = {};
-  for (const g of ids) (by[slateOf(g)] = by[slateOf(g)] || []).push(g);
-  const main = ["sun_intl", "sun_early", "sun_late"].flatMap(k => by[k] || []);
-  if (main.length && ["sun_intl", "sun_early", "sun_late"].filter(k => by[k]).length > 1) by.sun_main = main;
-  return SLATES.filter(s => by[s.k]).map(s => ({...s, games:by[s.k]}));
-}
-function inGameFilter(gid){
-  if (pref.game === "all") return true;
-  if (pref.game.startsWith("slate:")){
-    const k = pref.game.slice(6), sl = slateOf(gid);
-    return k === sl || (k === "sun_main" && ["sun_intl", "sun_early", "sun_late"].includes(sl));
-  }
-  return gid === pref.game;
-}
-function gameFilterLabel(){
-  if (pref.game === "all") return "All games";
-  if (pref.game.startsWith("slate:")) return (SLATES.find(s => s.k === pref.game.slice(6)) || {t:"Slate"}).t;
-  return gameName(pref.game);
-}
-function kickMs(gid){ const g = game(gid); return g && g.t ? +new Date(g.t) : Infinity; }
-function bookName(k){
-  if (k === "kalshi") return "Kalshi";
-  const b = D && (D.books || []).find(x => x.k === k);
-  return b ? b.name : k;
-}
-function ago(iso){
-  const m = Math.round((Date.now() - new Date(iso)) / 60000);
-  if (m < 2) return "just now";
-  if (m < 60) return m + " min ago";
-  const h = Math.round(m / 60);
-  return h < 36 ? h + " hr ago" : Math.round(h / 24) + " days ago";
-}
-function tier(p){
-  return p >= .75 ? "Very likely" : p >= .6 ? "Likely" : p >= .45 ? "Coin flip" : p >= .25 ? "Unlikely" : "Long shot";
-}
-function fmtPt(x){ return Number(x) % 1 ? Number(x).toFixed(1) : String(Number(x)); }
-// signed amount per $1 bet: +7¢, −12¢, +$3.98
-function money(x){
-  const a = Math.abs(x), sign = x < 0 ? "−" : "+";
-  return a < 0.995 ? sign + Math.round(a * 100) + "¢" : sign + "$" + a.toFixed(2);
-}
-function oneIn(p){
-  if (!(p > 0)) return "";
-  return p >= 0.5 ? "Wins about " + Math.round(p * 10) + " times in 10" : "About 1 in " + Math.round(1 / p);
-}
-const MIN_DEC = 1.25;  // hide prices shorter than −400 (about 80¢ on Kalshi): they barely pay anything
-
-/* ---------- picks for the chosen platform ---------- */
-function mk(c){
-  c.implied = 1 / c.dec;
-  c.ev = c.hit * c.dec - 1;
-  c.evSafe = (c.hit - c.unc) * c.dec - 1;
-  const who = P.norm(c.player);
-  c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
-  c.prop = who + "|" + c.m + "|" + c.pt;  // same prop, any side
-  // one pick per player and prop type (per game and market for game lines): the best line/rung for the chosen sort
-  c.group = c.game ? c.g + "|" + c.stat : who + "|" + c.stat;
-  return c;
-}
-function kalshiPicks(){
-  const out = [], P2 = D.params || {fee:.07, max_spread:8};
-  const fee = c => P2.fee * c * (1 - c);
-  for (const u of D.kalshi || []){
-    const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
-    if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P2.max_spread) continue;
-    const fair = u.km ? (q.bid + q.ask) / 200 : u.fair;   // Kalshi-only stats: Kalshi's own (live) mid price
-    for (const [side, hit, cost] of [["YES", fair, q.ask / 100], ["NO", 1 - fair, 1 - q.bid / 100]]){
-      if (side === "NO" && (u.stat === TD || u.stat === "game_ml")) continue;  // "No TD" pays nothing; "NO on team A" = team B's contract
-      if (1 / (cost + fee(cost)) < MIN_DEC) continue;
-      out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat, game:!!STAT[u.stat] && !!STAT[u.stat].game,
-                   team:u.team || null, km:!!u.km, pt:u.threshold, side, hit, unc:u.km ? 0.03 : (u.unc || .03), n:u.books,
-                   cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
-    }
-  }
-  return out;
-}
-function bookPicks(where){
-  const out = [];
-  for (const p of D.props || []){
-    const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
-    for (const s of [0, 1]){
-      let best = null;
-      for (const b of books){
-        const a = p.b[b][s], dec = a == null ? null : P.americanToDecimal(a);
-        if (dec && (!best || dec > best.dec)) best = {b, a, dec};
-      }
-      if (!best || best.dec < MIN_DEC) continue;
-      if (p.stat === TD && s === 1) continue;        // hide "No TD" bets
-      const side = p.stat === TD ? (s ? "No" : "Yes") : (s ? "Under" : "Over");
-      out.push(mk({plat:"book", book:best.b, player:p.player, g:p.g, stat:p.stat, m:p.m, pt:p.pt, side,
-                   hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec, prop_mv:p.mv || null}));
-    }
-  }
-  // game lines: moneyline / spread / total
-  for (const p of D.lines || []){
-    const gm = game(p.g); if (!gm) continue;
-    const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
-    for (const s of [0, 1]){
-      let best = null;
-      for (const b of books){
-        const a = p.b[b][s], dec = a == null ? null : P.americanToDecimal(a);
-        if (dec && (!best || dec > best.dec)) best = {b, a, dec};
-      }
-      if (!best || best.dec < MIN_DEC) continue;
-      const team = p.m === "totals" ? null : (s ? gm.a : gm.h);
-      const side = p.m === "totals" ? (s ? "Under" : "Over") : team;
-      const pt = p.m === "spreads" ? (s ? -p.pt : p.pt) : p.pt;
-      out.push(mk({plat:"book", game:true, book:best.b, player:team || "Game total", team, g:p.g, stat:p.stat, m:p.m, pt, side,
-                   hit:s ? 1 - p.p : p.p, unc:p.unc, n:p.n, american:best.a, dec:best.dec}));
-    }
-  }
-  return out;
-}
-function picksFor(where){ return where === "kalshi" ? kalshiPicks() : bookPicks(where); }
-// Best bets: value after the safety margin, nudged toward likelier picks and toward what the stats back.
-// Picks under 40% to hit drop to the bottom (they're lottery tickets, not "best bets").
-const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};  // no stats behind it: small penalty
-function bestScore(c){
-  if (c.hit < 0.4) return -1 + c.hit;
-  // Kalshi-only stats have no outside price, so no measured value: rank them by hit chance and stats only
-  return (c.km ? -0.02 : c.evSafe) + 0.2 * (c.hit - 0.5) + VBONUS[anaFor(c).v];
-}
-const SORTKEY = {best:bestScore, hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
-function filtered(where, sortKey){
-  const key = SORTKEY[sortKey] || SORTKEY.best, best = new Map();
-  for (const c of picksFor(where)){
-    if (pref.prop !== "all" && c.stat !== pref.prop) continue;
-    if (!inGameFilter(c.g)) continue;
-    const cur = best.get(c.group);
-    if (!cur || key(c) > key(cur)) best.set(c.group, c);
-  }
-  const out = [...best.values()];
-  if (sortKey === "game") out.sort((a, b) => kickMs(a.g) - kickMs(b.g) || b.hit - a.hit);
-  else out.sort((a, b) => key(b) - key(a));
-  return out;
-}
-
-/* ---------- text for a pick ---------- */
-function sgnPt(x){ return (x > 0 ? "+" : x < 0 ? "−" : "") + fmtPt(Math.abs(x)); }
-function lineText(c){
-  const s = STAT[c.stat] || {u:c.stat};
-  if (c.game){
-    const tn = c.team ? esc(teamShort(c.team)) : "";
-    if (c.stat === "game_ml") return "<b>" + tn + "</b> to win";
-    if (c.stat === "game_spread"){
-      if (c.plat === "kalshi") return (c.side === "YES" ? "<b>" + tn + " win by " : "<b>" + tn + " don't win by ") + (Math.floor(c.pt) + 1) + "+</b>";
-      return "<b>" + tn + " " + (c.pt === 0 ? "pick'em" : sgnPt(c.pt)) + "</b> (spread)";
-    }
-    if (c.plat === "kalshi") return "<b>" + (c.side === "YES" ? "Over " : "Under ") + fmtPt(c.pt) + "</b> total points";
-    return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> total points";
-  }
-  if (c.stat === TD) return (c.side === "Yes" || c.side === "YES") ? "<b>Scores a TD</b> (anytime)" : "<b>No TD</b>";
-  if (c.plat === "kalshi") return c.side === "YES" ? "<b>" + fmtPt(c.pt) + "+</b> " + s.u : "<b>Under " + fmtPt(c.pt) + "</b> " + s.u;
-  return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> " + s.u;
-}
-function priceText(c){
-  if (c.plat === "kalshi") return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on Kalshi";
-  return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book));
-}
-function valueHtml(c){
-  const k = c.plat === "kalshi";
-  if (c.km) return '<div class="value"><span class="ic" aria-hidden="true">?</span><span class="txt">Value: n/a' +
-    '<small>Only Kalshi prices this stat, so there\'s no outside price to compare</small></span></div>';
-  if (c.evSafe >= 0)
-    return '<div class="value good"><span class="ic" aria-hidden="true">✓</span><span class="txt">Good value: ' +
-      (k ? "Kalshi's price is below what it's worth" : "this book pays more than it's worth") +
-      '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
-  if (c.ev >= -0.06)
-    return '<div class="value"><span class="ic" aria-hidden="true">=</span><span class="txt">Fair price: about what it\'s worth' +
-      '<small>' + (k ? "after Kalshi's fee" : "the book's usual cut is built in") + '</small></span></div>';
-  return '<div class="value"><span class="ic" aria-hidden="true">−</span><span class="txt">Poor value: pays less than it\'s worth' +
-    '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
-}
-/* ---------- stats layer (analytics.json) ---------- */
-function anaFor(c){
-  if (c._ana !== undefined) return c._ana;
-  const g = game(c.g), teams = g ? [g.a, g.h] : [];
-  if (c.game){
-    const sideText = lineText(c).replace(/<[^>]+>/g, "").trim();
-    const fl = A && g ? AN.gameFlags(A, g.h, g.a, c.stat, c.side) : [];
-    const head = "Why " + Math.round(c.hit * 100) + "%: " + (c.n > 1 ? c.n + " sportsbooks' prices" : "one sportsbook's price") +
-      ", with the books' cut removed, give \u201c" + sideText + "\u201d a " + Math.round(c.hit * 100) + "% chance.";
-    return (c._ana = {p:null, pj:null, v:"n/a", fl, conf:AN.confidence(c.n, "n/a", fl), lineVal:c.pt, stale:false,
-      whyText: head + " Stats: we don't project game results; the panel compares each offense with the other defense."});
-  }
-  const p = A ? AN.findPlayer(A, c.player, teams) : null;
-  let stale = false;
-  if (p){
-    const G = (A.games || {})[p.t], O = G && A.teams[G.opp];
-    stale = !G || !O || (teams.length && !teams.includes(O.name));
-  }
-  const pj = p && !stale ? (p.pj || {})[c.stat] : null;
-  const lineVal = c.stat === TD ? null : c.plat === "kalshi" ? c.pt - 0.5 : c.pt;
-  const overP = c.stat === TD ? (OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) : null;
-  const v = AN.verdict(c.stat, c.side, lineVal, pj, overP);
-  const fl = p && !stale ? AN.flags(A, p, c.stat, c.side, c.prop_mv ? {mv:c.prop_mv} : null) : [];
-  const conf = AN.confidence(c.n, v, fl);
-  const sideText = lineText(c).replace(/<[^>]+>/g, "").replace("(anytime)", "").trim();
-  let whyText = AN.why(c, A, p, pj, v, lineVal, sideText);
-  if (p && stale) whyText = whyText.replace(/Stats: n\/a \([^)]*\)\.|Stats .*$/, "") + " Stats: n/a (the stats file is for week " + A.week + ", not this game; rerun the analytics job).";
-  return (c._ana = {p, pj, v, fl, conf, lineVal, whyText, stale});
-}
-const OVERSIDE = new Set(["Over", "Yes", "YES"]);
-const VWORD = {agree:"✓ Stats agree", neutral:"= Stats neutral", disagree:"✕ Stats disagree", "n/a":"Stats: n/a"};
-function anaHtml(c){
-  const a = anaFor(c);
-  let h = '<div class="why">' + esc(a.whyText) + '</div>';
-  h += '<div class="tags"><span class="tag conf-' + a.conf.level + '" title="' + esc(a.conf.why) + '">Confidence: ' + a.conf.level + '</span>' +
-    '<span class="tag ' + a.v.replace("/", "") + '">' + VWORD[a.v] + '</span></div>';
-  if (a.v === "disagree") h += '<div class="flag sev"><span class="fi" aria-hidden="true">⚠</span><span>Stats disagree with this pick: the projection points the other way. Hit chance is still the market number.</span></div>';
-  for (const f of a.fl) h += '<div class="flag' + (f.sev ? " sev" : "") + '"><span class="fi' + (f.sev ? "" : " info") + '" aria-hidden="true">' + (f.sev ? "⚠" : "i") + '</span><span>' + esc(f.text) + '</span></div>';
-  const open = openWhy.has(c.key);
-  h += '<button class="whybtn" type="button" data-why="' + esc(c.key) + '" aria-expanded="' + open + '" aria-controls="pn-' + esc(c.key) + '">Why this pick</button>' +
-    '<div class="panel" id="pn-' + esc(c.key) + '"' + (open ? "" : " hidden") + '>' + (open ? panelHtml(c) : "") + '</div>';
-  return h;
-}
-function term(key, text){ return '<button class="term" type="button" data-def="' + esc(key) + '">' + esc(text) + '</button>'; }
-function panelHtml(c){
-  const a = anaFor(c);
-  if (c.game){
-    const gm = game(c.g);
-    if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet.") + '</p>';
-    const secs = gm ? AN.gameSections(A, gm.h, gm.a) : [];
-    if (!secs.length) return '<p class="src">Stats n/a: these teams aren\'t in the stats file.</p>';
-    let h = '<div class="proj"><div class="ph">The hit chance is the sportsbooks\' consensus. There\'s no stats projection for game results here; these are the team numbers behind the matchup.</div></div>';
-    for (const sct of secs) h += '<div class="sec"><h4>' + esc(sct.title) + '</h4><ul>' + sct.lines.map(l => '<li' + (l.na ? ' class="na"' : "") + '>' +
-      (l.key && AN.DEF[l.key] ? term(l.key, AN.DEF[l.key].t) + ": " : "") + esc(l.text) + '</li>').join("") + '</ul></div>';
-    return h;
-  }
-  if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet (the weekly analytics job hasn't run).") + '</p>';
-  if (!a.p) return '<p class="src">Stats n/a: no nflverse play-by-play for ' + esc(c.player) + ' this season (rookie with no snaps yet, or a name we couldn\'t match).</p>';
-  if (a.stale) return '<p class="src">Stats n/a for this game: the stats file covers week ' + A.week + '. Rerun the analytics job for this week.</p>';
-  let h = '<div class="proj">';
-  if (a.pj){
-    const isTd = c.stat === TD, unit = {player_rush_yds:"rush yds", player_reception_yds:"rec yds", player_pass_yds:"pass yds", player_receptions:"catches", player_pass_tds:"pass TDs"}[c.stat];
-    h += '<div class="pv"><span class="pn">' + (isTd ? Math.round(a.pj.p * 100) + "%" : (Math.round(a.pj.med * 10) / 10).toFixed(1)) + '</span><span class="pl">' +
-      (isTd ? "stats chance to score vs " + Math.round((OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) * 100) + "% market" : unit + " stats projection (typical game) vs line " + fmtPt(a.lineVal)) + " · " + VWORD[a.v] + '</span></div>';
-    h += '<div class="ph">' + esc(AN.projText(c.stat, a.pj)) + '</div>';
-    h += '<div class="ph">Projection = usage × opponent-adjusted efficiency × game script, blended with last season while samples are small. It only checks the market; the hit chance above is still the books\' number.</div>';
-  } else h += '<div class="ph">Stats projection: n/a (not enough data to project this stat for him).</div>';
-  h += "</div>";
-  const p = a.p;
-  if (p.g < (A.consts || {}).small) h += '<div class="flag"><span class="fi info" aria-hidden="true">i</span><span>Small sample: ' + p.g + (p.g === 1 ? " game" : " games") + ' this season' + (p.prior ? "; projections lean on last season (" + p.prior.g + " games)" : "; no last-season data to lean on") + '.</span></div>';
-  for (const sct of AN.sections(A, p, c.stat)){
-    h += '<div class="sec"><h4>' + esc(sct.title) + '</h4><ul>' + sct.lines.map(l => '<li' + (l.na ? ' class="na"' : "") + '>' +
-      (AN.DEF[l.key] ? term(l.key, AN.DEF[l.key].t) + ": " : "") + esc(l.text) + '</li>').join("") + '</ul></div>';
-  }
-  h += '<p class="src">' + p.g + (p.g === 1 ? " game" : " games") + " of " + A.season + " data (weeks " + (p.wk || []).join(", ") + "). Percentiles are among players at his position with enough volume. Tap a dotted stat name for what it means.</p>";
-  return h;
-}
-function showDef(key, side, trigger){
-  const d = AN.DEF[key]; if (!d) return;
-  openSheet("def", trigger);
-  $("shTitle").textContent = d.t; $("shSub").textContent = "What this stat means";
-  $("shBody").innerHTML = '<p style="margin:6px 6px 0;font-size:16px;line-height:1.5">' + esc(d.d) + '</p><p class="defdir" style="margin:12px 6px">' + esc(AN.dirNote(key, side)) + '</p>';
-}
-
-function avatar(c){
-  if (c.game){
-    const lab = c.team ? (TEAM_ABBR[c.team] || teamShort(c.team).slice(0, 3).toUpperCase()) : "O/U";
-    return '<span class="av tm" aria-hidden="true">' + esc(lab) + '</span>';
-  }
-  const p = anaFor(c).p, ini = c.player.split(/\s+/).map(w => w[0]).filter(ch => /[A-Za-z]/.test(ch)).slice(0, 2).join("");
-  const src = p && p.img ? (/^https?:/.test(p.img) ? p.img : (A.img_base || "") + p.img) : null;
-  return '<span class="av" aria-hidden="true">' + esc(ini) + (src ? '<img src="' + esc(src) + '" alt="" loading="lazy" decoding="async" onerror="this.remove()">' : "") + '</span>';
-}
-function inSlip(key){ return slip.some(l => l.key === key); }
-function card(c){
-  const label = c.player + " " + lineText(c).replace(/<[^>]+>/g, "");
-  const added = inSlip(c.key);
-  const gap = c.hit - c.implied > 0.12
-    ? '<div class="gap">⚠ Big gap between this price and the other books: check injury news first</div>' : "";
-  const books = c.n + (c.n === 1 ? " book" : " books");
-  return '<li class="pick">' +
-    '<div><div class="who">' + avatar(c) + '<span>' + esc(c.game ? gameName(c.g) : c.player) + '</span></div><div class="line">' + lineText(c) + '</div>' +
-    '<div class="price">' + priceText(c) + '</div>' +
-    '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
-    '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance</div></div>' +
-    '<div class="meter" aria-hidden="true"><div class="bar"><i style="width:' + pct(c.hit) + '%"></i></div>' +
-    '<span class="tier">' + tier(c.hit) + '</span></div>' +
-    '<div class="foot">' + valueHtml(c) +
-    '<button class="add" type="button" data-add="' + esc(c.key) + '" aria-pressed="' + added + '" aria-label="' +
-    (added ? "Remove from parlay: " : "Add to parlay: ") + esc(label) + '">' + (added ? "✓ In slip" : "+ Parlay") + '</button></div>' +
-    gap + anaHtml(c) + '<span class="sr">Based on ' + books + '.</span></li>';
-}
-
-/* ---------- render ---------- */
-function whereLabel(k){ return k === "best" ? "Best price anywhere" : bookName(k); }
-function render(){
-  if (!D) return;
-  $("v-where").textContent = whereLabel(pref.where);
-  $("v-prop").textContent = pref.prop === "all" ? "Everything" : (STAT[pref.prop] || {t:pref.prop}).t;
-  const fn = $("filterNote");
-  fn.hidden = pref.prop === "all";
-  if (pref.prop !== "all") fn.innerHTML = 'Showing only <b>' + esc((STAT[pref.prop] || {t:pref.prop}).t) + '</b> · <button type="button" class="linkbtn" id="showAll">Show everything</button>';
-  $("v-game").textContent = gameFilterLabel();
-  $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
-  if (pref.where !== "kalshi") $("live").textContent = "";
-  const list = filtered(pref.where, pref.sort);
-  current = new Map(list.map(c => [c.key, c]));
-  $("list").innerHTML = list.slice(0, shown).map(card).join("");
-  $("more").hidden = list.length <= shown;
-  $("more").textContent = "Show " + Math.min(PAGE, list.length - shown) + " more";
-  $("count").textContent = list.length ? list.length + (list.length === 1 ? " pick" : " picks") + " · " + whereLabel(pref.where) : "";
-  const e = $("empty");
-  e.hidden = list.length > 0;
-  if (!list.length) e.textContent = emptyText();
-  renderSlipBar();
-}
-function emptyText(){
-  if (pref.where === "kalshi")
-    return (D.kalshi || []).length ? "No Kalshi contracts with a tight enough price for this filter right now."
-      : "The last scan didn't match any Kalshi contracts to sportsbook lines.";
-  const b = (D.books || []).find(x => x.k === pref.where);
-  if (b && !b.n) return "No " + b.name + " lines in the last scan." +
-    (b.paid ? " The Odds API only sends " + b.name + " on paid plans." : " Try another book or Best price anywhere.");
-  if (pref.game.startsWith("slate:") && !Object.keys(D.games || {}).some(inGameFilter))
-    return "No " + gameFilterLabel() + " games in the last scan. Pick another slate or All games.";
-  return "Nothing matches these filters. Try All props or All games.";
-}
-
-/* ---------- pickers (bottom sheet) ---------- */
-function opt(value, title, desc, checked, dim){
-  return '<button class="opt' + (dim ? " dim" : "") + '" type="button" role="radio" aria-checked="' + checked + '" data-v="' + esc(value) + '">' +
-    '<span class="dot" aria-hidden="true"></span><span class="o-x"><span class="o-t">' + esc(title) + '</span>' +
-    '<span class="o-d">' + esc(desc) + '</span></span></button>';
-}
-const PICKERS = {
-  where: {t:"Where I bet", d:"See each pick at your book's own line and odds", build(){
-    const props = D.props || [];
-    let h = opt("best", "Best price anywhere", "Each pick at whichever book pays the most", pref.where === "best");
-    h += '<div class="opt-sec">Sportsbooks</div>';
-    for (const b of D.books || []){
-      const desc = b.n ? b.n + " props in the last scan" : b.paid ? "No lines: The Odds API only sends this book on paid plans" : "No lines in the last scan";
-      h += opt(b.k, b.name, desc, pref.where === b.k, !b.n);
-    }
-    h += '<div class="opt-sec">Prediction market</div>';
-    h += opt("kalshi", "Kalshi", (D.kalshi || []).length ? "Prices in cents, refreshed live every 30 seconds" : "No contracts matched in the last scan", pref.where === "kalshi", !(D.kalshi || []).length);
-    return h;
-  }},
-  prop: {t:"Prop", d:"Which stat the bet is about", build(){
-    const have = new Set([...(D.props || []).map(p => p.stat), ...(D.kalshi || []).map(u => u.stat)]);
-    for (const p of D.lines || []) have.add(p.stat);
-    let h = opt("all", "Everything", "Game lines and every player prop in the last scan", pref.prop === "all");
-    const gl = Object.keys(STAT).filter(k => STAT[k].game && have.has(k)), pp = Object.keys(STAT).filter(k => !STAT[k].game && have.has(k));
-    if (gl.length) h += '<div class="opt-sec">Game lines</div>' + gl.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
-    if (pp.length) h += '<div class="opt-sec">Player props</div>' + pp.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
-    return h;
-  }},
-  game: {t:"Game / slate", d:"One slate (like Sunday Night) or one game. Updates with each week's schedule", build(){
-    const n = {};
-    for (const p of D.props || []) n[p.g] = (n[p.g] || 0) + 1;
-    const ids = Object.keys(D.games || {}).sort((a, b) => kickMs(a) - kickMs(b));
-    let h = opt("all", "All games", "Every game in the last scan (" + ids.length + ")", pref.game === "all");
-    const slates = slateList(ids);
-    if (slates.length) h += '<div class="opt-sec">Slates</div>';
-    for (const sl of slates) h += opt("slate:" + sl.k, sl.t, sl.games.map(gameName).join(", "), pref.game === "slate:" + sl.k);
-    h += '<div class="opt-sec">Games</div>';
-    for (const g of ids) h += opt(g, gameName(g), [SLATES.find(x => x.k === slateOf(g)).t, kickText(g), n[g] ? n[g] + " props" : ""].filter(Boolean).join(" · "), pref.game === g);
-    return h;
-  }},
-  sort: {t:"Show first", d:"How the list is ordered", build(){
-    return SORTS.map(s => opt(s.k, s.t, s.d, pref.sort === s.k)).join("");
-  }},
-};
-let sheetMode = null;
-function openSheet(mode, trigger){
-  sheetMode = mode;
-  lastTrigger = trigger || document.activeElement;
-  const sh = $("sheet"), sc = $("scrim");
-  if (mode === "slip"){ $("shTitle").textContent = "Your parlay"; $("shSub").textContent = "Every leg has to win"; renderSlip(); }
-  else if (mode === "def"){ /* showDef fills it */ }
-  else {
-    const p = PICKERS[mode];
-    $("shTitle").textContent = p.t; $("shSub").textContent = p.d;
-    $("shBody").innerHTML = '<div role="radiogroup" aria-label="' + esc(p.t) + '">' + p.build() + "</div>";
-  }
-  sh.hidden = false; sc.hidden = false;
-  requestAnimationFrame(() => { sh.classList.add("on"); sc.classList.add("on"); });
-  $("shBody").scrollTop = 0;
-  const first = sh.querySelector('[aria-checked="true"]') || sh.querySelector(".close");
-  setTimeout(() => { if (sheetMode === mode && first) first.focus({preventScroll:true}); }, 30);
-  document.body.style.overflow = "hidden";
-}
-function closeSheet(){
-  const sh = $("sheet"), sc = $("scrim");
-  if (sh.hidden) return;
-  sh.classList.remove("on"); sc.classList.remove("on");
-  sheetMode = null;
-  document.body.style.overflow = "";
-  setTimeout(() => { if (!sh.classList.contains("on")){ sh.hidden = true; sc.hidden = true; } }, 240);
-  if (lastTrigger && lastTrigger.focus) lastTrigger.focus({preventScroll:true});
-}
-$("scrim").onclick = closeSheet;
-document.addEventListener("keydown", e => {
-  if ($("sheet").hidden) return;
-  if (e.key === "Escape") closeSheet();
-  if (e.key === "Tab"){  // keep focus inside the open sheet
-    const f = [...$("sheet").querySelectorAll("button,input,[tabindex]")].filter(x => !x.disabled && x.offsetParent);
-    if (!f.length) return;
-    if (e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length - 1].focus(); }
-    else if (!e.shiftKey && document.activeElement === f[f.length - 1]){ e.preventDefault(); f[0].focus(); }
-  }
-  if ((e.key === "ArrowDown" || e.key === "ArrowUp") && document.activeElement.classList.contains("opt")){
-    const o = [...$("sheet").querySelectorAll(".opt")], i = o.indexOf(document.activeElement);
-    const n = o[(i + (e.key === "ArrowDown" ? 1 : o.length - 1)) % o.length];
-    if (n){ e.preventDefault(); n.focus(); }
-  }
-});
-$("sheet").addEventListener("click", e => {
-  if (e.target.closest("[data-close]")) return closeSheet();
-  const o = e.target.closest(".opt");
-  if (o && sheetMode && PICKERS[sheetMode]){
-    pref[sheetMode] = o.dataset.v;
-    if (sheetMode !== "game") store.set("ps_" + (sheetMode === "sort" ? "sort2" : sheetMode), o.dataset.v);
-    else store.set("ps_slate", o.dataset.v.startsWith("slate:") || o.dataset.v === "all" ? o.dataset.v : "");  // slates carry over to next week; single games don't
-    shown = PAGE;
-    closeSheet(); render();
-    if (pref.where === "kalshi") live();
-    return;
-  }
-  slipClick(e);
-});
-document.querySelectorAll("[data-picker]").forEach(b => b.onclick = () => openSheet(b.dataset.picker, b));
-
-/* ---------- parlay slip ---------- */
-function snapshot(c){
-  return {key:c.key, prop:c.prop, plat:c.plat, book:c.book, ticker:c.ticker, player:c.player, g:c.g, game:gameName(c.g),
-          stat:c.stat, m:c.m, pt:c.pt, side:c.side, hit:c.hit, dec:c.plat === "book" ? c.dec : null,
-          line:lineText(c).replace(/<[^>]+>/g, ""), price:priceText(c).replace(/<[^>]+>/g, "")};
-}
-function saveSlip(){ store.set("ps_slip", JSON.stringify(slip)); }
-function toggleLeg(c){
-  if (inSlip(c.key)) slip = slip.filter(l => l.key !== c.key);
-  else { slip = slip.filter(l => l.prop !== c.prop); slip.push(snapshot(c)); }  // one side per prop
-  saveSlip();
-}
-function refreshSlip(){
-  // re-price legs from the latest data (Kalshi live prices, a new scan); keep the old snapshot if a leg vanished
-  if (!D) return;
-  const pools = {};
-  for (const l of slip){
-    const w = l.plat === "kalshi" ? "kalshi" : l.book;
-    if (!pools[w]) pools[w] = new Map(picksFor(w).map(c => [c.key, c]));
-    const c = pools[w].get(l.key);
-    if (c) Object.assign(l, snapshot(c), {stale:false}); else l.stale = true;
-  }
-  saveSlip();
-}
-function renderSlipBar(){
-  const n = slip.length;
-  $("sbN").textContent = n;
-  if (!n){ $("sbT").textContent = "Parlay slip"; $("sbS").textContent = "Tap + Parlay on picks, or auto-build one"; return; }
-  const r = P.combine(slip);
-  $("sbT").textContent = n + (n === 1 ? " leg" : "-leg parlay") + " · " + pct(r.p) + "% to hit";
-  $("sbS").textContent = "Fair odds " + P.fmtAmerican(r.fairAmerican) + (r.samePlayer + r.sameGame ? " · linked legs, see slip" : "");
-}
-function renderSlip(){
-  const body = $("shBody"), n = slip.length, r = P.combine(slip);
-  let h = "";
-  if (n){
-    h += '<div class="combo"><div><div class="big">' + (r.p < .005 ? "<1" : pct(r.p)) + '<sup>%</sup></div></div>' +
-      '<div><div class="lbl">Chance all ' + n + " legs hit</div>" +
-      '<div class="sub">' + oneIn(r.p) + "</div></div>" +
-      '<div class="meter" style="grid-column:1/-1" aria-hidden="true"><div class="bar"><i style="width:' + pct(r.p) + '%"></i></div><span class="tier">' + tier(r.p) + "</span></div></div>";
-    h += '<dl class="kv"><dt>Fair odds</dt><dd>' + P.fmtAmerican(r.fairAmerican) + '</dd>' +
-      '<div class="hint">What this parlay is really worth. A payout better than this is good value.</div>';
-    const mult = P.multiplyOdds(slip);
-    if (mult) h += '<dt>If your book just multiplies the legs</dt><dd>' + P.fmtAmerican(P.decimalToAmerican(mult)) + '</dd>' +
-      '<div class="hint">' + (mult * r.p >= 1 ? "That would beat fair odds." : "That would be below fair odds.") +
-      " Same-game parlays usually pay less than this, so check the real price.</div>";
-    h += "</dl>";
-    if (r.samePlayer || r.sameGame){
-      h += '<div class="callout"><b>⚠ Linked legs.</b> ';
-      if (r.samePlayer) h += r.samePlayer + (r.samePlayer === 1 ? " pair is" : " pairs are") + " on the same player. ";
-      if (r.sameGame) h += r.sameGame + (r.sameGame === 1 ? " pair is" : " pairs are") + " from the same game. ";
-      h += "Results in one game move together, which can help or hurt, so we lowered the combined chance to be safe (" +
-        pct(r.raw) + "% → " + pct(r.p) + "%: " + [r.samePlayer ? "−" + Math.round((1 - P.SAME_PLAYER) * 100) + "% per same-player pair" : "",
-        r.sameGame ? "−" + Math.round((1 - P.SAME_GAME) * 100) + "% per same-game pair" : ""].filter(Boolean).join(", ") +
-        "). Some books only allow these as a same-game parlay.</div>";
-    }
-    h += '<ul class="legs">' + slip.map((l, i) =>
-      '<li><div class="l-x"><div class="l-t">' + esc(l.player) + '</div><div class="l-d">' + esc(l.line) + " · " + esc(l.price) +
-      (l.stale ? " · <b>not in the latest scan</b>" : "") + '</div><div class="l-d">' + esc(l.game) + '</div></div>' +
-      '<div class="l-p">' + pct(l.hit) + '%</div><button class="rm" type="button" data-rm="' + i + '" aria-label="Remove ' + esc(l.player) + '">✕</button></li>').join("") + "</ul>";
-    h += '<div class="field"><label for="odds">Odds your book offers for this parlay</label>' +
-      '<div class="row"><input id="odds" inputmode="text" autocomplete="off" placeholder="e.g. +450" value="' + esc(store.get("ps_odds") || "") + '"></div>' +
-      '<p class="verdict" id="verdict" aria-live="polite"></p></div>';
-  } else {
-    h += '<div class="callout info"><b>Your slip is empty.</b> Tap "+ Parlay" on any pick, or let auto-build pick the legs for you.</div>';
-  }
-  h += '<div class="auto"><h3>Auto-build</h3><p>Picks the highest hit chances from the list you\'re looking at (' + esc(whereLabel(pref.where)) +
-    ", " + esc(pref.prop === "all" ? "everything" : STAT[pref.prop].t.toLowerCase()) + ", " + esc(pref.game === "all" ? "all games" : gameFilterLabel()) +
-    "). One leg per player, no two legs from one game when it can avoid it, and it skips poor-value picks and picks the stats disagree with when there are enough others. Replaces your current slip.</p>" +
-    '<div class="seg" role="radiogroup" aria-label="Number of legs">' + [2, 3, 4, 5, 6].map(k =>
-      '<button type="button" role="radio" aria-checked="' + (pref.legsN === k) + '" data-legs="' + k + '">' + k + "</button>").join("") + "</div>" +
-    '<button class="primary" type="button" data-auto>Build a ' + pref.legsN + "-leg parlay</button></div>";
-  h += '<div class="fine"><p><b>More legs, fewer wins.</b> Each leg you add multiplies in another chance to lose: three 60% legs hit together about 22% of the time, five about 8%.</p>' +
-    "<p><b>High hit chance is not the same as profitable.</b> If the payout is too small for the risk, you still lose money over time. Compare the book's odds to the fair odds above.</p>" +
-    (n ? '<p><button class="ghost" type="button" data-clear>Clear slip</button></p>' : "") + "</div>";
-  body.innerHTML = h;
-  const inp = $("odds");
-  if (inp){ inp.oninput = () => { store.set("ps_odds", inp.value); verdict(); }; verdict(); }
-}
-function verdict(){
-  const el = $("verdict"); if (!el) return;
-  const r = P.combine(slip), dec = P.parseOdds($("odds").value);
-  el.className = "verdict";
-  if (!$("odds").value.trim()){ el.textContent = "Type the parlay odds from your book to see if they beat fair odds (" + P.fmtAmerican(r.fairAmerican) + ")."; return; }
-  if (!dec){ el.textContent = "Use American odds like +450 or −120, or decimal odds like 5.5."; return; }
-  const ev = P.evPerDollar(r.p, dec);
-  if (ev >= 0){ el.className = "verdict good"; el.textContent = "✓ Beats fair odds. On average you'd win about " + money(ev).slice(1) + " per $1 bet."; }
-  else { el.className = "verdict bad"; el.textContent = "✕ Below fair odds. On average you'd lose about " + money(-ev).slice(1) + " per $1 bet."; }
-}
-function slipClick(e){
-  const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.rm != null){ slip.splice(Number(t.dataset.rm), 1); saveSlip(); renderSlip(); render(); $("sheet").querySelector(".close").focus(); }
-  else if (t.dataset.legs){ pref.legsN = Number(t.dataset.legs); store.set("ps_legsN", pref.legsN); renderSlip(); $("sheet").querySelector('[data-legs="' + pref.legsN + '"]').focus(); }
-  else if (t.dataset.auto != null){
-    const pool = filtered(pref.where, "hit"), ok = pool.filter(c => anaFor(c).v !== "disagree" && c.ev >= -0.06);
-    const picks = P.autoBuild(ok.length >= pref.legsN ? ok : pool, pref.legsN);
-    if (!picks.length){ toast("No picks to build from. Change the filters."); return; }
-    slip = picks.map(snapshot); saveSlip(); renderSlip(); render(); $("shBody").scrollTop = 0;
-    toast(picks.length < pref.legsN ? "Only found " + picks.length + " legs with different players." : "Built a " + picks.length + "-leg parlay.");
-  }
-  else if (t.dataset.clear != null){ slip = []; saveSlip(); renderSlip(); render(); }
-}
-$("slipBtn").onclick = () => openSheet("slip", $("slipBtn"));
-$("list").addEventListener("click", e => {
-  const w = e.target.closest("[data-why]");
-  if (w){
-    const key = w.dataset.why, pn = document.getElementById("pn-" + key), c = current.get(key);
-    const open = w.getAttribute("aria-expanded") !== "true";
-    w.setAttribute("aria-expanded", open);
-    if (open){ openWhy.add(key); if (c) pn.innerHTML = panelHtml(c); pn.hidden = false; }
-    else { openWhy.delete(key); pn.hidden = true; }
-    return;
-  }
-  const t = e.target.closest("[data-def]");
-  if (t){ const c = current.get(t.closest(".panel").id.slice(3)); showDef(t.dataset.def, c ? c.side : "Over", t); return; }
-  const b = e.target.closest("[data-add]"); if (!b) return;
-  const c = current.get(b.dataset.add); if (!c) return;
-  toggleLeg(c); render();
-  const nb = $("list").querySelector('[data-add="' + CSS.escape(c.key) + '"]'); if (nb) nb.focus({preventScroll:true});
-});
-$("more").onclick = () => { shown += PAGE; render(); };
-$("filterNote").addEventListener("click", e => { if (e.target.id === "showAll"){ pref.prop = "all"; store.set("ps_prop", "all"); shown = PAGE; render(); } });
-let toastT = null;
-function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); }
-
-/* ---------- theme ---------- */
-const THEMES = ["auto", "light", "dark"];
-function applyTheme(t){
-  if (t === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", t);
-  $("theme").textContent = {auto:"◐ Auto", light:"☀ Light", dark:"☾ Dark"}[t];
-  $("theme").setAttribute("aria-label", "Color theme: " + t + ". Tap to change.");
-}
-let theme = store.get("ps_theme") || "auto";
-applyTheme(theme);
-$("theme").onclick = () => { theme = THEMES[(THEMES.indexOf(theme) + 1) % 3]; store.set("ps_theme", theme); applyTheme(theme); };
-
-/* ---------- data ---------- */
-async function live(){
-  const needs = D && (D.kalshi || []).length && (pref.where === "kalshi" || slip.some(l => l.plat === "kalshi"));
-  if (!needs || document.hidden) return;
-  const tickers = D.kalshi.map(u => u.ticker), out = {};
-  try{
-    for (let i = 0; i < tickers.length; i += 400){   // the Function splits these into Kalshi-sized batches
-      const r = await fetch("/api/prices?tickers=" + encodeURIComponent(tickers.slice(i, i + 400).join(",")), {cache:"no-store"});
-      if (!r.ok) throw new Error(r.status);
-      Object.assign(out, await r.json());
-    }
-    Q = out; liveAt = new Date();
-    refreshSlip(); render();
-    if (sheetMode === "slip") renderSlip();
-    $("live").textContent = pref.where === "kalshi" ? "Kalshi prices live as of " + liveAt.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"}) : "";
-  }catch(e){
-    if (pref.where === "kalshi") $("live").textContent = "Live Kalshi prices unavailable, showing prices from the last scan.";
-  }
-}
-function statusLine(){
-  const hrs = (Date.now() - new Date(D.updated)) / 36e5;
-  let h = (D.demo ? '<span class="demo">Demo data, made up</span>' : "") + "<span>Lines from " + ago(D.updated) + "</span>";
-  if (hrs > 72) h += '<span class="warnline">Old data: run a new scan</span>';
-  const older = Object.entries(D.markets_updated || {}).filter(([, t]) => t && (new Date(D.updated) - new Date(t)) > 6 * 36e5);
-  if (older.length) h += "<span>" + older.map(([m]) => (STAT[m] || {t:m}).t).join(", ") + " from " + ago(older[0][1]) + "</span>";
-  return h;
-}
-async function load(){
-  const demo = /[?&]demo\b/.test(location.search);
-  try{
-    D = await (await fetch((demo ? "demo-data.json" : "data.json") + "?t=" + Date.now(), {cache:"no-store"})).json();
-  }catch(e){ $("status").textContent = "Couldn't load data.json."; return; }
-  if (!D.updated || D.version !== 2){
-    $("status").textContent = D.updated ? "This data is from an older version of the scan." : "No scan has run yet.";
-    $("empty").hidden = false;
-    $("empty").textContent = "Run the workflow from the Actions tab on GitHub to get fresh picks.";
-    D = null; return;
-  }
-  const valid = new Set(["best", "kalshi", ...(D.books || []).map(b => b.k)]);
-  if (!valid.has(pref.where)) pref.where = "best";
-  if (pref.game !== "all" && !pref.game.startsWith("slate:") && !game(pref.game)) pref.game = "all";
-  $("status").innerHTML = statusLine();
-  const s = D.stats || {};
-  $("diag").textContent = (D.props || []).length + " sportsbook props across " + Object.keys(D.games || {}).length + " games. Kalshi: " +
-    (s.matched || 0) + " contracts matched to sportsbook lines, " + (D.kalshi || []).length + " shown." +
-    (s.credits_used != null ? " The last scan used " + s.credits_used + " Odds API credits." : "");
-  await loadAnalytics(demo);
-  refreshSlip();
-  render();
-  live();
-}
-async function loadAnalytics(demo){
-  A = null; aNote = "";
-  try{
-    const r = await fetch((demo ? "demo-analytics.json" : "analytics.json") + "?t=" + Date.now(), {cache:"no-store"});
-    if (!r.ok) throw new Error(r.status === 404 ? "analytics.json hasn't been generated yet (run the weekly analytics job)" : "HTTP " + r.status);
-    A = await r.json();
-    if (A.version !== 1) { aNote = "analytics.json is from a different version"; A = null; }
-  }catch(e){ aNote = String(e.message || e); A = null; }
-  const el = $("anaSrc");
-  if (!A){ el.innerHTML = "<b>Stats layer:</b> n/a (" + esc(aNote) + ")."; return; }
-  const src = Object.entries(A.sources || {}).map(([k, v]) => (v.ok ? "✓ " : "✕ ") + k + (v.ok ? "" : ": " + v.note)).join("<br>");
-  el.innerHTML = "<b>Stats layer:</b> nflverse data through week " + (A.played || []).slice(-1)[0] + " of " + A.season + ", built " + ago(A.generated) +
-    " for week " + A.week + ". Injury report: week " + A.inj_week + ".<br>" + (A.notes || []).map(esc).join("<br>") +
-    '<details style="margin-top:6px"><summary style="cursor:pointer;min-height:32px">Data sources</summary><p style="margin:6px 0 0">' + src + "</p></details>";
-}
-$("reload").onclick = load;
-$("build").textContent = "Page version " + BUILD + ".";
-setInterval(live, 30000);
-document.addEventListener("visibilitychange", live);
-load();
-</script>
+<script src="parlay.js?v=20261002"></script>
+<script src="model.js?v=20261002"></script>
+<script src="analytics.js?v=20261002"></script>
+<script src="app.js?v=20261002"></script>
 </body>
 </html>

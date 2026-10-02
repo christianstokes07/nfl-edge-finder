@@ -17,7 +17,9 @@ import polars as pl
 
 from . import context as X
 from . import metrics as M
+from . import matchups as MU
 from . import project
+from . import teams as teams_mod
 from .model import norm_name
 
 OUT = os.environ.get("ANALYTICS_PATH", "site/analytics.json")
@@ -102,6 +104,8 @@ def load_all(season, prior):
         "sched_prior": S.load("schedules (last season)", nfl.load_schedules, [prior]),
         "pbp_prior": S.load("play-by-play (last season)", nfl.load_pbp, [prior]),
         "ps_prior": S.load("player stats (last season)", nfl.load_player_stats, [prior]),
+        # coverage type per pass play (Cover 1/2/3...): published through last season only
+        "part_prior": S.load("coverage charting (last season, participation)", nfl.load_participation, [prior]),
     }
     cache_for(6 * 3600)
     d = {
@@ -118,6 +122,7 @@ def load_all(season, prior):
         "pfr_rush": S.load("PFR rushing charting", nfl.load_pfr_advstats, [season], stat_type="rush", summary_level="week"),
         "pfr_pass": S.load("PFR passing charting", nfl.load_pfr_advstats, [season], stat_type="pass", summary_level="week"),
         "inj": S.load("injury reports", nfl.load_injuries, [season]),
+        "ftn": S.load("FTN charting (blitzes, box counts)", nfl.load_ftn_charting, [season]),
         "teams": S.load("teams", nfl.load_teams),
     }
     # Participation (who was on the field each play) would give exact routes/pass snaps. Record whether
@@ -469,8 +474,70 @@ def build(d, sources, now=None, odds_key=None):
         elif s.get("def") and sum(s["def"]) / len(s["def"]) >= 0.6:
             inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"], "side": "def",
                                                       "role": f"{round(100 * sum(s['def']) / len(s['def']))}% of defensive snaps"})
+    # Questionable players and other regulars, both sides of the ball (the panel's injury report)
+    for gid, r in inj.items():
+        if r["team"] not in week_teams or not r["status"] or (r["status"] in ("Out", "Doubtful") and
+                                                              any(x["n"] == r["name"] for x in inj_out.get(r["team"], []))):
+            continue
+        s = snaps.get(gid, {})
+        off = sum(s["off"]) / len(s["off"]) if s.get("off") else 0
+        dfn = sum(s["def"]) / len(s["def"]) if s.get("def") else 0
+        if gid in roles or off >= 0.5 or dfn >= 0.5:
+            side = "off" if (gid in roles or off >= dfn) else "def"
+            role = roles.get(gid) or f"{round(100 * max(off, dfn))}% of {'offensive' if side == 'off' else 'defensive'} snaps"
+            inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"],
+                                                      "side": side, "role": role})
+    order = {"Out": 0, "Doubtful": 1, "Questionable": 2}
     for t in t_out:
-        t_out[t]["out"] = inj_out.get(t, [])
+        t_out[t]["out"] = sorted(inj_out.get(t, []), key=lambda x: (order.get(x["s"], 3), x["side"]))
+
+    # ---------------- scheme matchups (coverage: last season; blitz / box: this season)
+    cov_teams, cov_rec = MU.coverage_profiles(d.get("part_prior"), pbp_prior)
+    bb_teams, qb_blitz, rb_box = MU.blitz_box_profiles(d.get("ftn"), pbp)
+    for key in list(MU.COVERAGES) + ["MAN"]:
+        vals = {t: (cov_teams.get(t) or {}).get("man") if key == "MAN" else ((cov_teams.get(t) or {}).get("cov") or {}).get(key)
+                for t in teams_p}
+        ranks = M.rank_desc(vals)
+        for t in teams_p:
+            if vals[t] is not None:
+                t_out[t].setdefault("cov", {})[key] = [r3(vals[t]), ranks.get(t)]
+    for key in ("blitz", "box8"):
+        vals = {t: (bb_teams.get(t) or {}).get(key) for t in teams_p}
+        ranks = M.rank_desc(vals)
+        for t in teams_p:
+            if vals[t] is not None:
+                t_out[t][key] = [r3(vals[t]), ranks.get(t)]
+    home_by_game = {r["game_id"]: r["home_team"] for r in tg.iter_rows(named=True)}
+    logs = MU.game_logs(pg_cur, home_by_game)
+    last_year = MU.season_averages(pg_prior) if pg_prior is not None else {}
+    for pl_ in out_players:
+        fields = MU.LOG_FIELDS[pl_["pos"]]
+        pid = pl_["id"]
+        pl_["log"] = [[r["week"], r["defteam"], r["home"]] + [round(r.get(f) or 0) for f in fields] for r in logs.get(pid, [])]
+        if pid in last_year:
+            pl_["ly"] = [last_year[pid]["g"]] + [round(last_year[pid][f], 1) for f in fields]
+        if pid in cov_rec:
+            pl_["cv"] = {k: [v[0], round(v[1], 1)] for k, v in cov_rec[pid].items()}
+        if pid in qb_blitz:
+            pl_["bz"] = {k: [v[0], round(v[1], 2)] for k, v in qb_blitz[pid].items()}
+        if pid in rb_box:
+            pl_["bx"] = {k: [v[0], round(v[1], 1)] for k, v in rb_box[pid].items()}
+
+    # ---------------- final scores (bet grading on the page) and the pick log's track record
+    results = []
+    for g in sched.filter(pl.col("home_score").is_not_null() & (pl.col("game_type") == "REG")).iter_rows(named=True):
+        results.append({"game_id": g["game_id"], "week": g["week"], "away": names.get(g["away_team"], g["away_team"]),
+                        "home": names.get(g["home_team"], g["home_team"]), "away_score": g["away_score"],
+                        "home_score": g["home_score"], "kick": X.kickoff_utc(g["gameday"], g["gametime"])})
+    track = None
+    log_path = os.environ.get("LOG_PATH", "data/picks_log.csv")
+    if os.path.exists(log_path):
+        import csv
+        with open(log_path) as f:
+            rows = list(csv.DictReader(f))
+        if rows and "analytics" in rows[0]:
+            graded = MU.grade(rows, pg_cur, results, {k: v["name"] for k, v in info.items()}, now)
+            track = MU.track_record(graded)
 
     if "participation (per-play on-field players)" in sources and not sources["participation (per-play on-field players)"]["ok"]:
         notes.append("Per-play participation isn't published for this season, so routes and pass snaps are estimated "
@@ -495,6 +562,9 @@ def build(d, sources, now=None, odds_key=None):
         "sigma": {k: r3(v["sigma"]) for k, v in sigmas.items()}, "sigma_n": {k: v["n"] for k, v in sigmas.items()},
         "game_sd": {"margin": r3(gsd["margin"], 2), "total": r3(gsd["total"], 2), "n": gsd["n"]},
         "sources": sources, "notes": notes, "games": games, "teams": t_out, "players": out_players,
+        "logk": MU.LOG_FIELDS, "covk": MU.COVERAGES, "track": track,
+        "results": [[r["week"], teams_mod.abbr(r["away"]) or r["away"], teams_mod.abbr(r["home"]) or r["home"],
+                     r["away_score"], r["home_score"], r["kick"].strftime("%Y-%m-%d") if r["kick"] else None] for r in results],
         "consts": {"recency": M.RECENCY, "prior_games": M.PRIOR_GAMES, "small": M.SMALL_SAMPLE},
     }
 
@@ -518,8 +588,8 @@ def main():
         print(f"  {'ok ' if v['ok'] else 'n/a'} {k}: {v.get('rows', v.get('note'))}")
     for n in data["notes"]:
         print("  note:", n)
-    if size > 400_000:
-        sys.exit("analytics.json is over 400 KB; trim before publishing")
+    if size > 600_000:
+        sys.exit("analytics.json is over 600 KB; trim before publishing")
 
 
 if __name__ == "__main__":

@@ -21,7 +21,7 @@ const secs = AN.sections(A, warren, "player_rush_yds");
 assert.deepEqual(secs.map(s => s.title), ["Usage", "Efficiency", "Matchup vs Browns", "Game context"]);
 for (const s of secs) assert.ok(s.lines.length >= 3 && s.lines.length <= 5, s.title + " has " + s.lines.length);
 const all = secs.flatMap(s => s.lines.map(l => l.text)).join("\n");
-assert.match(all, /gets 58% of the Steelers' carries \(81st percentile among running backs\)/);
+assert.match(all, /gets 58% of the Steelers' carries \(top 19% of running backs\)/);
 assert.match(all, /4\.9 yards per carry \(4\.7 adjusted for defenses faced\)/);
 assert.match(all, /Browns allow 4\.6 yards per carry, 6th most in the NFL/);            // adjusted rounds the same: not repeated
 assert.match(all, /Browns stop 17% of runs at or behind the line \(21% adjusted for offenses faced\), 8th highest/);
@@ -69,4 +69,32 @@ assert.match(AN.why(c, A, null, null, "n/a", 65.5, "x"), /Stats: n\/a \(no nflve
 // bottom-half ranks read from the other end: rank 18 of 32 -> "15th fewest"
 assert.match(all, /Browns allow −0\.04 EPA per run \(−0\.07 adjusted for offenses faced\), 15th fewest in the NFL/);
 assert.match(all, /The Steelers run 61\.2 plays per game, 9th most/);
+// recent form: game log for the stat, hits vs the line, home/away split, last season
+const L = AN.gameLog(A, warren, "player_rush_yds");
+assert.deepEqual(L.map(x => x.v), [80, 52, 71]);
+assert.deepEqual(AN.gameLog(A, warren, "player_rush_reception_yds").map(x => x.v), [90, 57, 93]);
+const rf = AN.recentSection(A, warren, "player_rush_yds", 65.5, "Over").lines.map(l => l.text).join("\n");
+assert.match(rf, /Last 3 games: 71 vs NE, 52 @ SEA, 80 vs ATL/);
+assert.match(rf, /Over 65\.5 in 2 of 3 games this season \(average 67\.7\)/);
+assert.match(rf, /Home: 75\.5 a game \(2\) · Away: 52\.0 \(1\)/);
+assert.match(rf, /Last season: 58\.2 rushing yards per game over 17 games/);
+assert.match(rf, /on the road/);
+// coverage: CLE's most-used coverage, and the TE's split against it (good matchup when 15%+ better)
+const sc = AN.schemeSection(A, AN.findPlayer(A, "Pat Freiermuth", []), "player_reception_yds");
+const sct = sc.lines.map(l => l.text).join("\n");
+assert.match(sct, /Browns played Cover 1 on 35% of dropbacks last season \(2nd most\)/);
+assert.match(sct, /Freiermuth vs Cover 1: 10\.4 yards per target \(12 targets\) vs 7\.5 overall · good matchup/);
+assert.match(sct, /man coverage 41% of the time \(5th most\); Freiermuth averaged 9\.8 yards per target vs man, 6\.4 vs zone/);
+assert.equal(sc.edge, 1);
+// the short version leads with what matters and marks direction for THIS pick
+const sv = AN.shortVersion(A, warren, {stat: "player_rush_yds", side: "Over", hit: 0.55}, 65.5, warren.pj.player_rush_yds, "neutral");
+assert.match(sv[0].text, /listed Questionable/);          // the player's own injury always comes first
+assert.equal(sv[0].dir, -1);
+assert.ok(sv.some(x => /would have hit in 2 of 3 games/.test(x.text) && x.dir === 1));
+const svU = AN.shortVersion(A, warren, {stat: "player_rush_yds", side: "Under", hit: 0.45}, 65.5, warren.pj.player_rush_yds, "neutral");
+assert.ok(svU.some(x => /would have hit in 1 of 3 games/.test(x.text) && x.dir === -1));
+// injuries for both teams
+const inj = AN.injurySection(A, warren).lines.map(l => l.text).join("\n");
+assert.match(inj, /Steelers: WR Calvin Austin Out \(Ankle\)/);
+assert.match(inj, /Browns: CB Denzel Ward Out \(Hamstring\)/);
 console.log("analytics.js: all tests passed");

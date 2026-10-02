@@ -164,8 +164,11 @@
     ybc: "not in PFR charting yet", pressure_faced: "not in PFR charting yet",
     yprr_proxy: "not found in nflverse snap counts", tprr_proxy: "not found in nflverse snap counts", snap_share: "not found in nflverse snap counts",
   };
+  // percentile -> plain words: 89 -> "top 11% of running backs", 30 -> "bottom 30%"
   function pctText(m, pos) {
-    return m.pct == null ? "" : " (" + ord(m.pct) + " percentile among " + POSN[pos] + ")";
+    if (m.pct == null) return "";
+    if (m.pct >= 50) return " (top " + Math.max(1, 100 - m.pct) + "% of " + POSN[pos] + ")";
+    return " (bottom " + Math.max(1, m.pct) + "% of " + POSN[pos] + ")";
   }
   function line(key, text, na) { return {key, text, na: !!na}; }
 
@@ -463,7 +466,172 @@
     return out;
   }
 
-  const api = {gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
+  // ---- recent form, home/away, last season ------------------------------------------------------------
+  const LOGF = {player_rush_yds: "rush_yds", player_reception_yds: "rec_yds", player_receptions: "receptions",
+    player_pass_yds: "pass_yds", player_pass_completions: "completions", player_pass_attempts: "attempts",
+    player_rush_attempts: "carries", player_pass_tds: "pass_tds", player_pass_interceptions: "ints", player_anytime_td: "tds"};
+  function statValue(fields, row, stat, offset) {
+    const get = f => { const i = fields.indexOf(f); return i < 0 ? null : row[i + offset]; };
+    if (stat === "player_rush_reception_yds") {
+      const a = get("rush_yds"), b = get("rec_yds");
+      return a == null && b == null ? null : (a || 0) + (b || 0);
+    }
+    return LOGF[stat] ? get(LOGF[stat]) : null;
+  }
+  // [{wk, opp, home, v}] newest last, for this stat
+  function gameLog(A, p, stat) {
+    const fields = (A.logk || {})[p.pos] || [];
+    return (p.log || []).map(r => ({wk: r[0], opp: r[1], home: !!r[2], v: statValue(fields, r, stat, 3)})).filter(x => x.v != null);
+  }
+  function lastYear(A, p, stat) {
+    if (!p.ly) return null;
+    const v = statValue((A.logk || {})[p.pos] || [], p.ly, stat, 1);
+    return v == null ? null : {g: p.ly[0], avg: v};
+  }
+  const avg = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
+  // did this game beat the pick? (TD: scored or not)
+  function cleared(v, stat, line, side) {
+    const over = OVER.has(side);
+    if (stat === "player_anytime_td") return (v > 0) === over;
+    return line == null ? null : (v > line) === over;
+  }
+  function recentSection(A, p, stat, line, side) {
+    const L = gameLog(A, p, stat), out = [], ly = lastYear(A, p, stat), isTd = stat === "player_anytime_td";
+    const unit = isTd ? "TDs" : (UNIT[stat] || "");
+    if (L.length) {
+      const last = L.slice(-5).reverse();
+      out.push(line_(null, "Last " + last.length + (last.length === 1 ? " game: " : " games: ") +
+        last.map(x => fmtv(x.v, stat) + (x.home ? " vs " : " @ ") + x.opp).join(", ") + " (newest first)"));
+      const hits = L.filter(x => cleared(x.v, stat, line, side));
+      if (isTd) out.push(line_(null, "Scored in " + L.filter(x => x.v > 0).length + " of " + L.length + " games this season"));
+      else if (line != null) out.push(line_(null, (OVER.has(side) ? "Over " : "Under ") + fmt(line) + " in " + hits.length + " of " + L.length + " games this season (average " + d1(avg(L.map(x => x.v))) + ")"));
+      const H = L.filter(x => x.home), W = L.filter(x => !x.home);
+      if (H.length && W.length && !isTd) out.push(line_(null, "Home: " + d1(avg(H.map(x => x.v))) + " a game (" + H.length + ") · Away: " + d1(avg(W.map(x => x.v))) + " (" + W.length + ")"));
+    } else out.push(line_(null, "n/a (no games logged this season yet)", true));
+    if (ly) out.push(line_(null, "Last season: " + (isTd ? d2(ly.avg) + " TDs" : d1(ly.avg) + " " + unit) + " per game over " + ly.g + " games"));
+    const G = (A.games || {})[p.t];
+    if (G) out.push(line_(null, "This week he's " + (G.home ? "at home" : "on the road") + (G.rest != null && G.opp_rest != null && G.rest !== G.opp_rest ? ", " + G.rest + " days of rest vs " + G.opp_rest : "")));
+    return {title: "Recent form", lines: out, log: L};
+  }
+  const line_ = (key, text, na) => ({key, text, na: !!na});
+  const fmtv = (v, stat) => String(Math.round(v));
+
+  // ---- scheme matchups --------------------------------------------------------------------------------
+  function schemeSection(A, p, stat) {
+    const G = (A.games || {})[p.t], O = G && A.teams[G.opp], out = [];
+    let edge = 0;
+    if (!O) return {title: "Scheme matchup", lines: [], edge};
+    const on = nick(O.name), who = nick(p.n), nT = A.nteams || 32, covk = A.covk || {};
+    if (/reception|receptions|rush_reception/.test(stat) && p.pos !== "QB") {
+      const cov = Object.entries(O.cov || {}).filter(([k]) => k !== "MAN").sort((a, b) => b[1][0] - a[1][0]);
+      if (cov.length) {
+        const [k, [share, rank]] = cov[0];
+        out.push(line_(null, on + " played " + (covk[k] || k) + " on " + pct(share) + " of dropbacks last season (" + rankText(rank, nT, "most", "least") + ")"));
+        const cv = p.cv || {}, all = cv.ALL, mine = cv[k];
+        if (mine && all) {
+          const rel = mine[1] / all[1] - 1;
+          if (Math.abs(rel) >= 0.15) edge += rel > 0 ? 1 : -1;
+          out.push(line_(null, who + " vs " + (covk[k] || k) + ": " + d1(mine[1]) + " yards per target (" + mine[0] + " targets) vs " + d1(all[1]) + " overall" +
+            (rel >= 0.15 ? " · good matchup" : rel <= -0.15 ? " · tough matchup" : "")));
+        } else out.push(line_(null, who + " vs " + (covk[k] || k) + ": n/a (fewer than 8 targets against it last season)", true));
+      }
+      const man = (O.cov || {}).MAN, cv = p.cv || {};
+      if (man) {
+        const leanMan = man[0] >= 0.4, mine = cv[leanMan ? "MAN" : "ZONE"], other = cv[leanMan ? "ZONE" : "MAN"];
+        out.push(line_(null, on + " were in man coverage " + pct(man[0]) + " of the time (" + rankText(man[1], nT, "most", "least") + ")" +
+          (mine && other ? "; " + who + " averaged " + d1(mine[1]) + " yards per target vs " + (leanMan ? "man" : "zone") + ", " + d1(other[1]) + " vs " + (leanMan ? "zone" : "man") : "")));
+      }
+      if (out.length) out.push(line_(null, "Coverage charting is last season's (2025): this season's isn't public yet, and coaching changes can shift it.", true));
+    }
+    if (/pass_/.test(stat) && p.pos === "QB") {
+      if (O.blitz) out.push(line_(null, on + " blitz on " + pct(O.blitz[0]) + " of dropbacks (" + rankText(O.blitz[1], nT, "most", "least") + ", this season)"));
+      const bz = p.bz || {};
+      if (bz.blitz && bz.no) {
+        const diff = bz.blitz[1] - bz.no[1];
+        if (O.blitz && O.blitz[1] <= 8 && Math.abs(diff) >= 0.15) edge += diff > 0 ? 1 : -1;
+        out.push(line_(null, who + ": " + sgn(bz.blitz[1], d2) + " EPA per dropback when blitzed (" + bz.blitz[0] + ") vs " + sgn(bz.no[1], d2) + " when not (" + bz.no[0] + ")"));
+      }
+    }
+    if (/rush/.test(stat) && p.pos !== "WR") {
+      if (O.box8) out.push(line_(null, on + " put 8+ defenders in the box on " + pct(O.box8[0]) + " of runs (" + rankText(O.box8[1], nT, "most", "least") + ", this season)"));
+      const bx = p.bx || {};
+      if (bx.box8 && bx.lt8) {
+        const diff = bx.box8[1] - bx.lt8[1];
+        if (O.box8 && O.box8[1] <= 8 && diff <= -1) edge -= 1;
+        out.push(line_(null, who + ": " + d1(bx.box8[1]) + " yards per carry vs 8+ in the box (" + bx.box8[0] + " carries) vs " + d1(bx.lt8[1]) + " against lighter boxes"));
+      }
+    }
+    return {title: "Scheme matchup", lines: out, edge};
+  }
+
+  // ---- injuries, both teams ---------------------------------------------------------------------------
+  function injurySection(A, p) {
+    const G = (A.games || {})[p.t], out = [];
+    if (p.inj && (p.inj[0] || p.inj[2])) out.push(line_(null, nick(p.n) + ": " + (p.inj[0] || p.inj[2]) + (p.inj[1] ? " (" + p.inj[1] + ")" : "")));
+    for (const t of [p.t, G && G.opp]) {
+      const T = A.teams[t]; if (!T) continue;
+      const xs = (T.out || []).filter(x => P.norm(x.n) !== P.norm(p.n)).slice(0, 5);
+      out.push(line_(null, nick(T.name) + ": " + (xs.length ? xs.map(x => x.pos + " " + x.n + " " + x.s + (x.i ? " (" + x.i + ")" : "") + " · " + x.role).join("; ") : "no regulars on the report")));
+    }
+    out.push(line_(null, "Injury report from week " + A.inj_week + ". Final inactives come out 90 minutes before kickoff.", true));
+    return {title: "Injuries", lines: out};
+  }
+
+  // ---- the short version: what matters most, first ---------------------------------------------------
+  // Each point says whether it helps or hurts THIS pick. Ordered by how much it should move you.
+  function shortVersion(A, p, c, lineVal, pj, v) {
+    const pts = [], over = OVER.has(c.side), stat = c.stat, M = metrics(A, p), G = (A.games || {})[p.t] || {}, O = A.teams[G.opp];
+    const add = (w, dir, text) => pts.push({w, dir, text});
+    if (p.inj && /Out|Doubtful|Questionable/.test(p.inj[0] || "")) add(10, -1, nick(p.n) + " is listed " + p.inj[0] + (p.inj[1] ? " (" + p.inj[1] + ")" : "") + ": check inactives before betting");
+    if (pj) {
+      if (stat === "player_anytime_td") {
+        const mk = over ? c.hit : 1 - c.hit, d = pj.p - mk;
+        add(Math.abs(d) * 40, (d > 0) === over ? 1 : -1, "Stats give him a " + pct(pj.p) + " chance to score vs " + pct(mk) + " in the market");
+      } else if (lineVal != null) {
+        const gap = (pj.med - lineVal) / Math.max(lineVal, 1);
+        add(Math.abs(gap) * 30, v === "agree" ? 1 : v === "disagree" ? -1 : 0, "Stats project " + d1(pj.med) + " " + (UNIT[stat] || "") + " vs the " + fmt(lineVal) + " line" +
+          (v === "agree" ? " (backs this pick)" : v === "disagree" ? " (points the other way)" : " (close to the line)"));
+      }
+    }
+    const L = gameLog(A, p, stat);
+    if (L.length >= 2) {
+      const hits = L.filter(x => cleared(x.v, stat, lineVal, c.side)).length, rate = hits / L.length;
+      add(1 + Math.abs(rate - 0.5) * 6 * Math.min(1, L.length / 4), rate > 0.5 ? 1 : rate < 0.5 ? -1 : 0,
+        (stat === "player_anytime_td" ? "Scored in " + L.filter(x => x.v > 0).length + " of " + L.length : "This pick would have hit in " + hits + " of " + L.length) + " games this season");
+    }
+    const usage = {player_rush_yds: "carry_share", player_rush_attempts: "carry_share", player_reception_yds: "target_share", player_receptions: "target_share",
+                   player_rush_reception_yds: "touches_pg", player_anytime_td: "rz_opp_share", player_pass_yds: "attempts_pg", player_pass_attempts: "attempts_pg",
+                   player_pass_completions: "comp_pct", player_pass_tds: "epa_db", player_pass_interceptions: "int_rate"}[stat];
+    if (usage && M[usage] && M[usage].pct != null) {
+      const good = M[usage].pct >= 70, bad = M[usage].pct <= 30;
+      const l = playerLine(usage, M, p, A);
+      if (l && (good || bad)) add(1.5, (good === over) ? 1 : -1, l.text);
+    }
+    if (O) {
+      const pos = p.pos === "QB" ? null : p.pos, nT = A.nteams || 32;
+      const key = /rush/.test(stat) && stat !== "player_rush_reception_yds" ? ["d", "ypc"] : pos && /reception|receptions/.test(stat) ? ["dp", pos, "ypt"] : /pass/.test(stat) ? ["d", "ypa"] : stat === "player_anytime_td" ? ["d", "rz_td_pct"] : null;
+      let x = null;
+      if (key && key[0] === "d") x = (O.d || {})[key[1]];
+      if (key && key[0] === "dp") x = ((O.dp || {})[key[1]] || {})[key[2]];
+      if (x && x[2] && (x[2] <= 8 || x[2] >= nT - 7)) {
+        const soft = x[2] <= 8;   // allows a lot
+        const what = key[0] === "dp" ? d1(x[0]) + " yards per target to " + POSN[pos] : key[1] === "ypc" ? d1(x[0]) + " yards per carry" : key[1] === "ypa" ? d1(x[0]) + " yards per pass" : pct(x[0]) + " TDs on red-zone trips";
+        add(2, soft === over ? 1 : -1, nick(O.name) + " allow " + what + " (" + rankText(x[2], nT, "most", "fewest") + ")");
+      }
+    }
+    const sc = schemeSection(A, p, stat);
+    if (sc.edge) add(1.8, (sc.edge > 0) === over ? 1 : -1, sc.lines.find(l => /good matchup|tough matchup|EPA per dropback when blitzed|8\+ in the box \(/.test(l.text)).text);
+    // warnings (wind on a passing pick, line moving against you) hurt; teammate/defense news is context
+    for (const f of flags(A, p, stat, c.side, c.prop_mv ? {mv: c.prop_mv} : null)) if (f.k !== "injury") add(f.sev ? 3 : 1.2, f.sev ? -1 : 0, f.text);
+    if (G.implied != null && stat !== "player_pass_interceptions") {
+      const hi = G.implied >= 26, lo = G.implied <= 18;
+      if (hi || lo) add(1, (hi === over) ? 1 : -1, nick((A.teams[p.t] || {}).name || p.t) + " are expected to score " + d1(G.implied) + " points" + (hi ? " (a high total)" : " (a low total)"));
+    }
+    pts.sort((a, b) => b.w - a.w);
+    return pts.slice(0, 5);
+  }
+
+  const api = {shortVersion, recentSection, schemeSection, injurySection, gameLog, lastYear, cleared, gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
                YARDS_REL, RECEPTIONS_ABS, PASS_TDS_ABS, TD_PROB_ABS};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Analytics = api;

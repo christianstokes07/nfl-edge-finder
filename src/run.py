@@ -433,6 +433,8 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
         "props": [{"id": f"p{i}", **p} for i, p in enumerate(prop_list)],
         "lines": [{"id": f"q{i}", **p} for i, p in enumerate(game_props)],   # moneyline / spread / total
         "game_sd": {"margin": C.MARGIN_SD, "total": C.TOTAL_SD},
+        # what site/model.js needs to price custom lines exactly like the scan does
+        "model": {"sigma": C.SIGMA, "td_vig": C.ANYTIME_TD_VIG, "dist": C.KALSHI_LINE_DISTANCE},
         "kalshi": kalshi_rows,  # the page re-prices these live
         "picks": [
             {**p, "label": STAT_LABEL[p["stat"]], "fair": round(p["fair"], 3), "edge": round(p["edge"], 3)}
@@ -479,6 +481,10 @@ def kalshi_refresh(path=None, markets=None, now=None):
     lines = props.lines_from_props(prev.get("props", []), prev.get("games", {}))
     gprops = [{k: v for k, v in p.items() if k != "id"} for p in prev.get("lines", [])]
     markets = markets if markets is not None else get_kalshi_markets()
+    if not markets:
+        # Kalshi unreachable or empty: never replace a working list with nothing
+        print("[kalshi-only] no Kalshi markets came back (network or API trouble); data.json left unchanged")
+        return None
     universe = []
     picks, stats = evaluate(lines, markets, universe, games_mod.lines_from_props(gprops), prev.get("games"))
     stats["credits_used"] = 0
@@ -539,6 +545,10 @@ def main():
     universe = []
     picks, stats = evaluate(lines, markets, universe, game_lines, games)
     stats["credits_used"] = used
+    if not markets and prev and prev.get("kalshi"):
+        # Kalshi didn't answer: keep the previous Kalshi rows (the page re-prices them live) instead of none
+        print("[kalshi] no markets came back; keeping the previous scan's Kalshi contracts")
+        universe = [u for u in prev["kalshi"] if u.get("g") in games]
     msg = build_message(picks, stats)
     print(msg)
     if not args.no_send:

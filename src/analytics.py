@@ -17,10 +17,11 @@ import polars as pl
 
 from . import context as X
 from . import metrics as M
+from . import injuries as INJ
 from . import matchups as MU
+from .model import norm_name
 from . import project
 from . import teams as teams_mod
-from .model import norm_name
 
 OUT = os.environ.get("ANALYTICS_PATH", "site/analytics.json")
 # order matters: rush+rec yards is built from the rushing and receiving projections before it
@@ -182,7 +183,7 @@ def injury_map(inj, week):
     return out, use
 
 
-def build(d, sources, now=None, odds_key=None):
+def build(d, sources, now=None, odds_key=None, fetch_injuries=True):
     now = now or datetime.now(timezone.utc)
     sched = d["sched"]
     season = int(sched["season"][0])
@@ -245,6 +246,33 @@ def build(d, sources, now=None, odds_key=None):
     gsd = M.game_spreads(sched_all)
     snaps = snap_info(d["snaps"], d["rosters"], tg)
     inj, inj_week = injury_map(d["inj"], week)
+    # ESPN's feed carries today's game designations (Doubtful, Out...) with a time and a news note: it wins
+    espn, espn_note = (INJ.fetch() if fetch_injuries else ({}, "not fetched"))
+    inj_src = "nflverse injury report (week %s)" % inj_week
+    if espn:
+        idx = {}
+        for gid, v in info.items():
+            idx[(v["team"], norm_name(v["name"] or ""))] = gid
+        for gid, sv in snaps.items():
+            idx.setdefault((sv["team"], norm_name(sv["name"] or "")), gid)
+        # nickname fallback ("Hollywood Brown" = Marquise Brown): same team, last name and position, if unique
+        by_last = {}
+        for (team, nm), gid in idx.items():
+            pos = (info.get(gid) or {}).get("pos")
+            by_last.setdefault((team, nm.split(" ")[-1] if nm else "", pos), set()).add(gid)
+        for (team, nm), e in INJ.by_name(espn).items():
+            gid = idx.get((team, nm))
+            if not gid:
+                cands = by_last.get((team, nm.split(" ")[-1] if nm else "", e["pos"]), set())
+                gid = next(iter(cands)) if len(cands) == 1 else None
+            gid = gid or f"espn:{team}:{nm}"
+            cur = inj.get(gid, {})
+            inj[gid] = {**cur, "status": e["s"], "injury": e["i"] or cur.get("injury"), "practice": cur.get("practice"),
+                        "name": e["n"], "pos": e["pos"] or cur.get("pos"), "team": team, "date": e["d"], "news": e["c"]}
+        sources["ESPN injury feed (current designations)"] = {"ok": True, "rows": sum(len(v) for v in espn.values())}
+        inj_src = "ESPN injury feed, " + now.strftime("%Y-%m-%d %H:%M UTC")
+    else:
+        sources["ESPN injury feed (current designations)"] = {"ok": False, "note": espn_note}
 
     # ---------------- game context for the upcoming week
     names = {}
@@ -448,7 +476,8 @@ def build(d, sources, now=None, odds_key=None):
             "img": short_img((info.get(pid) or {}).get("img")),
             "qual": qualifies(pos, raw), "m": pm, "pj": projs,
             "prior": {"g": p["prior"]["games"]} if p["prior"] else None,
-            "inj": [injr["status"], injr["injury"], injr["practice"]] if injr and (injr["status"] or injr["practice"]) else None,
+            "inj": [injr["status"], injr["injury"], injr["practice"], injr.get("date"), injr.get("news")]
+                   if injr and (injr["status"] or injr["practice"]) else None,
         })
 
     # ---------------- key injuries per team (offense: role players; defense: regular starters)
@@ -466,17 +495,18 @@ def build(d, sources, now=None, odds_key=None):
             roles[pl_["id"]] = ", ".join(role)
     inj_out = {}
     for gid, r in inj.items():
-        if r["status"] not in ("Out", "Doubtful") or r["team"] not in week_teams:
+        if r["status"] not in INJ.OUT or r["team"] not in week_teams:
             continue
         s = snaps.get(gid, {})
+        extra = {"d": r.get("date"), "c": r.get("news")}
         if gid in roles:
-            inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"], "side": "off", "role": roles[gid]})
+            inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"], "side": "off", "role": roles[gid], **extra})
         elif s.get("def") and sum(s["def"]) / len(s["def"]) >= 0.6:
             inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"], "side": "def",
-                                                      "role": f"{round(100 * sum(s['def']) / len(s['def']))}% of defensive snaps"})
+                                                      "role": f"{round(100 * sum(s['def']) / len(s['def']))}% of defensive snaps", **extra})
     # Questionable players and other regulars, both sides of the ball (the panel's injury report)
     for gid, r in inj.items():
-        if r["team"] not in week_teams or not r["status"] or (r["status"] in ("Out", "Doubtful") and
+        if r["team"] not in week_teams or not r["status"] or (r["status"] in INJ.OUT and
                                                               any(x["n"] == r["name"] for x in inj_out.get(r["team"], []))):
             continue
         s = snaps.get(gid, {})
@@ -486,8 +516,8 @@ def build(d, sources, now=None, odds_key=None):
             side = "off" if (gid in roles or off >= dfn) else "def"
             role = roles.get(gid) or f"{round(100 * max(off, dfn))}% of {'offensive' if side == 'off' else 'defensive'} snaps"
             inj_out.setdefault(r["team"], []).append({"n": r["name"], "pos": r["pos"], "s": r["status"], "i": r["injury"],
-                                                      "side": side, "role": role})
-    order = {"Out": 0, "Doubtful": 1, "Questionable": 2}
+                                                      "side": side, "role": role, "d": r.get("date"), "c": r.get("news")})
+    order = {"Out": 0, "Injured Reserve": 0, "Suspension": 0, "Doubtful": 1, "Questionable": 2}
     for t in t_out:
         t_out[t]["out"] = sorted(inj_out.get(t, []), key=lambda x: (order.get(x["s"], 3), x["side"]))
 
@@ -550,7 +580,7 @@ def build(d, sources, now=None, odds_key=None):
 
     return {
         "version": 1, "generated": now.isoformat(timespec="seconds"), "season": season, "week": week,
-        "played": played, "prior": prior, "inj_week": inj_week,
+        "played": played, "prior": prior, "inj_week": inj_week, "inj_src": inj_src,
         "script": {k: r3(v, 4) for k, v in script.items()}, "tdpp": r3(tdpp, 4),
         "mf": {k: {"factor": r3(v["factor"]), "n": v["n"]} for k, v in medf.items()},
         "league": {k: r3(v) for k, v in league.items()},

@@ -97,4 +97,40 @@ assert.ok(svU.some(x => /would have hit in 1 of 3 games/.test(x.text) && x.dir =
 const inj = AN.injurySection(A, warren).lines.map(l => l.text).join("\n");
 assert.match(inj, /Steelers: WR Calvin Austin Out \(Ankle\)/);
 assert.match(inj, /Browns: CB Denzel Ward Out \(Hamstring\)/);
+// ---- injuries: freed-up targets go to the active players in proportion to their shares
+const mk = A.mk.WR, wr = (n, share, inj, lastWk) => ({n, id: n, pos: "WR", t: "PIT", g: 3, wk: [1, 2, 3], m: mk.map(k => k === "target_share" ? [share, 50] : null),
+  pj: {}, inj, log: [[lastWk, "CLE", 1, 50, 4, 6, 0, 0, 0]]});
+A.players.push(wr("Calvin Austin", 0.18, ["Out", "Ankle", null, "2026-10-02T16:00Z", "Ruled out Friday."], 3));
+A.players.push(wr("DK Metcalf", 0.40, null, 3));
+A.players.push(wr("Long Gone", 0.10, ["Injured Reserve", "Knee", null, null, null], 1));   // hasn't played since week 1: already priced in
+A._byName = null;   // players added after the lookup index was built
+const fm = AN.findPlayer(A, "Pat Freiermuth", []);
+const adj = AN.injuryAdjust(A, fm, "player_reception_yds");
+assert.deepEqual(adj.target_share.freed.map(x => x.n), ["Calvin Austin"]);
+assert.ok(Math.abs(adj.target_share.newShare - (0.17 + 0.18 * 0.4 * 0.17 / 0.57)) < 1e-9);
+const mAdj = AN.injuryAdjust(A, AN.findPlayer(A, "DK Metcalf", []), "player_reception_yds");    // the WR gets the WR-only 60% too
+assert.ok(Math.abs(mAdj.target_share.newShare - (0.40 + 0.18 * 0.6 * 0.40 / 0.40 + 0.18 * 0.4 * 0.40 / 0.57)) < 1e-9);
+const pjA = AN.adjustProjection("player_reception_yds", fm.pj.player_reception_yds, adj);
+assert.ok(Math.abs(pjA.med - 37.0 * adj.target_share.factor) < 1e-9 && pjA.adj === adj);
+assert.match(AN.adjustText(fm, adj), /WR Calvin Austin \(Out\) is likely out: his 18% of the team's targets get spread around, so Freiermuth projects for 19% instead of 17%/);
+assert.match(AN.projText("player_reception_yds", pjA), /Includes teammates' freed-up targets \(17% → 19% share\)/);
+assert.equal(AN.injuryAdjust(A, AN.findPlayer(A, "DK Metcalf", []), "player_pass_yds"), null);
+// the short version leads with it, pointing the right way for each side
+const vI = AN.verdict("player_reception_yds", "Under", 30.5, pjA, null);
+assert.equal(vI, "disagree");                                       // an Under on a player gaining targets
+const svI = AN.shortVersion(A, fm, {stat: "player_reception_yds", side: "Under", hit: 0.5}, 30.5, pjA, vI);
+assert.ok(svI.slice(0, 2).some(x => x.dir === -1 && /Calvin Austin \(Out\) is likely out/.test(x.text)), JSON.stringify(svI));
+assert.ok(svI.some(x => /points the other way/.test(x.text) && x.dir === -1));
+// live statuses from ESPN replace the stats file's, and the team report is rebuilt
+const live = {updated: "2026-10-02T17:00:00Z", teams: {"Pittsburgh Steelers": [
+  {n: "Pat Freiermuth", pos: "TE", s: "Doubtful", d: "2026-10-02T16:30Z", i: "Hamstring", c: "Didn't practice Friday."}]}};
+assert.equal(AN.applyLiveInjuries(A, live), 1);
+assert.equal(fm.inj[0], "Doubtful");
+assert.equal(warren.inj[0], null);                                  // off ESPN's list now
+assert.deepEqual(A.teams.PIT.out.map(x => x.n + " " + x.s), ["Pat Freiermuth Doubtful"]);
+assert.match(A.inj_src, /ESPN injury feed, live/);
+// news after the lines were pulled -> a warning to check the current line
+const fl2 = AN.flags(A, fm, "player_reception_yds", "Over", null, "2026-10-01T20:58:00Z");
+assert.match(fl2[0].text, /Injury news since these lines were pulled: Pat Freiermuth Doubtful/);
+assert.equal(AN.flags(A, fm, "player_reception_yds", "Over", null, "2026-10-02T18:00:00Z").filter(f => f.k === "news").length, 0);
 console.log("analytics.js: all tests passed");

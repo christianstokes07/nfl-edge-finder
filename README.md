@@ -112,6 +112,24 @@ Checked for the 2026 season on 2026-10-01 (weeks 1–3 played): everything above
 `load_participation` only covers 2016–2025, so this season's per-play on-field and coverage data isn't available
 (last season's is used for coverage tendencies, labeled as such).
 
+### Injuries: live, and folded into the projections
+
+- **Live statuses.** The page reads ESPN's public injury feed (free, no key) through `functions/api/injuries.js` (cached
+  5 minutes), so Friday's Doubtful/Out designations and late news show up within minutes, with the time and the latest
+  note. The analytics job also pulls the feed when it runs (falling back to nflverse's weekly report), so the page still
+  has statuses if the Function is unreachable. Nicknames ("Hollywood Brown") are matched by team, last name and position.
+- **Freed-up usage.** When a teammate is Out, Doubtful, on IR or suspended *and was playing until now*, his share of the
+  team's targets (or carries) is handed out: 60% to active teammates at his position (a WR's targets mostly go to the
+  other WRs), 40% to everyone active, each in proportion to the shares they already have. The projection, the stats
+  verdict and the short version all use the adjusted share ("Smith is likely out: his 33% of the targets get spread
+  around, so Lemon projects for 21% instead of 11%"). Players who had already missed games aren't counted again,
+  because their absence is already in everyone's recent shares. It's a rule of thumb: a direct replacement can gain more
+  than this.
+- **Injury news after the lines.** Sportsbook lines are from the last scan. If injury news about the player or a key
+  teammate is newer than that, the pick shows a warning to check your book's current line. Books usually move fast on
+  news, so the stored line (and the hit chance built on it) is probably out of date.
+- The pick log's stats verdicts (`data/picks_log.csv`) use the unadjusted projection.
+
 ### Scheme matchups (coverage, blitz, stacked boxes)
 
 - **Coverage:** nflverse participation charts every pass play's coverage (Cover 0/1/2/3/4/6, 2-Man, man vs. zone), but

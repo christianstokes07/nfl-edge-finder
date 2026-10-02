@@ -65,3 +65,17 @@ def test_game_log_and_grading():
                   ("game_spread", "-6.5"): True, ("game_total", "37.5"): False}
     tr = MU.track_record(graded)
     assert tr["all"]["n"] == 4 and tr["all"]["hits"] == 3 and tr["verdict"]["agree"] == {"n": 1, "hits": 1, "expected": 0.52}
+
+
+def test_espn_injury_feed_parse():
+    from src import injuries as INJ
+    feed = {"timestamp": "2026-10-02T17:00:00Z", "injuries": [{"displayName": "Philadelphia Eagles", "injuries": [
+        {"status": "Doubtful", "date": "2026-10-02T16:28Z", "athlete": {"displayName": "DeVonta Smith", "position": {"abbreviation": "WR"}},
+         "details": {"type": "Hamstring"}, "shortComment": "Smith (hamstring) remained sidelined for Friday's practice."},
+        {"status": "Active", "athlete": {"displayName": "Jalen Hurts", "position": {"abbreviation": "QB"}}}]},
+        {"displayName": "Not A Team", "injuries": []}]}
+    out = INJ.parse(feed)
+    assert list(out) == ["PHI"] and out["PHI"] == [{"n": "DeVonta Smith", "pos": "WR", "s": "Doubtful", "d": "2026-10-02T16:28Z",
+                                                    "i": "Hamstring", "c": "Smith (hamstring) remained sidelined for Friday's practice."}]
+    assert INJ.by_name(out)[("PHI", "devonta smith")]["s"] == "Doubtful"
+    assert "Doubtful" in INJ.OUT and "Questionable" not in INJ.OUT

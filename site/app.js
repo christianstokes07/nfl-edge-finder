@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-02 · custom lines, bankroll, my bets";
+const BUILD = "2026-10-02 · live injuries";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -323,11 +323,12 @@ function anaFor(c){
   const p = A ? AN.findPlayer(A, c.player, teams) : null;
   let stale = false;
   if (p){ const G = (A.games || {})[p.t], O = G && A.teams[G.opp]; stale = !G || !O || (teams.length && !teams.includes(O.name)); }
-  const pj = p && !stale ? (p.pj || {})[c.stat] : null;
+  // projection, with injured teammates' targets/carries handed to the players still active
+  const pj = p && !stale ? AN.adjustProjection(c.stat, (p.pj || {})[c.stat], AN.injuryAdjust(A, p, c.stat)) : null;
   const lineVal = c.stat === TD ? null : c.plat === "kalshi" ? c.pt - 0.5 : c.pt;
   const overP = c.stat === TD ? (OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) : null;
   const v = AN.verdict(c.stat, c.side, lineVal, pj, overP);
-  const fl = p && !stale ? AN.flags(A, p, c.stat, c.side, c.prop_mv ? {mv:c.prop_mv} : null) : [];
+  const fl = p && !stale ? AN.flags(A, p, c.stat, c.side, c.prop_mv ? {mv:c.prop_mv} : null, D.updated) : [];
   const conf = AN.confidence(c.n, v, fl);
   const sideText = lineText(c).replace(/<[^>]+>/g, "").replace("(anytime)", "").trim();
   let whyText = AN.why(c, A, p, pj, v, lineVal, sideText);
@@ -372,7 +373,7 @@ function panelHtml(c){
   if (a.stale) return '<p class="src">Stats n/a for this game: the stats file covers week ' + A.week + '.</p>';
   const p = a.p;
   // 1) the short version: most important first, each marked helps / hurts this pick
-  const sv = AN.shortVersion(A, p, c, a.lineVal, a.pj, a.v);
+  const sv = AN.shortVersion(A, p, c, a.lineVal, a.pj, a.v, D.updated);
   let h = sv.length ? '<div class="sec"><h4>The short version</h4><ul class="sv">' + sv.map(x =>
     '<li><span class="ar ' + (x.dir > 0 ? "up" : x.dir < 0 ? "dn" : "nt") + '" aria-hidden="true">' + (x.dir > 0 ? "▲" : x.dir < 0 ? "▼" : "•") + '</span>' +
     '<span>' + (x.dir > 0 ? '<span class="sr">Helps: </span>' : x.dir < 0 ? '<span class="sr">Hurts: </span>' : "") + esc(x.text) + '</span></li>').join("") +
@@ -866,7 +867,8 @@ function outCustom(){
     if (s != null) h += '<div class="sub">' + (s > 0 ? "Suggested stake: " + dollars(s) : "Suggested stake: $0 (no edge at this price)") + '</div>';
   }
   if (cust.kind === "player" && A){
-    const gm = game(cust.g) || {}, p = AN.findPlayer(A, cust.player, [gm.a, gm.h]), pj = p && (p.pj || {})[cust.stat];
+    const gm = game(cust.g) || {}, p = AN.findPlayer(A, cust.player, [gm.a, gm.h]);
+    const pj = p && AN.adjustProjection(cust.stat, (p.pj || {})[cust.stat], AN.injuryAdjust(A, p, cust.stat));
     if (pj){
       const v = AN.verdict(cust.stat, cust.side, ed.line, pj, cust.stat === TD ? (cust.side === "Yes" ? r.hit : 1 - r.hit) : null);
       h += '<div class="sub">' + VWORD[v] + ": projection " + (cust.stat === TD ? pct(pj.p) + "% to score" : (Math.round(pj.med * 10) / 10) + " vs " + fmtPt(ed.line)) + '</div>';
@@ -1103,9 +1105,14 @@ async function loadAnalytics(demo){
   }catch(e){ aNote = String(e.message || e); A = null; }
   const el = $("anaSrc");
   if (!A){ el.innerHTML = "<b>Stats layer:</b> n/a (" + esc(aNote) + ")."; return; }
+  // live injury statuses (ESPN, via the Pages Function): newer than the stats file's copy
+  try{
+    const r = await fetch("/api/injuries", {cache:"no-store"});
+    if (r.ok){ const live = await r.json(); if (live && live.teams) AN.applyLiveInjuries(A, live); }
+  }catch(e){ /* keep the stats file's injury report */ }
   const src = Object.entries(A.sources || {}).map(([k, v]) => (v.ok ? "✓ " : "✕ ") + k + (v.ok ? "" : ": " + v.note)).join("<br>");
   el.innerHTML = "<b>Stats layer:</b> nflverse data through week " + (A.played || []).slice(-1)[0] + " of " + A.season + ", built " + ago(A.generated) +
-    " for week " + A.week + ". Injury report: week " + A.inj_week + ".<br>" + (A.notes || []).map(esc).join("<br>") +
+    " for week " + A.week + ". Injuries: " + esc(A.inj_src || "week " + A.inj_week + " report") + ".<br>" + (A.notes || []).map(esc).join("<br>") +
     '<details style="margin-top:6px"><summary style="cursor:pointer;min-height:32px">Data sources</summary><p style="margin:6px 0 0">' + src + "</p></details>";
 }
 $("reload").onclick = load;

@@ -341,6 +341,10 @@
   function projText(stat, pj) {
     if (!pj) return null;
     const i = pj.in || {};
+    const note = pj.adj ? " Includes teammates' freed-up " + Object.values(pj.adj).map(a => (a.kind === "target_share" ? "targets" : "carries") + " (" + pct(a.share) + " → " + pct(a.newShare) + " share)").join(" and ") + "." : "";
+    return projBase(stat, pj, i) + note;
+  }
+  function projBase(stat, pj, i) {
     if (stat === "player_anytime_td")
       return "Expected TDs " + d2(i.lam) + " = " + d2(i.team_tds) + " team TDs × (" + pct(i.rush_frac) + " rushing × " + pct(i.rush_share) +
         " of his rushing chances + " + pct(1 - i.rush_frac) + " receiving × " + pct(i.rec_share) + " of his receiving chances) → " + pct(pj.p) + " to score at least once.";
@@ -358,9 +362,12 @@
     return null;
   }
 
-  function flags(A, p, stat, side, prop) {
+  function flags(A, p, stat, side, prop, linesTime) {
     const out = [];
     if (!A || !p) return out;
+    const news = newsAfterLines(A, p, linesTime);
+    if (news.length) out.push({k: "news", sev: 1, text: "Injury news since these lines were pulled: " + news.map(x => x.n + " " + x.s + " (" +
+      new Date(x.d).toLocaleString([], {weekday: "short", hour: "numeric", minute: "2-digit"}) + ")").join(", ") + ". Books have probably moved this line, so check your book's current number."});
     if (p.inj) {
       const [status, injury, practice] = p.inj;
       if (status) out.push({k: "injury", sev: status === "Questionable" ? 1 : 2, text: nick(p.n) + " is listed " + status + (injury ? " (" + injury + ")" : "") + " on the week " + A.inj_week + " injury report"});
@@ -369,6 +376,7 @@
     const T = A.teams[p.t] || {}, G = (A.games || {})[p.t] || {}, O = A.teams[G.opp] || {};
     for (const x of T.out || []) {
       if (x.side !== "off" || P.norm(x.n) === P.norm(p.n)) continue;
+      if (x.role === "on the injury report") continue;
       out.push({k: "teammate", sev: 0, text: "Teammate " + x.pos + " " + x.n + " is " + x.s + (x.i ? " (" + x.i + ")" : "") + ": had " + x.role});
     }
     const defOut = (O.out || []).filter(x => x.side === "def");
@@ -579,9 +587,10 @@
 
   // ---- the short version: what matters most, first ---------------------------------------------------
   // Each point says whether it helps or hurts THIS pick. Ordered by how much it should move you.
-  function shortVersion(A, p, c, lineVal, pj, v) {
+  function shortVersion(A, p, c, lineVal, pj, v, linesTime) {
     const pts = [], over = OVER.has(c.side), stat = c.stat, M = metrics(A, p), G = (A.games || {})[p.t] || {}, O = A.teams[G.opp];
     const add = (w, dir, text) => pts.push({w, dir, text});
+    if (pj && pj.adj) add(6, over ? 1 : -1, adjustText(p, pj.adj));
     if (p.inj && /Out|Doubtful|Questionable/.test(p.inj[0] || "")) add(10, -1, nick(p.n) + " is listed " + p.inj[0] + (p.inj[1] ? " (" + p.inj[1] + ")" : "") + ": check inactives before betting");
     if (pj) {
       if (stat === "player_anytime_td") {
@@ -622,7 +631,10 @@
     const sc = schemeSection(A, p, stat);
     if (sc.edge) add(1.8, (sc.edge > 0) === over ? 1 : -1, sc.lines.find(l => /good matchup|tough matchup|EPA per dropback when blitzed|8\+ in the box \(/.test(l.text)).text);
     // warnings (wind on a passing pick, line moving against you) hurt; teammate/defense news is context
-    for (const f of flags(A, p, stat, c.side, c.prop_mv ? {mv: c.prop_mv} : null)) if (f.k !== "injury") add(f.sev ? 3 : 1.2, f.sev ? -1 : 0, f.text);
+    for (const f of flags(A, p, stat, c.side, c.prop_mv ? {mv: c.prop_mv} : null, linesTime)) {
+      if (f.k === "injury" || (f.k === "teammate" && pj && pj.adj)) continue;
+      add(f.k === "news" ? 8 : f.sev ? 3 : 1.2, f.sev ? -1 : 0, f.text);
+    }
     if (G.implied != null && stat !== "player_pass_interceptions") {
       const hi = G.implied >= 26, lo = G.implied <= 18;
       if (hi || lo) add(1, (hi === over) ? 1 : -1, nick((A.teams[p.t] || {}).name || p.t) + " are expected to score " + d1(G.implied) + " points" + (hi ? " (a high total)" : " (a low total)"));
@@ -631,7 +643,124 @@
     return pts.slice(0, 5);
   }
 
-  const api = {shortVersion, recentSection, schemeSection, injurySection, gameLog, lastYear, cleared, gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
+  // ---- injuries: live statuses and the usage they free up ------------------------------------------------
+  const OUTSET = new Set(["Out", "Doubtful", "Injured Reserve", "Suspension", "Physically Unable to Perform", "Reserve/PUP", "IR"]);
+  const ORDER = {Out: 0, "Injured Reserve": 0, Suspension: 0, Doubtful: 1, Questionable: 2};
+  const OFFPOS = new Set(["QB", "RB", "FB", "WR", "TE", "T", "OT", "G", "OG", "C", "OL"]);
+  const lastName = n => P.norm(n).split(" ").slice(-1)[0];
+  function roleOf(A, p) {
+    const M = metrics(A, p), r = [];
+    if (p.pos === "QB" && M.db_share && M.db_share.v >= 0.5) r.push(pct(M.db_share.v) + " of dropbacks");
+    if (M.target_share && M.target_share.v >= 0.15) r.push(pct(M.target_share.v) + " target share");
+    if (M.carry_share && M.carry_share.v >= 0.3) r.push(pct(M.carry_share.v) + " carry share");
+    return r.join(", ");
+  }
+  // live = {updated, teams: {"Philadelphia Eagles": [{n, pos, s, d, i, c}]}} from /api/injuries (ESPN)
+  function applyLiveInjuries(A, live) {
+    if (!A || !live || !live.teams) return 0;
+    let n = 0;
+    for (const [abbr, T] of Object.entries(A.teams || {})) {
+      const L = live.teams[T.name];
+      if (!L) continue;
+      const byName = new Map(L.map(e => [P.norm(e.n), e]));
+      const find = (name, pos) => byName.get(P.norm(name)) || (() => {
+        const c = L.filter(e => lastName(e.n) === lastName(name) && e.pos === pos);
+        return c.length === 1 ? c[0] : null;
+      })();
+      const mine = A.players.filter(p => p.t === abbr), oldRole = new Map((T.out || []).map(x => [P.norm(x.n), x]));
+      for (const p of mine) {
+        const e = find(p.n, p.pos);
+        if (e) { p.inj = [e.s, e.i, (p.inj || [])[2] || null, e.d, e.c]; n++; }
+        else if (p.inj && p.inj[0]) p.inj = [null, p.inj[1], p.inj[2], null, null];   // no longer on ESPN's list
+      }
+      const out = [];
+      for (const e of L) {
+        const p = mine.find(x => P.norm(x.n) === P.norm(e.n)) || mine.find(x => lastName(x.n) === lastName(e.n) && x.pos === e.pos);
+        const prev = oldRole.get(P.norm(e.n));
+        const role = (p && roleOf(A, p)) || (prev && prev.role) || "";
+        const side = p ? "off" : prev ? prev.side : OFFPOS.has(e.pos) ? "off" : "def";
+        if (role || (["QB", "RB", "WR", "TE"].includes(e.pos) && (OUTSET.has(e.s) || e.s === "Questionable")))
+          out.push({n: e.n, pos: e.pos, s: e.s, i: e.i, side, role: role || "on the injury report", d: e.d, c: e.c});
+      }
+      T.out = out.sort((a, b) => (ORDER[a.s] ?? 3) - (ORDER[b.s] ?? 3) || (a.side === "off" ? -1 : 1));
+    }
+    A.inj_src = "ESPN injury feed, live (as of " + new Date(live.updated).toLocaleTimeString([], {weekday: "short", hour: "numeric", minute: "2-digit"}) + ")";
+    A.inj_live = true;
+    return n;
+  }
+  function teamLatestWeek(A, team) {
+    let w = 0;
+    for (const p of A.players) if (p.t === team && p.log && p.log.length) w = Math.max(w, p.log[p.log.length - 1][0]);
+    return w;
+  }
+  // Teammates ruled Out / Doubtful who were part of the offense until now: their share of the team's targets
+  // (or carries) is handed to the players still active, in proportion to the shares those players already
+  // have. Returns {kind, share, newShare, factor, freed: [{n, pos, s, share}]} or null.
+  function injuryAdjust(A, p, stat) {
+    if (!A || !p || p.pos === "QB") return null;
+    const kinds = /rush_yds$|rush_attempts/.test(stat) ? ["carry_share"] : /reception|receptions/.test(stat) && stat !== "player_rush_reception_yds" ? ["target_share"]
+      : stat === "player_rush_reception_yds" || stat === "player_anytime_td" ? ["carry_share", "target_share"] : [];
+    if (!kinds.length) return null;
+    const latest = teamLatestWeek(A, p.t), mates = A.players.filter(x => x.t === p.t && x !== p && x.pos !== "QB");
+    const res = {};
+    for (const k of kinds) {
+      const sh = x => (metrics(A, x)[k] || {}).v || 0;
+      const mine = sh(p);
+      if (!(mine > 0)) continue;
+      const isOut = x => x.inj && OUTSET.has(x.inj[0]) && x.log && x.log.length && x.log[x.log.length - 1][0] === latest;
+      const freed = mates.filter(x => isOut(x) && sh(x) > 0.03).map(x => ({n: x.n, pos: x.pos, s: x.inj[0], share: sh(x)}));
+      if (!freed.length) continue;
+      // 60% of a missing player's share goes to active teammates at his position (a WR's targets mostly go to
+      // the other WRs), 40% to everyone active; both in proportion to the shares they already have
+      const active = mates.filter(x => !(x.inj && OUTSET.has(x.inj[0]))).concat([p]);
+      let newShare = mine;
+      for (const f of freed) {
+        const same = active.filter(x => x.pos === f.pos), sameSum = same.reduce((a, x) => a + sh(x), 0);
+        const allSum = active.reduce((a, x) => a + sh(x), 0);
+        const toSame = sameSum > 0 ? 0.6 : 0;
+        if (p.pos === f.pos && sameSum > 0) newShare += f.share * toSame * mine / sameSum;
+        newShare += f.share * (1 - toSame) * mine / allSum;
+      }
+      res[k] = {kind: k, share: mine, newShare, factor: Math.min(newShare / mine, 1.75), freed};
+    }
+    return Object.keys(res).length ? res : null;
+  }
+  // the projection with freed-up usage folded in (volume scales with share; efficiency unchanged)
+  function adjustProjection(stat, pj, adj) {
+    if (!pj || !adj) return pj;
+    const fT = (adj.target_share || {}).factor || 1, fC = (adj.carry_share || {}).factor || 1;
+    const i = {...(pj.in || {})};
+    if (stat === "player_anytime_td") {
+      const lam = i.team_tds * (i.rush_frac * i.rush_share * fC + (1 - i.rush_frac) * i.rec_share * fT);
+      return {...pj, p: 1 - Math.exp(-lam), in: {...i, lam, rush_share: i.rush_share * fC, rec_share: i.rec_share * fT}, adj};
+    }
+    let f = /reception|receptions/.test(stat) ? fT : fC;
+    if (stat === "player_rush_reception_yds") {
+      const mean = (i.rush || 0) * fC + (i.rec || 0) * fT;
+      return {...pj, mean, med: mean * (i.mf || 1), in: {...i, rush: (i.rush || 0) * fC, rec: (i.rec || 0) * fT}, adj};
+    }
+    const scaled = {...i};
+    for (const k of ["carries", "targets", "share"]) if (scaled[k] != null) scaled[k] *= f;
+    return {...pj, mean: pj.mean * f, med: pj.med * f, in: scaled, adj};
+  }
+  function adjustText(p, adj) {
+    if (!adj) return null;
+    return Object.values(adj).map(a => a.freed.map(x => x.pos + " " + x.n + " (" + x.s + ")").join(" and ") + (a.freed.length > 1 ? " are likely out: their " : " is likely out: his ") +
+      pct(a.freed.reduce((s, x) => s + x.share, 0)) + " of the team's " + (a.kind === "target_share" ? "targets" : "carries") + " get spread around, so " +
+      nick(p.n) + " projects for " + pct(a.newShare) + " instead of " + pct(a.share)).join(". ") + ".";
+  }
+  // injury news that came out after the sportsbook lines were pulled: books have probably moved since
+  function newsAfterLines(A, p, linesTime) {
+    if (!linesTime) return [];
+    const t0 = new Date(linesTime), out = [];
+    const T = A.teams[p.t] || {};
+    if (p.inj && p.inj[3] && new Date(p.inj[3]) > t0) out.push({n: p.n, s: p.inj[0] || "on the report", d: p.inj[3]});
+    for (const x of T.out || []) if (x.side === "off" && x.d && new Date(x.d) > t0 && P.norm(x.n) !== P.norm(p.n) && x.role !== "on the injury report")
+      out.push({n: x.n, s: x.s, d: x.d});
+    return out;
+  }
+
+  const api = {applyLiveInjuries, injuryAdjust, adjustProjection, adjustText, newsAfterLines, OUTSET, shortVersion, recentSection, schemeSection, injurySection, gameLog, lastYear, cleared, gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
                YARDS_REL, RECEPTIONS_ABS, PASS_TDS_ABS, TD_PROB_ABS};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Analytics = api;

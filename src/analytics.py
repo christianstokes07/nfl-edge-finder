@@ -538,12 +538,14 @@ def build(d, sources, now=None, odds_key=None, fetch_injuries=True):
             if vals[t] is not None:
                 t_out[t][key] = [r3(vals[t]), ranks.get(t)]
     home_by_game = {r["game_id"]: r["home_team"] for r in tg.iter_rows(named=True)}
-    logs = MU.game_logs(pg_cur, home_by_game)
+    home_prior = {r["game_id"]: r["home_team"] for r in tg_prior.iter_rows(named=True)} if tg_prior is not None else {}
+    logs = MU.game_logs(pg_cur, home_by_game, pg_prior, home_prior)
     last_year = MU.season_averages(pg_prior) if pg_prior is not None else {}
     for pl_ in out_players:
         fields = MU.LOG_FIELDS[pl_["pos"]]
         pid = pl_["id"]
-        pl_["log"] = [[r["week"], r["defteam"], r["home"]] + [round(r.get(f) or 0) for f in fields] for r in logs.get(pid, [])]
+        # [season, week, opponent, home, *fields]: last season's games fill in "last 10" early in the year
+        pl_["log"] = [[r["season"], r["week"], r["defteam"], r["home"]] + [round(r.get(f) or 0) for f in fields] for r in logs.get(pid, [])]
         if pid in last_year:
             pl_["ly"] = [last_year[pid]["g"]] + [round(last_year[pid][f], 1) for f in fields]
         if pid in cov_rec:

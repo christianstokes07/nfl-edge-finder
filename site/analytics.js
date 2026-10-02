@@ -486,11 +486,14 @@
     }
     return LOGF[stat] ? get(LOGF[stat]) : null;
   }
-  // [{wk, opp, home, v}] newest last, for this stat
+  // [{season, wk, opp, home, v}] oldest first, for this stat. Rows reach back into last season so "last 10"
+  // works early in the year; anything labeled "this season" filters on season.
   function gameLog(A, p, stat) {
     const fields = (A.logk || {})[p.pos] || [];
-    return (p.log || []).map(r => ({wk: r[0], opp: r[1], home: !!r[2], v: statValue(fields, r, stat, 3)})).filter(x => x.v != null);
+    return (p.log || []).map(r => ({season: r[0], wk: r[1], opp: r[2], home: !!r[3], v: statValue(fields, r, stat, 4)})).filter(x => x.v != null);
   }
+  const thisSeason = (A, L) => L.filter(x => x.season === A.season);
+  const wkLabel = (A, x) => (x.season === A.season ? "Wk " : "'" + String(x.season).slice(2) + " Wk ") + x.wk;
   function lastYear(A, p, stat) {
     if (!p.ly) return null;
     const v = statValue((A.logk || {})[p.pos] || [], p.ly, stat, 1);
@@ -504,22 +507,24 @@
     return line == null ? null : (v > line) === over;
   }
   function recentSection(A, p, stat, line, side) {
-    const L = gameLog(A, p, stat), out = [], ly = lastYear(A, p, stat), isTd = stat === "player_anytime_td";
+    const all = gameLog(A, p, stat), L = thisSeason(A, all), out = [], ly = lastYear(A, p, stat), isTd = stat === "player_anytime_td";
     const unit = isTd ? "TDs" : (UNIT[stat] || "");
-    if (L.length) {
-      const last = L.slice(-5).reverse();
+    if (all.length) {
+      const last = all.slice(-5).reverse();
       out.push(line_(null, "Last " + last.length + (last.length === 1 ? " game: " : " games: ") +
-        last.map(x => fmtv(x.v, stat) + (x.home ? " vs " : " @ ") + x.opp).join(", ") + " (newest first)"));
+        last.map(x => fmtv(x.v, stat) + (x.home ? " vs " : " @ ") + x.opp + (x.season !== A.season ? " ('" + String(x.season).slice(2) + ")" : "")).join(", ") + " (newest first)"));
+    }
+    if (L.length) {
       const hits = L.filter(x => cleared(x.v, stat, line, side));
       if (isTd) out.push(line_(null, "Scored in " + L.filter(x => x.v > 0).length + " of " + L.length + " games this season"));
       else if (line != null) out.push(line_(null, (OVER.has(side) ? "Over " : "Under ") + fmt(line) + " in " + hits.length + " of " + L.length + " games this season (average " + d1(avg(L.map(x => x.v))) + ")"));
       const H = L.filter(x => x.home), W = L.filter(x => !x.home);
       if (H.length && W.length && !isTd) out.push(line_(null, "Home: " + d1(avg(H.map(x => x.v))) + " a game (" + H.length + ") · Away: " + d1(avg(W.map(x => x.v))) + " (" + W.length + ")"));
-    } else out.push(line_(null, "n/a (no games logged this season yet)", true));
+    } else out.push(line_(null, "No games this season yet", true));
     if (ly) out.push(line_(null, "Last season: " + (isTd ? d2(ly.avg) + " TDs" : d1(ly.avg) + " " + unit) + " per game over " + ly.g + " games"));
     const G = (A.games || {})[p.t];
     if (G) out.push(line_(null, "This week he's " + (G.home ? "at home" : "on the road") + (G.rest != null && G.opp_rest != null && G.rest !== G.opp_rest ? ", " + G.rest + " days of rest vs " + G.opp_rest : "")));
-    return {title: "Recent form", lines: out, log: L};
+    return {title: "Recent form", lines: out, log: all};
   }
   const line_ = (key, text, na) => ({key, text, na: !!na});
   const fmtv = (v, stat) => String(Math.round(v));
@@ -602,11 +607,12 @@
           (v === "agree" ? " (backs this pick)" : v === "disagree" ? " (points the other way)" : " (close to the line)"));
       }
     }
-    const L = gameLog(A, p, stat);
+    const L = gameLog(A, p, stat).slice(-10);
     if (L.length >= 2) {
       const hits = L.filter(x => cleared(x.v, stat, lineVal, c.side)).length, rate = hits / L.length;
-      add(1 + Math.abs(rate - 0.5) * 6 * Math.min(1, L.length / 4), rate > 0.5 ? 1 : rate < 0.5 ? -1 : 0,
-        (stat === "player_anytime_td" ? "Scored in " + L.filter(x => x.v > 0).length + " of " + L.length : "This pick would have hit in " + hits + " of " + L.length) + " games this season");
+      add(1 + Math.abs(rate - 0.5) * 6 * Math.min(1, L.length / 6), rate > 0.5 ? 1 : rate < 0.5 ? -1 : 0,
+        (stat === "player_anytime_td" ? (c.side === "No" ? "Kept out of the end zone in " + L.filter(x => x.v === 0).length : "Scored in " + L.filter(x => x.v > 0).length) + " of his last " + L.length + " games"
+          : "This pick would have hit in " + hits + " of his last " + L.length + " games"));
     }
     const usage = {player_rush_yds: "carry_share", player_rush_attempts: "carry_share", player_reception_yds: "target_share", player_receptions: "target_share",
                    player_rush_reception_yds: "touches_pg", player_anytime_td: "rz_opp_share", player_pass_yds: "attempts_pg", player_pass_attempts: "attempts_pg",
@@ -690,7 +696,7 @@
   }
   function teamLatestWeek(A, team) {
     let w = 0;
-    for (const p of A.players) if (p.t === team && p.log && p.log.length) w = Math.max(w, p.log[p.log.length - 1][0]);
+    for (const p of A.players) if (p.t === team) for (const r of p.log || []) if (r[0] === A.season) w = Math.max(w, r[1]);
     return w;
   }
   // Teammates ruled Out / Doubtful who were part of the offense until now: their share of the team's targets
@@ -707,7 +713,7 @@
       const sh = x => (metrics(A, x)[k] || {}).v || 0;
       const mine = sh(p);
       if (!(mine > 0)) continue;
-      const isOut = x => x.inj && OUTSET.has(x.inj[0]) && x.log && x.log.length && x.log[x.log.length - 1][0] === latest;
+      const isOut = x => { const r = x.inj && OUTSET.has(x.inj[0]) && x.log && x.log[x.log.length - 1]; return !!r && r[0] === A.season && r[1] === latest; };
       const freed = mates.filter(x => isOut(x) && sh(x) > 0.03).map(x => ({n: x.n, pos: x.pos, s: x.inj[0], share: sh(x)}));
       if (!freed.length) continue;
       // 60% of a missing player's share goes to active teammates at his position (a WR's targets mostly go to
@@ -760,7 +766,7 @@
     return out;
   }
 
-  const api = {applyLiveInjuries, injuryAdjust, adjustProjection, adjustText, newsAfterLines, OUTSET, shortVersion, recentSection, schemeSection, injurySection, gameLog, lastYear, cleared, gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
+  const api = {thisSeason, wkLabel, applyLiveInjuries, injuryAdjust, adjustProjection, adjustText, newsAfterLines, OUTSET, shortVersion, recentSection, schemeSection, injurySection, gameLog, lastYear, cleared, gameSections, gameFlags, lean, verdict, DEF, dirNote, findPlayer, metrics, sections, projText, flags, confidence, why, teamAbbr, ord,
                YARDS_REL, RECEPTIONS_ABS, PASS_TDS_ABS, TD_PROB_ABS};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Analytics = api;

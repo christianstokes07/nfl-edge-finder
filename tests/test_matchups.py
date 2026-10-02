@@ -41,8 +41,12 @@ def test_game_log_and_grading():
     rows = [run("RB1", 30, week=1, game_id="G1", posteam="AAA", defteam="BBB", home_team="AAA"),
             run("RB1", 50, week=1, game_id="G1", posteam="AAA", defteam="BBB", home_team="AAA", rush_touchdown=1)]
     pg = M.player_games(df(rows))
-    logs = MU.game_logs(pg, {"G1": "AAA"})
-    assert logs["RB1"][0]["rush_yds"] == 80 and logs["RB1"][0]["home"] == 1 and logs["RB1"][0]["tds"] == 1
+    prior_rows = [run("RB1", 40, season=2025, week=w, game_id=f"P{w}", posteam="AAA", defteam="CCC", home_team="CCC") for w in range(1, 18)]
+    pg_prior = M.player_games(df(prior_rows))
+    logs = MU.game_logs(pg, {"G1": "AAA"}, pg_prior, {f"P{w}": "CCC" for w in range(1, 18)})
+    rb = logs["RB1"]
+    assert len(rb) == MU.LOG_GAMES and rb[-1]["season"] == 2026 and rb[-1]["rush_yds"] == 80 and rb[-1]["home"] == 1 and rb[-1]["tds"] == 1
+    assert rb[0]["season"] == 2025 and rb[0]["week"] == 7 and rb[0]["home"] == 0   # last season fills the rest, oldest first
     kick = datetime(2026, 9, 13, 17, tzinfo=timezone.utc)
     results = [{"game_id": "G1", "week": 1, "away": "Bees", "home": "Aces", "away_score": 10, "home_score": 24, "kick": kick}]
     log = [  # logged Thursday, re-logged Sunday morning: only the later row counts

@@ -90,16 +90,16 @@ assert.equal(sc.edge, 1);
 const sv = AN.shortVersion(A, warren, {stat: "player_rush_yds", side: "Over", hit: 0.55}, 65.5, warren.pj.player_rush_yds, "neutral");
 assert.match(sv[0].text, /listed Questionable/);          // the player's own injury always comes first
 assert.equal(sv[0].dir, -1);
-assert.ok(sv.some(x => /would have hit in 2 of 3 games/.test(x.text) && x.dir === 1));
+assert.ok(sv.some(x => /would have hit in 2 of his last 3 games/.test(x.text) && x.dir === 1));
 const svU = AN.shortVersion(A, warren, {stat: "player_rush_yds", side: "Under", hit: 0.45}, 65.5, warren.pj.player_rush_yds, "neutral");
-assert.ok(svU.some(x => /would have hit in 1 of 3 games/.test(x.text) && x.dir === -1));
+assert.ok(svU.some(x => /would have hit in 1 of his last 3 games/.test(x.text) && x.dir === -1));
 // injuries for both teams
 const inj = AN.injurySection(A, warren).lines.map(l => l.text).join("\n");
 assert.match(inj, /Steelers: WR Calvin Austin Out \(Ankle\)/);
 assert.match(inj, /Browns: CB Denzel Ward Out \(Hamstring\)/);
 // ---- injuries: freed-up targets go to the active players in proportion to their shares
 const mk = A.mk.WR, wr = (n, share, inj, lastWk) => ({n, id: n, pos: "WR", t: "PIT", g: 3, wk: [1, 2, 3], m: mk.map(k => k === "target_share" ? [share, 50] : null),
-  pj: {}, inj, log: [[lastWk, "CLE", 1, 50, 4, 6, 0, 0, 0]]});
+  pj: {}, inj, log: [[2026, lastWk, "CLE", 1, 50, 4, 6, 0, 0, 0]]});
 A.players.push(wr("Calvin Austin", 0.18, ["Out", "Ankle", null, "2026-10-02T16:00Z", "Ruled out Friday."], 3));
 A.players.push(wr("DK Metcalf", 0.40, null, 3));
 A.players.push(wr("Long Gone", 0.10, ["Injured Reserve", "Knee", null, null, null], 1));   // hasn't played since week 1: already priced in

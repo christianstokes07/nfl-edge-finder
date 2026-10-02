@@ -102,19 +102,20 @@ LOG_FIELDS = {
     "WR": ("rec_yds", "receptions", "targets", "rush_yds", "carries", "tds"),
 }
 LOG_FIELDS["TE"] = LOG_FIELDS["WR"]
-LOG_GAMES = 8
+LOG_GAMES = 12   # enough for "last 10" early in the season (reaches back into last season)
 
 
-def game_logs(pg, home_by_game):
-    """Per player: his most recent games, newest last: [week, opponent, home(1/0), *LOG_FIELDS[pos]]."""
+def game_logs(pg, home_by_game, pg_prior=None, home_prior=None):
+    """Per player: his most recent games across this season and last, oldest first (at most LOG_GAMES).
+    Each row is a dict with season, week, defteam, home (1/0), tds and the stat columns."""
     out = defaultdict(list)
-    for r in pg.sort(["week"]).iter_rows(named=True):
-        out[r["player_id"]].append(r)
-    logs = {}
-    for pid, rows in out.items():
-        logs[pid] = [{**r, "tds": (r.get("rush_tds") or 0) + (r.get("rec_tds") or 0),
-                      "home": 1 if home_by_game.get(r["game_id"]) == r["posteam"] else 0} for r in rows[-LOG_GAMES:]]
-    return logs
+    for df, homes in ((pg_prior, home_prior or {}), (pg, home_by_game)):
+        if df is None or not df.height:
+            continue
+        for r in df.sort(["season", "week"]).iter_rows(named=True):
+            out[r["player_id"]].append({**r, "tds": (r.get("rush_tds") or 0) + (r.get("rec_tds") or 0),
+                                        "home": 1 if homes.get(r["game_id"]) == r["posteam"] else 0})
+    return {pid: rows[-LOG_GAMES:] for pid, rows in out.items()}
 
 
 def season_averages(pg):

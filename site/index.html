@@ -237,6 +237,38 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .chip.ink{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .chip .n{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:12px}
 .chip .n[hidden]{display:none}
+/* hit-rate chart: one bar per game, line across, ✓/✕ under each (never color alone) */
+:root{--hit:#1f7a55;--miss:#b9b0a1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hit:#3fa877;--miss:#77706a}}
+:root[data-theme="dark"]{--hit:#3fa877;--miss:#77706a}
+.hc{margin:4px 0 10px}
+.hc-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.hc-tab{min-height:36px;padding:0 11px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);font-size:13px;font-weight:650;cursor:pointer;color:var(--ink2)}
+.hc-tab b{color:var(--ink);font-weight:800}
+.hc-tab[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.hc-tab[aria-pressed="true"] b{color:var(--bg)}
+.hc-tab:disabled{opacity:.45;cursor:default}
+.hc-sum{margin:2px 0 8px;font-size:14px;color:var(--ink2)}
+.hc-sum b{color:var(--ink)}
+.hc-plot{position:relative;height:118px;display:flex;align-items:stretch;gap:2px;border-bottom:1px solid var(--line);margin-top:18px}
+.hc-col{position:relative;flex:1;min-width:0;display:flex;justify-content:center;outline-offset:2px;border-radius:6px}
+.hc-bar{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(24px,70%);border-radius:4px 4px 0 0;background:var(--miss)}
+.hc-bar.hit{background:var(--hit)}
+.hc-bar.old{opacity:.55}
+.hc-v{position:absolute;left:50%;transform:translateX(-50%);font-size:11.5px;font-weight:750;color:var(--ink);line-height:1;white-space:nowrap}
+.hc-line{position:absolute;left:0;right:0;border-top:1.5px solid var(--ink);z-index:1;pointer-events:none}
+.hc-line span{position:absolute;right:0;top:-17px;font-size:11px;font-weight:800;background:var(--surface);padding:0 3px;border-radius:4px}
+.hc-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);z-index:3;white-space:nowrap;background:var(--ink);color:var(--bg);
+  font-size:12px;font-weight:650;padding:5px 8px;border-radius:8px;pointer-events:none}
+.hc-col:hover .hc-tip,.hc-col:focus .hc-tip{display:block}
+.hc-col:first-child .hc-tip{left:0;transform:none}
+.hc-col:last-child .hc-tip{left:auto;right:0;transform:none}
+.hc-xs{display:flex;gap:2px;margin-top:4px}
+.hc-xs span{flex:1;min-width:0;text-align:center;font-size:10.5px;color:var(--mute);line-height:1.25;overflow:hidden}
+.hc-xs b{display:block;font-size:12px}
+.hc-xs b.ok{color:var(--hit)} .hc-xs b.no{color:var(--mute)}
+.hc-xs small{display:block;font-size:9.5px}
+.tag.heads{border-color:var(--warn);color:var(--warn)}
 .sec .sv li{padding-left:0}
 .sec .sv li::before{display:none}
 .form label .hint{display:inline}
@@ -436,9 +468,9 @@ table.tr td.r,table.tr th.r{text-align:right}
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="parlay.js?v=20261002b"></script>
-<script src="model.js?v=20261002b"></script>
-<script src="analytics.js?v=20261002b"></script>
-<script src="app.js?v=20261002b"></script>
+<script src="parlay.js?v=20261002c"></script>
+<script src="model.js?v=20261002c"></script>
+<script src="analytics.js?v=20261002c"></script>
+<script src="app.js?v=20261002c"></script>
 </body>
 </html>

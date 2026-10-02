@@ -34,6 +34,13 @@ chance doesn't make a bet profitable: the price still matters, and the page show
 - **Track record.** The weekly stats job grades every logged pick in `data/picks_log.csv` against final stats. It shows
   hit rate vs. predicted, by stats verdict (does "Stats agree" really hit more?), by source, and calibration (do 60% picks
   hit about 60% of the time?). Week 4's Thursday game gave the first 40 graded picks, far too few to trust yet.
+- **Hit-rate charts (last 5 / last 10 / this season).** Inside "Why this pick" (and live in the custom-pick sheet), a bar
+  per game with the prop's line drawn across: green bars with ✓ hit the pick, gray with ✕ missed, values on top, and a
+  tooltip on hover or tap. Tabs switch between the last 5, the last 10 (reaching back into last season early in the
+  year, shown faded and labeled '25) and this season. Cards show a small "Last 10: 6/10" tag. Logs keep each player's
+  last 12 games.
+- **Cleaner cards.** Injury news, line-move and weather warnings, "stats disagree" and price-gap alerts now sit at the
+  top of "Why this pick" under **Heads up**. The card shows one "⚠ Heads up (n)" tag when there's something to read.
 - **Better price elsewhere.** On a single-book view, a pick shows when another book pays clearly more for the same line.
 - **Desktop.** At 1180px+ the page is three panes: filters on the left, picks in a grid, and the parlay slip always open
   on the right. Tablets get two columns of picks; phones keep the single column and bottom sheets.

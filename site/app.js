@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-02 · live injuries";
+const BUILD = "2026-10-02 · hit-rate charts";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -344,14 +344,34 @@ function anaHtml(c){
     st = s > 0 ? '<span class="tag stake" title="Quarter-Kelly style stake from your bankroll settings">Bet ' + dollars(s) + '</span>'
                : '<span class="tag nobet" title="After the safety margin there is no edge at this price">No bet: no edge at this price</span>';
   }
+  // the card stays short: warnings and injury news live in the "Why this pick" panel; one tag points there
+  let l10 = "";
+  if (a.p && !c.game){
+    const r = hitRate(AN.gameLog(A, a.p, c.stat), c.stat, a.lineVal, c.side, "l10");
+    if (r.n >= 3) l10 = '<span class="tag" title="How often this exact pick would have won lately">Last ' + r.n + ': ' + r.hits + '/' + r.n + '</span>';
+  }
+  const heads = headsUp(c, a), serious = heads.some(x => x.sev);
   h += '<div class="tags"><span class="tag conf-' + a.conf.level + '" title="' + esc(a.conf.why) + '">Confidence: ' + a.conf.level + '</span>' +
-    '<span class="tag ' + a.v.replace("/", "") + '">' + VWORD[a.v] + '</span>' + st + '</div>';
-  if (a.v === "disagree") h += '<div class="flag sev"><span class="fi" aria-hidden="true">⚠</span><span>Stats disagree with this pick: the projection points the other way. Hit chance is still the market number.</span></div>';
-  for (const f of a.fl) h += '<div class="flag' + (f.sev ? " sev" : "") + '"><span class="fi' + (f.sev ? "" : " info") + '" aria-hidden="true">' + (f.sev ? "⚠" : "i") + '</span><span>' + esc(f.text) + '</span></div>';
+    '<span class="tag ' + a.v.replace("/", "") + '">' + VWORD[a.v] + '</span>' + l10 + st +
+    (heads.length ? '<span class="tag ' + (serious ? "heads" : "") + '">' + (serious ? "⚠ Heads up" : "i Notes") + ' (' + heads.length + ')</span>' : "") + '</div>';
   const open = openWhy.has(c.key);
   h += '<button class="whybtn" type="button" data-why="' + esc(c.key) + '" aria-expanded="' + open + '" aria-controls="pn-' + esc(c.key) + '">Why this pick</button>' +
     '<div class="panel" id="pn-' + esc(c.key) + '"' + (open ? "" : " hidden") + '>' + (open ? panelHtml(c) : "") + '</div>';
   return h;
+}
+// everything that used to sit on the card: stats disagreeing, injury news, weather, line moves, price gaps
+function headsUp(c, a){
+  const out = [];
+  if (a.v === "disagree") out.push({sev:1, text:"Stats disagree with this pick: the projection points the other way. The hit chance is still the market's number."});
+  if (c.hit - c.implied > 0.12 && !c.km) out.push({sev:1, text:"Big gap between this price and the other books: usually news the last scan doesn't know about. Check injury news first."});
+  for (const f of a.fl) out.push({sev:f.sev, text:f.text});
+  return out.sort((x, y) => y.sev - x.sev);
+}
+function headsHtml(c, a){
+  const hs = headsUp(c, a);
+  if (!hs.length) return "";
+  return '<div class="sec"><h4>Heads up</h4>' + hs.map(f => '<div class="flag' + (f.sev ? " sev" : "") + '" style="margin-top:6px"><span class="fi' + (f.sev ? "" : " info") +
+    '" aria-hidden="true">' + (f.sev ? "⚠" : "i") + '</span><span>' + esc(f.text) + '</span></div>').join("") + '</div>';
 }
 function term(key, text){ return '<button class="term" type="button" data-def="' + esc(key) + '">' + esc(text) + '</button>'; }
 function secHtml(sct){
@@ -366,7 +386,7 @@ function panelHtml(c){
     if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet.") + '</p>';
     const secs = gm ? AN.gameSections(A, gm.h, gm.a) : [];
     if (!secs.length) return '<p class="src">Stats n/a: these teams aren\'t in the stats file.</p>';
-    return '<div class="proj"><div class="ph">The hit chance is the sportsbooks\' consensus. There\'s no stats projection for game results here; these are the team numbers behind the matchup.</div></div>' + secs.map(secHtml).join("");
+    return headsHtml(c, a) + '<div class="proj"><div class="ph">The hit chance is the sportsbooks\' consensus. There\'s no stats projection for game results here; these are the team numbers behind the matchup.</div></div>' + secs.map(secHtml).join("");
   }
   if (!A) return '<p class="src">Stats n/a: ' + esc(aNote || "analytics.json hasn't been generated yet.") + '</p>';
   if (!a.p) return '<p class="src">Stats n/a: no nflverse play-by-play for ' + esc(c.player) + ' this season (rookie with no snaps yet, or a name we couldn\'t match).</p>';
@@ -374,10 +394,10 @@ function panelHtml(c){
   const p = a.p;
   // 1) the short version: most important first, each marked helps / hurts this pick
   const sv = AN.shortVersion(A, p, c, a.lineVal, a.pj, a.v, D.updated);
-  let h = sv.length ? '<div class="sec"><h4>The short version</h4><ul class="sv">' + sv.map(x =>
+  let h = headsHtml(c, a) + (sv.length ? '<div class="sec"><h4>The short version</h4><ul class="sv">' + sv.map(x =>
     '<li><span class="ar ' + (x.dir > 0 ? "up" : x.dir < 0 ? "dn" : "nt") + '" aria-hidden="true">' + (x.dir > 0 ? "▲" : x.dir < 0 ? "▼" : "•") + '</span>' +
     '<span>' + (x.dir > 0 ? '<span class="sr">Helps: </span>' : x.dir < 0 ? '<span class="sr">Hurts: </span>' : "") + esc(x.text) + '</span></li>').join("") +
-    '</ul><p class="src" style="margin-top:6px">▲ helps this pick · ▼ hurts it · • context</p></div>' : "";
+    '</ul><p class="src" style="margin-top:6px">▲ helps this pick · ▼ hurts it · • context</p></div>' : "");
   // 2) the projection, with its math
   h += '<div class="proj" style="margin-top:12px">';
   if (a.pj){
@@ -391,10 +411,8 @@ function panelHtml(c){
   // 3) recent form with a game-by-game strip
   const rf = AN.recentSection(A, p, c.stat, a.lineVal, c.side);
   if (rf.log.length){
-    h += '<div class="sec"><h4>Recent form</h4><div class="chips">' + rf.log.slice(-8).map(x => {
-      const ok = AN.cleared(x.v, c.stat, a.lineVal, c.side);
-      return '<span class="lc ' + (ok ? "hit" : "miss") + '">Wk ' + x.wk + (x.home ? " vs " : " @ ") + esc(x.opp) + ' <b>' + Math.round(x.v) + '</b> ' + (ok ? "✓" : "✕") + '</span>';
-    }).join("") + '</div><ul>' + rf.lines.slice(1).map(l => '<li' + (l.na ? ' class="na"' : "") + '>' + esc(l.text) + '</li>').join("") + '</ul></div>';
+    h += '<div class="sec"><h4>Recent form</h4>' + hitChart(rf.log, c.stat, a.lineVal, c.side, c.key) +
+      '<ul>' + rf.lines.slice(1).map(l => '<li' + (l.na ? ' class="na"' : "") + '>' + esc(l.text) + '</li>').join("") + '</ul></div>';
   } else h += secHtml(rf);
   // 4) matchup, scheme, usage, efficiency, injuries, context
   const S = AN.sections(A, p, c.stat);
@@ -407,6 +425,51 @@ function showDef(key, side, trigger){
   openSheet("def", trigger);
   $("shTitle").textContent = d.t; $("shSub").textContent = "What this stat means";
   $("shBody").innerHTML = '<p style="margin:6px 6px 0;font-size:16px;line-height:1.5">' + esc(d.d) + '</p><p class="defdir" style="margin:12px 6px">' + esc(AN.dirNote(key, side)) + '</p>';
+}
+
+/* ---------- hit-rate bar chart (last 5 / last 10 / this season) ---------- */
+let chartScope = store.get("ps_chart") || "l10";
+const SCOPES = [["l5", "Last 5"], ["l10", "Last 10"], ["season", "This season"]];
+function scopeGames(all, scope){ return scope === "season" ? AN.thisSeason(A, all) : all.slice(scope === "l5" ? -5 : -10); }
+function hitRate(all, stat, line, side, scope){
+  const L = scopeGames(all, scope);
+  return {n:L.length, hits:L.filter(x => AN.cleared(x.v, stat, line, side)).length};
+}
+function hitChart(all, stat, line, side, id){
+  if (!all || !all.length) return "";
+  const isTd = stat === TD, unit = isTd ? "TDs" : (STAT[stat] || {u:""}).u;
+  const L = scopeGames(all, chartScope);
+  const tabs = SCOPES.map(([k, t]) => {
+    const r = hitRate(all, stat, line, side, k);
+    return '<button type="button" class="hc-tab" data-scope="' + k + '" aria-pressed="' + (chartScope === k) + '"' + (r.n ? "" : " disabled") + '>' +
+      t + ' <b>' + (r.n ? r.hits + "/" + r.n : "–") + '</b></button>';
+  }).join("");
+  if (!L.length) return '<div class="hc" data-chart="' + esc(id) + '"><div class="hc-tabs" role="group" aria-label="Games shown">' + tabs + '</div><p class="src">No games this season yet.</p></div>';
+  const max = Math.max(1, ...L.map(x => x.v), line || 0) * 1.22;
+  const r = hitRate(all, stat, line, side, chartScope);
+  const what = isTd ? (side === "No" ? "kept out of the end zone" : "scored") : (OVERSIDE.has(side) ? "went over " : "stayed under ") + fmtPt(line);
+  let h = '<div class="hc" data-chart="' + esc(id) + '"><div class="hc-tabs" role="group" aria-label="Games shown">' + tabs + '</div>' +
+    '<p class="hc-sum"><b>' + r.hits + ' of ' + r.n + '</b> ' + what + ' (' + Math.round(r.hits / r.n * 100) + '%)' + '</p>' +
+    '<div class="hc-plot" role="img" aria-label="' + esc(r.hits + " of " + r.n + " games " + what + ": " + L.map(x => AN.wkLabel(A, x) + " " + Math.round(x.v)).join(", ")) + '">';
+  if (line != null) h += '<div class="hc-line" style="bottom:' + (line / max * 100).toFixed(1) + '%"><span>' + fmtPt(line) + '</span></div>';
+  for (const x of L){
+    const ok = AN.cleared(x.v, stat, line, side), hp = Math.max(x.v / max * 100, x.v > 0 ? 2 : 0.8);
+    h += '<div class="hc-col" tabindex="0" aria-label="' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " at ") + x.opp + ": " + Math.round(x.v) + " " + unit + ", " + (ok ? "hit" : "miss")) + '">' +
+      '<span class="hc-v" style="bottom:calc(' + hp.toFixed(1) + '% + 3px)">' + Math.round(x.v) + '</span>' +
+      '<i class="hc-bar ' + (ok ? "hit" : "miss") + (x.season !== A.season ? " old" : "") + '" style="height:' + hp.toFixed(1) + '%"></i>' +
+      '<span class="hc-tip">' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " @ ") + x.opp + " · " + Math.round(x.v) + " " + unit + " · " + (ok ? "✓ hit" : "✕ miss")) + '</span></div>';
+  }
+  h += '</div><div class="hc-xs" aria-hidden="true">' + L.map(x => {
+    const ok = AN.cleared(x.v, stat, line, side);
+    return '<span><b class="' + (ok ? "ok" : "no") + '">' + (ok ? "✓" : "✕") + '</b>' + (x.home ? "" : "@") + esc(x.opp) + '<small>' + esc(AN.wkLabel(A, x).replace("Wk ", "W")) + '</small></span>';
+  }).join("") + '</div>' + (L.some(x => x.season !== A.season) ? '<p class="src">Faded bars are last season\'s games.</p>' : "") + '</div>';
+  return h;
+}
+function rerenderChart(btn){
+  chartScope = btn.dataset.scope; store.set("ps_chart", chartScope);
+  const pn = btn.closest(".panel");
+  if (pn){ const c = current.get(pn.id.slice(3)); if (c) pn.innerHTML = panelHtml(c); }
+  else if (sheetMode === "custom") outCustom();
 }
 
 /* ---------- cards ---------- */
@@ -872,14 +935,15 @@ function outCustom(){
     if (pj){
       const v = AN.verdict(cust.stat, cust.side, ed.line, pj, cust.stat === TD ? (cust.side === "Yes" ? r.hit : 1 - r.hit) : null);
       h += '<div class="sub">' + VWORD[v] + ": projection " + (cust.stat === TD ? pct(pj.p) + "% to score" : (Math.round(pj.med * 10) / 10) + " vs " + fmtPt(ed.line)) + '</div>';
-      const L = AN.gameLog(A, p, cust.stat);
-      if (L.length) h += '<div class="sub">This line would have hit in ' + L.filter(x => AN.cleared(x.v, cust.stat, ed.line, cust.side)).length + " of his " + L.length + " games this season.</div>";
+      h += hitChart(AN.gameLog(A, p, cust.stat), cust.stat, ed.line, cust.side, "cust");
     }
   }
   out.innerHTML = h;
 }
 function customClick(e){
-  const t = e.target.closest("button"); if (!t || t.id !== "cAdd") return;
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.scope){ rerenderChart(t); return; }
+  if (t.id !== "cAdd") return;
   readCustom();
   const ed = custEd(), gm = game(cust.g) || {};
   const leg = {player:ed.player || (ed.team || "Game total"), g:cust.g, game:gameName(cust.g), stat:ed.stat, side:ed.side, pt:ed.line,
@@ -889,6 +953,8 @@ function customClick(e){
   closeSheet(); render(); toast("Added " + edLabel(ed) + " (" + pct(leg.hit) + "%).");
 }
 $("list").addEventListener("click", e => {
+  const sc = e.target.closest("[data-scope]");
+  if (sc){ rerenderChart(sc); return; }
   const w = e.target.closest("[data-why]");
   if (w){
     const key = w.dataset.why, pn = document.getElementById("pn-" + key), c = current.get(key);
@@ -969,7 +1035,7 @@ function legResult(leg){
     const x = m + ed.line; return x === 0 ? "push" : x > 0 ? "won" : "lost";
   }
   const p = AN.findPlayer(A, ed.player, [leg.a, leg.h]); if (!p) return "pending";
-  const g = AN.gameLog(A, p, ed.stat).find(x => x.wk === wk);
+  const g = AN.gameLog(A, p, ed.stat).find(x => x.wk === wk && x.season === A.season);
   if (!g) return "void";
   if (ed.stat === TD) return (g.v > 0) === (ed.side === "Yes") ? "won" : "lost";
   return g.v === ed.line ? "push" : (g.v > ed.line) === (ed.side === "Over") ? "won" : "lost";

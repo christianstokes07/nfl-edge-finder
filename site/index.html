@@ -237,6 +237,25 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .chip.ink{background:var(--ink);color:var(--bg);border-color:var(--ink)}
 .chip .n{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:6px;padding:0 6px;border-radius:99px;background:var(--accent);color:var(--accent-ink);font-size:12px}
 .chip .n[hidden]{display:none}
+.search{position:relative;margin:0 0 12px}
+.search input{width:100%;font:inherit;font-size:16px;min-height:50px;padding:0 48px 0 16px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.search button{position:absolute;right:4px;top:3px;width:44px;height:44px;border:0;background:none;font-size:16px;color:var(--mute);cursor:pointer}
+.pname{font:inherit;font-weight:750;color:var(--ink);background:none;border:0;padding:0;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px;min-height:32px}
+.pp-head{display:flex;gap:12px;align-items:center;padding:4px 6px 8px}
+.pp-head .av{width:56px;height:56px}
+.pp-role{font-weight:650}
+.pp-inj{margin-top:4px;font-size:14px;color:var(--warn);font-weight:600}
+.pp-sec{border-top:1px solid var(--line);padding:12px 6px}
+.pp-sec h3{margin:0 0 8px;font-size:18px;font-weight:800}
+.pp-sec h3 span{font-size:14px;color:var(--mute);font-weight:650;margin-left:6px}
+.pp-side{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:var(--bg);margin-bottom:6px}
+.pp-side b{display:block;font-size:16px}
+.pp-side span{display:block;font-size:14px;color:var(--ink2)}
+.pp-side small{display:block;font-size:12.5px;color:var(--mute)}
+.pp-side .add{min-width:86px}
+.pp-proj{margin:6px 0;font-size:14px;color:var(--ink2)}
+.pp-all summary{cursor:pointer;min-height:40px;display:flex;align-items:center;font-weight:650;font-size:14px}
+.pp-k{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px;font-size:13px}
 /* hit-rate chart: one bar per game, line across, ✓/✕ under each (never color alone) */
 :root{--hit:#1f7a55;--miss:#b9b0a1}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hit:#3fa877;--miss:#77706a}}
@@ -360,10 +379,11 @@ table.tr td.r,table.tr th.r{text-align:right}
   <aside class="side" aria-label="Filters">
     <div class="controls">
       <button class="pk wide" type="button" data-picker="where"><small>Where I bet</small><b id="v-where">…</b></button>
+      <button class="pk" type="button" data-picker="who"><small>Players</small><b id="v-who">Key players</b></button>
       <button class="pk" type="button" data-picker="prop"><small>Prop</small><b id="v-prop">Everything</b></button>
-      <button class="pk" type="button" data-picker="side"><small>Over / Under</small><b id="v-side">Overs and unders</b></button>
+      <button class="pk" type="button" data-picker="side"><small>Over / Under</small><b id="v-side">Both sides</b></button>
       <button class="pk" type="button" data-picker="game"><small>Game / slate</small><b id="v-game">All games</b></button>
-      <button class="pk" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Best bets</b></button>
+      <button class="pk wide" type="button" data-picker="sort"><small>Show first</small><b id="v-sort">Best bets</b></button>
     </div>
     <details class="how" id="how">
     <summary>How to read this</summary>
@@ -382,6 +402,11 @@ table.tr td.r,table.tr th.r{text-align:right}
         safety margin), nudged up when they're more likely to hit and when the stats agree, and down when the stats
         disagree. "No TD" bets and anything priced shorter than −400 are hidden everywhere: they almost always win
         but pay almost nothing. Each player shows once per prop type, at the best line for the chosen order.</dd></div>
+      <div><dt>Key players, search and player pages</dt>
+        <dd>The list shows key players by default (starting QBs, lead backs, receivers with real target shares), so the
+        obvious names aren't buried under backups; switch Players to Everyone for the rest. Search finds anyone. Tap a
+        player's name for every line every book has on him, each side's hit chance and best price, Kalshi's prices, his
+        hit-rate chart and the stats projection.</dd></div>
       <div><dt>Why most sportsbook picks sit near 50%</dt>
         <dd>Books set their main line (like Over/Under 65.5) so both sides are about even. Higher hit chances come
         from lower lines: "alternate lines" at a book (e.g. Over 39.5 at −300) or Kalshi's lower thresholds (e.g. 40+).
@@ -429,6 +454,8 @@ table.tr td.r,table.tr th.r{text-align:right}
   </aside>
 
   <main class="feed">
+    <div class="search"><input id="q" type="search" placeholder="Search a player or team (e.g. Gibbs, Lions)" autocomplete="off" aria-label="Search players or teams">
+      <button type="button" id="qClear" aria-label="Clear search">✕</button></div>
     <p class="live" id="live" aria-live="polite"></p>
     <p class="filternote" id="filterNote" hidden></p>
     <p class="count" id="count"></p>
@@ -468,9 +495,9 @@ table.tr td.r,table.tr th.r{text-align:right}
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="parlay.js?v=20261002c"></script>
-<script src="model.js?v=20261002c"></script>
-<script src="analytics.js?v=20261002c"></script>
-<script src="app.js?v=20261002c"></script>
+<script src="parlay.js?v=20261002d"></script>
+<script src="model.js?v=20261002d"></script>
+<script src="analytics.js?v=20261002d"></script>
+<script src="app.js?v=20261002d"></script>
 </body>
 </html>

@@ -41,6 +41,14 @@ chance doesn't make a bet profitable: the price still matters, and the page show
   last 12 games.
 - **Cleaner cards.** Injury news, line-move and weather warnings, "stats disagree" and price-gap alerts now sit at the
   top of "Why this pick" under **Heads up**. The card shows one "⚠ Heads up (n)" tag when there's something to read.
+- **Key players, search and player pages.** The list defaults to **key players**, judged from this season's usage:
+  starting QBs (half the dropbacks or more), lead backs (35%+ of carries or 12+ touches a game) and receivers with real
+  roles (15%+ target share or 5+ targets a game). That keeps the obvious names from being buried under backups'
+  "Under 1.5 catches". Switch **Players** to Everyone for the rest. The search box finds any player or team. Tapping a
+  name opens his **player page**: every prop the scan has on him, the line most books use with Over and Under hit
+  chances, fair odds, best price and value, the stats projection, his hit-rate chart, **every book's line and odds**
+  (alternate lines included when bought), Kalshi's rungs, one-tap "+ Slip", and "Price a different line".
+- **Fair odds everywhere.** Every hit chance also shows its no-cut odds (70% = −233), so you can compare it with your book.
 - **Better price elsewhere.** On a single-book view, a pick shows when another book pays clearly more for the same line.
 - **Desktop.** At 1180px+ the page is three panes: filters on the left, picks in a grid, and the parlay slip always open
   on the right. Tablets get two columns of picks; phones keep the single column and bottom sheets.

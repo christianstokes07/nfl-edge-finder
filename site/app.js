@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-02 · hit-rate charts";
+const BUILD = "2026-10-02 · player pages, search, key players";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -39,8 +39,12 @@ const SORTS = [
   {k:"value", t:"Best value",         d:"Biggest gap between the price and the true odds"},
   {k:"game",  t:"By kickoff",         d:"Earliest games first, then most likely to hit"},
 ];
+const WHOS = [
+  {k:"key", t:"Key players", d:"Starting QBs, lead backs and receivers with real target shares (from this season's usage). Search finds everyone"},
+  {k:"all", t:"Everyone", d:"Every player with a line, backups included"},
+];
 const SIDES = [
-  {k:"all", t:"Overs and unders", d:"Every side"},
+  {k:"all", t:"Both sides", d:"Overs and unders"},
   {k:"over", t:"Overs only", d:"Over a line, YES on Kalshi, scores a TD. Moneylines and spreads are hidden"},
   {k:"under", t:"Unders only", d:"Under a line, NO on Kalshi. Moneylines and spreads are hidden"},
 ];
@@ -52,7 +56,8 @@ const DESK = window.matchMedia("(min-width:1180px)");
 let A = null, aNote = "", openWhy = new Set();
 let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null, sheetMode = null;
 const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all", side:store.get("ps_side") || "all",
-              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3};
+              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3,
+              who:store.get("ps_who") || "key", q:""};
 let slip = jget("ps_slip", []);
 let bank = jget("ps_bank", {amount:0, frac:0.25, max:0.02});
 let bets = jget("ps_bets", []);
@@ -148,7 +153,7 @@ function stakeFor(p, dec, parlay){
 
 /* ---------- picks for the chosen platform (cached until data changes) ---------- */
 let pickCache = new Map();
-function bumpData(){ pickCache = new Map(); }
+function bumpData(){ pickCache = new Map(); keyFallback = null; namesCache = null; }
 function mk(c){
   c.implied = 1 / c.dec;
   c.ev = c.hit * c.dec - 1;
@@ -225,11 +230,35 @@ function sideOf(c){
   if (c.stat === "game_ml" || c.stat === "game_spread") return null;
   return OVERSIDE.has(c.side) ? "over" : "under";
 }
+// a "key player": real role this season (stats file), or, without stats, a player most books post several props for
+let keyFallback = null;
+function isKey(c){
+  if (c.game) return true;
+  const p = anaFor(c).p;
+  if (p){
+    const M = AN.metrics(A, p), v = k => (M[k] || {}).v || 0;
+    if (p.pos === "QB") return v("db_share") >= 0.5;
+    if (p.pos === "RB") return v("carry_share") >= 0.35 || v("touches_pg") >= 12;
+    return v("target_share") >= 0.15 || v("targets_pg") >= 5;
+  }
+  if (!keyFallback){
+    keyFallback = new Map();
+    for (const pr of D.props || []) if (Object.keys(pr.b).length >= 5) keyFallback.set(P.norm(pr.player), (keyFallback.get(P.norm(pr.player)) || 0) + 1);
+  }
+  return (keyFallback.get(P.norm(c.player)) || 0) >= 3;
+}
+function matchesQuery(c){
+  if (!pref.q) return true;
+  const q = P.norm(pref.q), gm = game(c.g) || {};
+  return [c.player, gm.a, gm.h, TEAM_ABBR[gm.a], TEAM_ABBR[gm.h]].some(x => x && P.norm(x).includes(q));
+}
 function filtered(where, sortKey){
   const key = SORTKEY[sortKey] || SORTKEY.best, best = new Map();
   for (const c of picksFor(where)){
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
     if (pref.side !== "all" && sideOf(c) !== pref.side) continue;
+    if (pref.q){ if (!matchesQuery(c)) continue; }          // a search looks at everyone
+    else if (pref.who === "key" && !isKey(c)) continue;
     if (!inGameFilter(c.g)) continue;
     const cur = best.get(c.group);
     if (!cur || key(c) > key(cur)) best.set(c.group, c);
@@ -493,10 +522,12 @@ function card(c){
     ? '<div class="gap">⚠ Big gap between this price and the other books: check injury news first</div>' : "";
   const books = c.km ? "Kalshi's own price" : c.n + (c.n === 1 ? " book" : " books");
   return '<li class="pick">' +
-    '<div><div class="who">' + avatar(c) + '<span>' + esc(c.game ? gameName(c.g) : c.player) + '</span></div><div class="line">' + lineText(c) + '</div>' +
+    '<div><div class="who">' + avatar(c) + (c.game ? '<span>' + esc(gameName(c.g)) + '</span>' :
+      '<button type="button" class="pname" data-player="' + esc(c.player) + '" data-g="' + esc(c.g) + '" aria-label="All lines for ' + esc(c.player) + '">' + esc(c.player) + '</button>') + '</div><div class="line">' + lineText(c) + '</div>' +
     '<div class="price">' + priceText(c) + '</div>' +
     '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
-    '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance<span class="ten">' + inTen(c.hit) + '</span></div></div>' +
+    '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance<span class="ten">' + inTen(c.hit) +
+      '</span><span class="ten" title="What these odds would be with no house cut">fair ' + P.fmtAmerican(P.probToAmerican(c.hit)) + '</span></div></div>' +
     '<div class="meter" aria-hidden="true"><div class="bar"><i style="width:' + pct(c.hit) + '%"></i></div>' +
     '<span class="tier">' + tier(c.hit) + '</span></div>' +
     '<div class="foot">' + valueHtml(c) + '<div class="btns">' +
@@ -513,12 +544,16 @@ function render(){
   $("v-where").textContent = whereLabel(pref.where);
   $("v-prop").textContent = pref.prop === "all" ? "Everything" : (STAT[pref.prop] || {t:pref.prop}).t;
   $("v-side").textContent = (SIDES.find(s => s.k === pref.side) || SIDES[0]).t;
+  $("v-who").textContent = (WHOS.find(w => w.k === pref.who) || WHOS[0]).t;
   const notes = [];
+  if (pref.q) notes.push('Search: <b>' + esc(pref.q) + '</b> (all players)');
   if (pref.prop !== "all") notes.push('Showing only <b>' + esc((STAT[pref.prop] || {t:pref.prop}).t) + '</b>');
   if (pref.side !== "all") notes.push('<b>' + esc(SIDES.find(s => s.k === pref.side).t) + '</b>');
   const fn = $("filterNote");
   fn.hidden = !notes.length;
-  if (notes.length) fn.innerHTML = notes.join(" · ") + ' · <button type="button" class="linkbtn" id="showAll">Show everything</button>';
+  const exact = pref.q ? playerNames().filter(n => P.norm(n).includes(P.norm(pref.q))) : [];
+  if (notes.length) fn.innerHTML = notes.join(" · ") + ' · <button type="button" class="linkbtn" id="showAll">Show everything</button>' +
+    (exact.length >= 1 && exact.length <= 3 ? exact.map(n => ' · <button type="button" class="linkbtn" data-player="' + esc(n) + '">' + esc(n) + "'s page</button>").join("") : "");
   $("v-game").textContent = gameFilterLabel();
   $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
   if (pref.where !== "kalshi") $("live").textContent = "";
@@ -574,6 +609,7 @@ const PICKERS = {
     if (pp.length) h += '<div class="opt-sec">Player props</div>' + pp.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
     return h;
   }},
+  who: {t:"Players", d:"Key players, or everyone with a line", build(){ return WHOS.map(w => opt(w.k, w.t, w.d, pref.who === w.k)).join(""); }},
   side: {t:"Over / Under", d:"Only overs, only unders, or both", build(){ return SIDES.map(s => opt(s.k, s.t, s.d, pref.side === s.k)).join(""); }},
   game: {t:"Game / slate", d:"One slate (like Sunday Night) or one game. Updates with each week's schedule", build(){
     const n = {};
@@ -595,6 +631,7 @@ const SHEETS = {
   bank: ["Bankroll", "How much to bet, so one bad week can't sink you", () => renderBank()],
   bets: ["My bets", "Saved on this device and graded from final stats", () => renderBets()],
   track: ["Track record", "How the logged picks have actually done", () => renderTrack()],
+  player: ["", "", () => {}],
   def: ["", "", () => {}],
 };
 function openSheet(mode, trigger, arg){
@@ -655,6 +692,7 @@ $("sheet").addEventListener("click", e => {
   else if (sheetMode === "custom") customClick(e);
   else if (sheetMode === "bank") bankClick(e);
   else if (sheetMode === "bets") betsClick(e);
+  else if (sheetMode === "player") playerClick(e);
 });
 document.querySelectorAll("[data-picker]").forEach(b => b.onclick = () => openSheet(b.dataset.picker, b));
 document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => openSheet(b.dataset.open, b));
@@ -955,6 +993,8 @@ function customClick(e){
 $("list").addEventListener("click", e => {
   const sc = e.target.closest("[data-scope]");
   if (sc){ rerenderChart(sc); return; }
+  const pn = e.target.closest("[data-player]");
+  if (pn){ openPlayer(pn.dataset.player, pn.dataset.g, pn); return; }
   const w = e.target.closest("[data-why]");
   if (w){
     const key = w.dataset.why, pn = document.getElementById("pn-" + key), c = current.get(key);
@@ -975,10 +1015,113 @@ $("list").addEventListener("click", e => {
 });
 $("more").onclick = () => { shown += PAGE; render(); };
 $("filterNote").addEventListener("click", e => {
-  if (e.target.id === "showAll"){ pref.prop = "all"; pref.side = "all"; store.set("ps_prop", "all"); store.set("ps_side", "all"); shown = PAGE; render(); }
+  const pb = e.target.closest("[data-player]");
+  if (pb){ openPlayer(pb.dataset.player, null, pb); return; }
+  if (e.target.id === "showAll"){ pref.prop = "all"; pref.side = "all"; pref.q = ""; $("q").value = ""; store.set("ps_prop", "all"); store.set("ps_side", "all"); shown = PAGE; render(); }
 });
+let qT = null;
+$("q").addEventListener("input", () => { clearTimeout(qT); qT = setTimeout(() => { pref.q = $("q").value.trim(); shown = PAGE; render(); }, 120); });
+$("q").addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+  const hits = playerNames().filter(n => P.norm(n).includes(P.norm($("q").value)));
+  if (hits.length === 1) openPlayer(hits[0], null, $("q"));
+});
+$("qClear").onclick = () => { $("q").value = ""; pref.q = ""; shown = PAGE; render(); $("q").focus(); };
 let toastT = null;
 function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => t.hidden = true, 2600); }
+
+/* ---------- player page: every line for one player ---------- */
+let curPlayer = null, namesCache = null;
+function playerNames(){
+  if (!D) return [];
+  if (!namesCache) namesCache = [...new Set([...(D.props || []).map(p => p.player), ...(D.kalshi || []).filter(u => !(STAT[u.stat] || {}).game).map(u => u.player)])].sort();
+  return namesCache;
+}
+function openPlayer(name, g, trigger){
+  curPlayer = {name, g};
+  openSheet("player", trigger);
+  renderPlayer();
+}
+const STAT_ORDER = ["player_pass_yds", "player_rush_yds", "player_reception_yds", "player_receptions", "player_rush_reception_yds",
+  "player_pass_completions", "player_pass_attempts", "player_rush_attempts", "player_pass_tds", "player_pass_interceptions", TD];
+function renderPlayer(){
+  const name = curPlayer.name, k = P.norm(name);
+  const props = (D.props || []).filter(p => P.norm(p.player) === k);
+  const krows = (D.kalshi || []).filter(u => P.norm(u.player) === k);
+  const g = curPlayer.g || (props[0] || krows[0] || {}).g, gm = game(g) || {};
+  const ap = A ? AN.findPlayer(A, name, [gm.a, gm.h]) : null;
+  $("shTitle").textContent = name;
+  $("shSub").textContent = [gameName(g), kickText(g), ap ? ap.pos : ""].filter(Boolean).join(" · ");
+  let h = '<div class="pp-head">' + avatar({player:name, g, _ana:{p:ap}}) + '<div>';
+  if (ap){
+    const M = AN.metrics(A, ap), bits = [];
+    for (const [kk, lab] of [["carry_share", "of carries"], ["target_share", "of targets"], ["db_share", "of dropbacks"], ["snap_share", "of snaps"]])
+      if (M[kk] && M[kk].v >= 0.1) bits.push(pct(M[kk].v) + "% " + lab);
+    h += '<div class="pp-role">' + esc(bits.slice(0, 3).join(" · ") || "Limited role so far") + '</div>';
+    if (ap.inj && ap.inj[0]) h += '<div class="pp-inj">⚠ ' + esc(ap.inj[0] + (ap.inj[1] ? " (" + ap.inj[1] + ")" : "") + (ap.inj[4] ? ": " + ap.inj[4] : "")) + '</div>';
+  }
+  h += '</div></div>';
+  const stats = [...new Set([...props.map(p => p.stat), ...krows.map(u => u.stat)])].sort((a, b) => STAT_ORDER.indexOf(a) - STAT_ORDER.indexOf(b));
+  if (!stats.length) h += '<p class="src">No lines for ' + esc(name) + ' in the last scan.</p>';
+  for (const st of stats){
+    const all = props.filter(p => p.stat === st).sort((a, b) => (a.pt || 0) - (b.pt || 0));
+    const main = all.filter(p => p.m === st).sort((a, b) => Object.keys(b.b).length - Object.keys(a.b).length)[0];
+    h += '<section class="pp-sec"><h3>' + esc(STAT[st].t) + (main && main.pt != null ? ' <span>line ' + fmtPt(main.pt) + '</span>' : "") + '</h3>';
+    if (main){
+      const sides = st === TD ? [["Yes", main.p, 0]] : [["Over", main.p, 0], ["Under", 1 - main.p, 1]];
+      for (const [side, hit, s] of sides){
+        const best = bestOf(main, s, Object.keys(main.b));
+        const label = st === TD ? "Scores a TD" : side + " " + fmtPt(main.pt);
+        h += '<div class="pp-side"><div><b>' + esc(label) + '</b><span>' + pct(hit) + '% · ' + inTen(hit) + ' · fair ' + P.fmtAmerican(P.probToAmerican(hit)) + '</span>' +
+          (best ? '<small>best ' + P.fmtAmerican(best.a) + ' at ' + esc(bookName(best.b)) + ' · ' + (((hit - main.unc) * best.dec - 1) >= 0 ? "good value" : (hit * best.dec - 1) >= -0.06 ? "fair price" : "poor value") + '</small>' : "") +
+          '</div><button type="button" class="add" data-pp="' + esc(JSON.stringify({stat:st, pt:main.pt, side, g:main.g, a:best ? best.a : null})) + '">+ Slip</button></div>';
+      }
+      if (ap){
+        const pj = AN.adjustProjection(st, (ap.pj || {})[st], AN.injuryAdjust(A, ap, st));
+        if (pj){
+          const v = AN.verdict(st, st === TD ? "Yes" : "Over", main.pt, pj, st === TD ? main.p : null);
+          h += '<p class="pp-proj">Stats: ' + (st === TD ? pct(pj.p) + "% to score" : "projection " + (Math.round(pj.med * 10) / 10) + " vs " + fmtPt(main.pt)) +
+            ' · ' + ({agree:"leans " + (st === TD ? "Yes" : "Over"), disagree:"leans " + (st === TD ? "No" : "Under"), neutral:"no lean"}[v] || "n/a") + (pj.adj ? " (includes injured teammates' usage)" : "") + '</p>';
+        }
+        h += hitChart(AN.gameLog(A, ap, st), st, main.pt, st === TD ? "Yes" : "Over", "pp-" + st);
+      }
+      h += '<details class="pp-all"><summary>Every line (' + all.reduce((n, p) => n + Object.keys(p.b).length, 0) + ' prices from ' +
+        new Set(all.flatMap(p => Object.keys(p.b))).size + ' books)</summary><table class="tr"><tr><th>Book</th><th class="r">Line</th>' +
+        (st === TD ? '<th class="r">Yes</th>' : '<th class="r">Over</th><th class="r">Under</th><th class="r">Over hits</th>') + '</tr>' +
+        all.flatMap(p => Object.entries(p.b).sort((x, y) => bookName(x[0]).localeCompare(bookName(y[0]))).map(([b, pr]) =>
+          '<tr><td>' + esc(bookName(b)) + (p.m !== st ? " (alt)" : "") + '</td><td class="r">' + (p.pt == null ? "–" : fmtPt(p.pt)) + '</td><td class="r">' + P.fmtAmerican(pr[0]) + '</td>' +
+          (st === TD ? "" : '<td class="r">' + P.fmtAmerican(pr[1]) + '</td><td class="r">' + pct(p.p) + '%</td>') + '</tr>')).join("") + '</table></details>';
+    } else h += '<p class="src">No sportsbook line for this (the free plan buys a few categories); Kalshi\'s prices below are the only market.</p>';
+    const ks = krows.filter(u => u.stat === st).sort((a, b) => (a.threshold || 0) - (b.threshold || 0));
+    if (ks.length) h += '<div class="pp-k"><b>Kalshi</b> ' + ks.map(u => {
+      const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask}, fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
+      return '<span class="lc">' + (st === TD ? "TD" : fmtPt(u.threshold) + "+") + ' <b>' + Math.round(q.ask) + '¢</b> · ' + pct(fair) + '%' + (u.km ? "" : (fair - q.ask / 100 > 0.02 ? " ✓" : "")) + '</span>';
+    }).join("") + '</div>';
+    if (main && main.pt != null) h += '<p style="margin:6px 0 0"><button type="button" class="mini" data-ppcustom="' + esc(st) + '">Price a different line…</button></p>';
+    h += '</section>';
+  }
+  $("shBody").innerHTML = '<div class="pp">' + h + '</div>';
+}
+function playerClick(e){
+  const t = e.target.closest("button"); if (!t) return;
+  if (t.dataset.scope){ chartScope = t.dataset.scope; store.set("ps_chart", chartScope); renderPlayer(); return; }
+  if (t.dataset.ppcustom){
+    const st = t.dataset.ppcustom, k = P.norm(curPlayer.name);
+    const main = (D.props || []).filter(p => P.norm(p.player) === k && p.stat === st && p.m === st).sort((a, b) => Object.keys(b.b).length - Object.keys(a.b).length)[0];
+    closeSheet();
+    setTimeout(() => openSheet("custom", null, {kind:"player", player:curPlayer.name, g:main ? main.g : curPlayer.g, stat:st, side:"Over", line:main ? main.pt : null}), 260);
+    return;
+  }
+  if (t.dataset.pp){
+    const x = JSON.parse(t.dataset.pp), gm = game(x.g) || {};
+    const ed = {kind:"player", player:curPlayer.name, g:x.g, stat:x.stat, side:x.side, line:x.stat === TD ? null : x.pt};
+    const leg = {player:curPlayer.name, g:x.g, game:gameName(x.g), stat:x.stat, side:x.side, pt:ed.line, ed,
+                 myOdds:x.a != null ? P.fmtAmerican(x.a) : "", kick:gm.t, a:gm.a, h:gm.h};
+    if (!repriceLeg(leg)){ toast("Couldn't price that."); return; }
+    slip = slip.filter(l => l.prop !== leg.prop); slip.push(leg); saveSlip(); render();
+    toast("Added " + curPlayer.name + ": " + edLabel(ed) + " (" + pct(leg.hit) + "%).");
+  }
+}
 
 /* ---------- bankroll ---------- */
 function renderBank(){

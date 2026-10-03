@@ -51,7 +51,11 @@ MAX_LINE_DISTANCE = _f("MAX_LINE_DISTANCE", 0.25)  # sportsbook main lines: book
 KALSHI_LINE_DISTANCE = _f("KALSHI_LINE_DISTANCE", 0.5)
 ALT_LINE_DISTANCE = _f("ALT_LINE_DISTANCE", 0.5)   # alternate sportsbook lines may sit further from the main line
 PROP_MIN_BOOKS = _i("PROP_MIN_BOOKS", 1)   # sportsbook picks: books needed for a hit chance (count is shown)
-ANYTIME_TD_VIG = _f("ANYTIME_TD_VIG", 0.12)  # rough vig removed from one-sided anytime-TD prices
+ANYTIME_TD_VIG = _f("ANYTIME_TD_VIG", 0.12)  # flat cut, only used if TD_CURVE is turned off
+# Anytime-TD Yes prices -> fair chance: fair = implied x clamp(a + b x implied, 0.80, 0.93). Fitted to Kalshi's
+# prices on the same players (99 players, 2026-10-02); each scan re-fits it from the current Kalshi prices when
+# 30+ players match, and uses this as the fallback.
+TD_CURVE = (0.7915, 0.2341, 0.80, 0.93)
 # Spread of a player's game-to-game output (lognormal sigma), used to price lines/rungs away from the
 # book line. The weekly analytics job measures these from last season's games (site/analytics.json
 # "sigma") and the scan uses those when present; these defaults are only the fallback.

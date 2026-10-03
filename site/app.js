@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-02 · player pages, search, key players";
+const BUILD = "2026-10-03 · TD fair odds fitted to Kalshi";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -39,10 +39,6 @@ const SORTS = [
   {k:"value", t:"Best value",         d:"Biggest gap between the price and the true odds"},
   {k:"game",  t:"By kickoff",         d:"Earliest games first, then most likely to hit"},
 ];
-const WHOS = [
-  {k:"key", t:"Key players", d:"Starting QBs, lead backs and receivers with real target shares (from this season's usage). Search finds everyone"},
-  {k:"all", t:"Everyone", d:"Every player with a line, backups included"},
-];
 const SIDES = [
   {k:"all", t:"Both sides", d:"Overs and unders"},
   {k:"over", t:"Overs only", d:"Over a line, YES on Kalshi, scores a TD. Moneylines and spreads are hidden"},
@@ -56,8 +52,7 @@ const DESK = window.matchMedia("(min-width:1180px)");
 let A = null, aNote = "", openWhy = new Set();
 let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null, sheetMode = null;
 const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all", side:store.get("ps_side") || "all",
-              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3,
-              who:store.get("ps_who") || "key", q:""};
+              game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3, q:""};
 let slip = jget("ps_slip", []);
 let bank = jget("ps_bank", {amount:0, frac:0.25, max:0.02});
 let bets = jget("ps_bets", []);
@@ -153,7 +148,7 @@ function stakeFor(p, dec, parlay){
 
 /* ---------- picks for the chosen platform (cached until data changes) ---------- */
 let pickCache = new Map();
-function bumpData(){ pickCache = new Map(); keyFallback = null; namesCache = null; }
+function bumpData(){ pickCache = new Map(); roleFallback = null; namesCache = null; }
 function mk(c){
   c.implied = 1 / c.dec;
   c.ev = c.hit * c.dec - 1;
@@ -223,29 +218,33 @@ function picksFor(where){
 const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};
 function bestScore(c){
   if (c.hit < 0.4) return -1 + c.hit;
-  return (c.km ? -0.02 : c.evSafe) + 0.2 * (c.hit - 0.5) + VBONUS[anaFor(c).v];
+  // value matters, but this is a site for high-hit-rate legs: likelier picks get real weight
+  return (c.km ? -0.02 : c.evSafe) + 0.45 * (c.hit - 0.5) + VBONUS[anaFor(c).v] + 0.06 * (roleScore(c) - 0.5);
 }
 const SORTKEY = {best:bestScore, hit:c => c.hit + c.evSafe * 1e-3, value:c => c.evSafe, game:c => c.hit};
 function sideOf(c){
   if (c.stat === "game_ml" || c.stat === "game_spread") return null;
   return OVERSIDE.has(c.side) ? "over" : "under";
 }
-// a "key player": real role this season (stats file), or, without stats, a player most books post several props for
-let keyFallback = null;
-function isKey(c){
-  if (c.game) return true;
+// how big a role the player has (0 = deep backup, 1 = lead back / top target / starting QB), from this season's
+// usage; without stats, how many props most books post on him. Best bets leans a little toward real roles: their
+// lines are sharper and better known, while backups' thin props are noisier.
+let roleFallback = null;
+function roleScore(c){
+  if (c._role !== undefined) return c._role;
+  if (c.game) return (c._role = 0.5);
   const p = anaFor(c).p;
   if (p){
     const M = AN.metrics(A, p), v = k => (M[k] || {}).v || 0;
-    if (p.pos === "QB") return v("db_share") >= 0.5;
-    if (p.pos === "RB") return v("carry_share") >= 0.35 || v("touches_pg") >= 12;
-    return v("target_share") >= 0.15 || v("targets_pg") >= 5;
+    if (p.pos === "QB") return (c._role = v("db_share") >= 0.5 ? 1 : 0);
+    if (p.pos === "RB") return (c._role = Math.min(1, Math.max(v("carry_share") / 0.5, v("touches_pg") / 18)));
+    return (c._role = Math.min(1, Math.max(v("target_share") / 0.22, v("targets_pg") / 7)));
   }
-  if (!keyFallback){
-    keyFallback = new Map();
-    for (const pr of D.props || []) if (Object.keys(pr.b).length >= 5) keyFallback.set(P.norm(pr.player), (keyFallback.get(P.norm(pr.player)) || 0) + 1);
+  if (!roleFallback){
+    roleFallback = new Map();
+    for (const pr of D.props || []) if (Object.keys(pr.b).length >= 5) roleFallback.set(P.norm(pr.player), (roleFallback.get(P.norm(pr.player)) || 0) + 1);
   }
-  return (keyFallback.get(P.norm(c.player)) || 0) >= 3;
+  return (c._role = Math.min(1, (roleFallback.get(P.norm(c.player)) || 0) / 3));
 }
 function matchesQuery(c){
   if (!pref.q) return true;
@@ -257,8 +256,7 @@ function filtered(where, sortKey){
   for (const c of picksFor(where)){
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
     if (pref.side !== "all" && sideOf(c) !== pref.side) continue;
-    if (pref.q){ if (!matchesQuery(c)) continue; }          // a search looks at everyone
-    else if (pref.who === "key" && !isKey(c)) continue;
+    if (pref.q && !matchesQuery(c)) continue;
     if (!inGameFilter(c.g)) continue;
     const cur = best.get(c.group);
     if (!cur || key(c) > key(cur)) best.set(c.group, c);
@@ -266,6 +264,19 @@ function filtered(where, sortKey){
   const out = [...best.values()];
   if (sortKey === "game") out.sort((a, b) => kickMs(a.g) - kickMs(b.g) || b.hit - a.hit);
   else out.sort((a, b) => key(b) - key(a));
+  // Best bets on "Everything": take turns across prop types (TDs, rushing, receiving, catches, passing, game
+  // lines...) so one type can't fill the whole first screen; each round goes in order of that round's best score
+  if (sortKey === "best" && pref.prop === "all" && !pref.q) return interleave(out, key);
+  return out;
+}
+function interleave(sorted, key){
+  const by = new Map();
+  for (const c of sorted){ if (!by.has(c.stat)) by.set(c.stat, []); by.get(c.stat).push(c); }
+  const lists = [...by.values()], out = [];
+  for (let round = 0; out.length < sorted.length; round++){
+    const row = lists.map(l => l[round]).filter(Boolean).sort((a, b) => key(b) - key(a));
+    out.push(...row);
+  }
   return out;
 }
 
@@ -544,9 +555,8 @@ function render(){
   $("v-where").textContent = whereLabel(pref.where);
   $("v-prop").textContent = pref.prop === "all" ? "Everything" : (STAT[pref.prop] || {t:pref.prop}).t;
   $("v-side").textContent = (SIDES.find(s => s.k === pref.side) || SIDES[0]).t;
-  $("v-who").textContent = (WHOS.find(w => w.k === pref.who) || WHOS[0]).t;
   const notes = [];
-  if (pref.q) notes.push('Search: <b>' + esc(pref.q) + '</b> (all players)');
+  if (pref.q) notes.push('Search: <b>' + esc(pref.q) + '</b>');
   if (pref.prop !== "all") notes.push('Showing only <b>' + esc((STAT[pref.prop] || {t:pref.prop}).t) + '</b>');
   if (pref.side !== "all") notes.push('<b>' + esc(SIDES.find(s => s.k === pref.side).t) + '</b>');
   const fn = $("filterNote");
@@ -609,7 +619,6 @@ const PICKERS = {
     if (pp.length) h += '<div class="opt-sec">Player props</div>' + pp.map(k => opt(k, STAT[k].t, STAT[k].d, pref.prop === k)).join("");
     return h;
   }},
-  who: {t:"Players", d:"Key players, or everyone with a line", build(){ return WHOS.map(w => opt(w.k, w.t, w.d, pref.who === w.k)).join(""); }},
   side: {t:"Over / Under", d:"Only overs, only unders, or both", build(){ return SIDES.map(s => opt(s.k, s.t, s.d, pref.side === s.k)).join(""); }},
   game: {t:"Game / slate", d:"One slate (like Sunday Night) or one game. Updates with each week's schedule", build(){
     const n = {};

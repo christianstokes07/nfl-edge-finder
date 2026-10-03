@@ -213,7 +213,7 @@ def build(now=None, seed=7, analytics=None):
     spec = games_from_analytics(analytics, rng) if analytics else None
     lines, games = fake_lines(now, rng, spec or None)
     prop_list = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE,
-                                  C.ANYTIME_TD_VIG, C.PROP_MIN_BOOKS)
+                                  C.TD_CURVE, C.PROP_MIN_BOOKS)
     game_lines = fake_game_lines(games, analytics, rng)
     gprops = games_mod.build_game_props(game_lines, C.MARGIN_SD, C.TOTAL_SD)
     km = [{"ticker": f"KXNFLPASSATT-DEMO-{i}", "title": f"{p['player']}: {t}+ passing attempts", "yes_bid": b, "yes_ask": b + 1}

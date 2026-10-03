@@ -31,6 +31,34 @@ def devig_two_way(over_odds, under_odds) -> float:
     return a / (a + b)
 
 
+def yes_only_fair(yes_odds, td_vig) -> float:
+    """Fair chance from a Yes-only price (anytime TD; books don't post the No side).
+
+    td_vig is either a curve (a, b, lo, hi) or a flat cut. Curve: fair = implied x clamp(a + b x implied, lo, hi).
+    It's fitted to Kalshi's prices on the same players (Kalshi's fee is tiny, so its mid price is close to a fair
+    chance): books build relatively more of their cut into longshots (+400 keeps ~83% of its implied chance)
+    than into heavy favorites (-340 keeps ~93%). A flat cut divides every price by (1 + td_vig)."""
+    py = american_to_prob(yes_odds)
+    if isinstance(td_vig, (tuple, list)):
+        a, b, lo, hi = td_vig
+        return min(py * min(max(a + b * py, lo), hi), 0.99)
+    return min(py / (1 + td_vig), 0.99)
+
+
+def fit_td_curve(pairs, lo=0.80, hi=0.93, min_n=30):
+    """Least-squares fit of (Kalshi mid / book implied) on book implied, from (implied, kalshi_mid) pairs.
+    Returns (a, b, lo, hi, n) or None if there are too few pairs to trust."""
+    pairs = [(x, y) for x, y in pairs if 0.02 < x < 0.95 and 0 < y < 1]
+    if len(pairs) < min_n:
+        return None
+    xs = [x for x, _ in pairs]
+    rs = [y / x for x, y in pairs]
+    mx, mr = sum(xs) / len(xs), sum(rs) / len(rs)
+    var = sum((x - mx) ** 2 for x in xs)
+    b = sum((x - mx) * (r - mr) for x, r in zip(xs, rs)) / var if var else 0.0
+    return (mr - b * mx, b, lo, hi, len(pairs))
+
+
 def lognormal_p_at_least(threshold: float, line: float, p_over: float, sigma: float) -> float:
     """Book says P(X > line) = p_over. Assume X is lognormal with spread sigma, anchor it to
     that, and return P(X >= threshold). Yardage lines end in .5 so 'X+' means X > X-0.5."""
@@ -90,7 +118,7 @@ def fair_probability(stat, threshold, lines, sigma_map, max_dist, td_vig):
             if "Yes" in pr and "No" in pr:
                 probs.append(devig_two_way(pr["Yes"], pr["No"]))
             elif "Yes" in pr:
-                probs.append(min(american_to_prob(pr["Yes"]) / (1 + td_vig), 0.99))
+                probs.append(yes_only_fair(pr["Yes"], td_vig))
         elif stat in POISSON:
             # Kalshi '2+' vs book Over 1.5: exact; other thresholds via the book's Poisson rate
             if pt is not None and "Over" in pr and "Under" in pr and abs(threshold - (pt + 0.5)) <= 2:

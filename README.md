@@ -41,13 +41,13 @@ chance doesn't make a bet profitable: the price still matters, and the page show
   last 12 games.
 - **Cleaner cards.** Injury news, line-move and weather warnings, "stats disagree" and price-gap alerts now sit at the
   top of "Why this pick" under **Heads up**. The card shows one "⚠ Heads up (n)" tag when there's something to read.
-- **Key players, search and player pages.** The list defaults to **key players**, judged from this season's usage:
-  starting QBs (half the dropbacks or more), lead backs (35%+ of carries or 12+ touches a game) and receivers with real
-  roles (15%+ target share or 5+ targets a game). That keeps the obvious names from being buried under backups'
-  "Under 1.5 catches". Switch **Players** to Everyone for the rest. The search box finds any player or team. Tapping a
-  name opens his **player page**: every prop the scan has on him, the line most books use with Over and Under hit
-  chances, fair odds, best price and value, the stats projection, his hit-rate chart, **every book's line and odds**
-  (alternate lines included when bought), Kalshi's rungs, one-tap "+ Slip", and "Price a different line".
+- **Search and player pages.** The feed shows every player. The search box narrows it to one player (or a team). Tapping a
+  name opens his **player page**: every prop the scan has on him, the line most books use with Over and Under hit chances,
+  fair odds, best price and value, the stats projection, his hit-rate chart, **every book's line and odds** (alternate
+  lines included when bought), Kalshi's rungs, one-tap "+ Slip", and "Price a different line".
+- **Best bets mixes prop types.** On "Everything", Best bets takes turns across TDs, rushing, receiving, catches, passing and
+  game lines, so the first screen shows the best of each. The score weighs hit chance about as much as value (this is a site
+  for high-hit-rate legs), with small nudges for the stats verdict and for players with real roles.
 - **Fair odds everywhere.** Every hit chance also shows its no-cut odds (70% = −233), so you can compare it with your book.
 - **Better price elsewhere.** On a single-book view, a pick shows when another book pays clearly more for the same line.
 - **Desktop.** At 1180px+ the page is three panes: filters on the left, picks in a grid, and the parlay slip always open
@@ -270,6 +270,16 @@ are supported. Add `player_rush_yds_alternate,player_reception_yds_alternate` to
 about 1 credit per game per run, so both on both runs is about +120 credits a month, which doesn't fit with
 two runs a week. If you want them, drop to one scan a week (Sunday) with 5–6 markets. You can also add them
 to a single manual run with the `markets` box on the Run workflow screen.
+
+## Anytime TD hit chances (fitted to Kalshi)
+
+Books only post the "Yes" side of anytime TDs, so the cut can't be removed by comparing two sides. Comparing books' Yes
+prices with Kalshi's prices on the same players (Kalshi's fee is tiny, so its mid price is close to a fair chance) shows the
+cut is a bigger slice of longshots than of favorites. A +400 TD keeps about 83% of its implied chance; a −340 favorite keeps
+about 93%. So fair = implied × clamp(a + b × implied, 0.80, 0.93). The curve is re-fitted on every scan and Kalshi refresh
+from the current prices when 30+ players match: 307 players on 2026-10-03 gave a = 0.809, b = 0.184. Otherwise the
+configured curve is used (`TD_CURVE`). This replaced a flat 12% cut, which made favorites like Gibbs (−340 everywhere)
+look like 70% and poor value; he's about 73%.
 
 ## Platforms
 

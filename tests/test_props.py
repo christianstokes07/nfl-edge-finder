@@ -11,7 +11,7 @@ def _ln(book, point, over, under, player="Jaylen Warren", market="player_rush_yd
 
 
 def _build(lines):
-    return props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE, C.ANYTIME_TD_VIG)
+    return props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE, C.TD_CURVE)
 
 
 def test_each_book_keeps_its_own_line_and_prices():
@@ -42,7 +42,7 @@ def test_anytime_td_yes_only_and_two_way():
     ]
     (p,) = _build(lines)
     assert p["pt"] is None and p["b"] == {"draftkings": [105, None], "fanduel": [100, -130]}
-    yes_only = model.american_to_prob(105) / (1 + C.ANYTIME_TD_VIG)
+    yes_only = model.yes_only_fair(105, C.TD_CURVE)
     assert abs(p["p"] - (yes_only + model.devig_two_way(100, -130)) / 2) < 0.001
 
 
@@ -181,3 +181,18 @@ def test_kalshi_refresh_keeps_data_when_kalshi_is_down(tmp_path):
     before = path.read_text()
     assert run.kalshi_refresh(str(path), markets=[]) is None
     assert path.read_text() == before
+
+
+def test_td_curve_shades_longshots_more_than_favorites():
+    fav, longshot = model.yes_only_fair(-340, C.TD_CURVE), model.yes_only_fair(400, C.TD_CURVE)
+    assert abs(fav - model.american_to_prob(-340) * 0.93) < 1e-9          # capped at 93% of the implied chance
+    assert abs(longshot - 0.2 * (C.TD_CURVE[0] + C.TD_CURVE[1] * 0.2)) < 1e-9
+    assert fav / model.american_to_prob(-340) > longshot / 0.2
+    assert abs(model.yes_only_fair(150, 0.12) - 0.4 / 1.12) < 1e-9        # flat cut still available
+
+
+def test_fit_td_curve_from_kalshi_pairs():
+    pairs = [(x, x * (0.8 + 0.2 * x)) for x in [0.05 + 0.02 * i for i in range(35)]]
+    a, b, lo, hi, n = model.fit_td_curve(pairs)
+    assert n == 35 and abs(a - 0.8) < 1e-9 and abs(b - 0.2) < 1e-9
+    assert model.fit_td_curve(pairs[:10]) is None                            # too few to trust

@@ -228,7 +228,7 @@ def evaluate(lines, markets, universe=None, game_lines=(), games=None):
             continue
         stats["matched"] += 1
         fair, n = model.fair_probability(
-            c["stat"], c["threshold"], book_lines, C.SIGMA, C.KALSHI_LINE_DISTANCE, C.ANYTIME_TD_VIG
+            c["stat"], c["threshold"], book_lines, C.SIGMA, C.KALSHI_LINE_DISTANCE, C.TD_CURVE
         )
         if fair is None or n < C.MIN_BOOKS:
             continue
@@ -434,7 +434,7 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
         "lines": [{"id": f"q{i}", **p} for i, p in enumerate(game_props)],   # moneyline / spread / total
         "game_sd": {"margin": C.MARGIN_SD, "total": C.TOTAL_SD},
         # what site/model.js needs to price custom lines exactly like the scan does
-        "model": {"sigma": C.SIGMA, "td_vig": C.ANYTIME_TD_VIG, "dist": C.KALSHI_LINE_DISTANCE},
+        "model": {"sigma": C.SIGMA, "td_curve": list(C.TD_CURVE), "dist": C.KALSHI_LINE_DISTANCE},
         "kalshi": kalshi_rows,  # the page re-prices these live
         "picks": [
             {**p, "label": STAT_LABEL[p["stat"]], "fair": round(p["fair"], 3), "edge": round(p["edge"], 3)}
@@ -469,6 +469,33 @@ def apply_measured_spreads(a):
     C.TOTAL_SD = sd.get("total") or C.TOTAL_SD
 
 
+def refit_td_curve(lines, markets):
+    """Re-fit the anytime-TD curve from this scan: median book Yes price vs Kalshi's mid, per player
+    (tight Kalshi markets only). Keeps the configured curve if fewer than 30 players match."""
+    from statistics import median
+    yes = defaultdict(list)
+    for ln in lines:
+        if ln["market"] == "player_anytime_td" and "Yes" in ln["prices"]:
+            yes[model.norm_name(ln["player"])].append(model.american_to_prob(ln["prices"]["Yes"]))
+    names = sorted(yes, key=len, reverse=True)
+    pairs = []
+    for m in markets:
+        c = kalshi.parse_contract(m)
+        if not c or c["stat"] != "player_anytime_td":
+            continue
+        bid, ask = kalshi.prices(m)
+        who = find_player(kalshi.market_text(m), names)
+        if who and bid and ask and ask - bid <= 4 and len(yes[who]) >= 4:
+            pairs.append((median(yes[who]), (bid + ask) / 200))
+    fit = model.fit_td_curve(pairs)
+    if fit:
+        C.TD_CURVE = tuple(round(x, 4) for x in fit[:4])
+        print(f"[td] anytime-TD curve re-fitted from {fit[4]} players matched to Kalshi: {C.TD_CURVE}")
+    else:
+        print(f"[td] only {len(pairs)} players matched to Kalshi; keeping the TD curve {C.TD_CURVE}")
+    return fit
+
+
 def kalshi_refresh(path=None, markets=None, now=None):
     """Rebuild the Kalshi section of data.json from fresh Kalshi markets and the sportsbook lines already
     stored there. Free: no Odds API call. The sportsbook numbers and their timestamp stay as they were."""
@@ -485,10 +512,16 @@ def kalshi_refresh(path=None, markets=None, now=None):
         # Kalshi unreachable or empty: never replace a working list with nothing
         print("[kalshi-only] no Kalshi markets came back (network or API trouble); data.json left unchanged")
         return None
+    refit_td_curve(lines, markets)
+    # re-price the stored props with the current TD curve; keep each prop's line-move marker
+    moves = {(p["player"], p["m"], p["pt"]): p.get("mv") for p in prev.get("props", []) if p.get("mv")}
+    prop_list = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE, C.TD_CURVE, C.PROP_MIN_BOOKS)
+    for p in prop_list:
+        if (p["player"], p["m"], p["pt"]) in moves:
+            p["mv"] = moves[(p["player"], p["m"], p["pt"])]
     universe = []
     picks, stats = evaluate(lines, markets, universe, games_mod.lines_from_props(gprops), prev.get("games"))
     stats["credits_used"] = 0
-    prop_list = [{k: v for k, v in p.items() if k != "id"} for p in prev.get("props", [])]
     data = site_data(picks, stats, universe, prop_list, prev.get("games"), prev.get("markets_updated"),
                      datetime.fromisoformat(prev["updated"]), gprops)
     data["kalshi_updated"] = now.isoformat(timespec="seconds")
@@ -535,11 +568,13 @@ def main():
     markets_updated.update({m: stamp for m in C.ODDS_MARKETS})
     lines += carried
     games = {**carried_games, **games}
+    markets = get_kalshi_markets()
+    if markets:
+        refit_td_curve(lines, markets)
     prop_list = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE,
-                                  C.ANYTIME_TD_VIG, C.PROP_MIN_BOOKS)
+                                  C.TD_CURVE, C.PROP_MIN_BOOKS)
     props.add_line_moves(prop_list, (prev or {}).get("props"))
     print(f"[props] {len(prop_list)} sportsbook props across {len(games)} games")
-    markets = get_kalshi_markets()
     gprops = games_mod.build_game_props(game_lines, C.MARGIN_SD, C.TOTAL_SD)
     print(f"[games] {len(gprops)} game-line props (moneyline / spread / total)")
     universe = []

@@ -19,7 +19,7 @@ def test_custom_line_pricing_matches_python(tmp_path):
              ln("draftkings", 1.5, 120, -150, "player_pass_tds", "QB One"), ln("fanduel", 1.5, 110, -140, "player_pass_tds", "QB One"),
              {"player": "Jaylen Warren", "market": "player_anytime_td", "book": "draftkings", "point": None, "prices": {"Yes": 140}, "game_id": "g1"},
              {"player": "Jaylen Warren", "market": "player_anytime_td", "book": "fanduel", "point": None, "prices": {"Yes": 130, "No": -170}, "game_id": "g1"}]
-    ps = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE, C.ANYTIME_TD_VIG)
+    ps = props.build_props(lines, C.SIGMA, C.MAX_LINE_DISTANCE, C.ALT_LINE_DISTANCE, C.TD_CURVE)
     gl = [{"g": "g1", "market": "h2h", "book": "dk", "point": None, "prices": [-300, 240]},
           {"g": "g1", "market": "spreads", "book": "dk", "point": -6.5, "prices": [-110, -110]},
           {"g": "g1", "market": "spreads", "book": "fd", "point": -7.0, "prices": [-105, -115]},
@@ -32,7 +32,7 @@ def test_custom_line_pricing_matches_python(tmp_path):
     def py_player(stat, line, player="Jaylen Warren"):
         mains = [l for l in lines if l["market"] == stat and l["player"] == player]
         thr = 1.0 if stat == "player_anytime_td" else float(int(line) + 1)
-        p, _ = model.fair_probability(stat, thr, mains, C.SIGMA, C.KALSHI_LINE_DISTANCE, C.ANYTIME_TD_VIG)
+        p, _ = model.fair_probability(stat, thr, mains, C.SIGMA, C.KALSHI_LINE_DISTANCE, C.TD_CURVE)
         return p
     cases, want = [], []
     for line in (40.5, 52.5, 65.5, 66.5, 80.5, 95.5):

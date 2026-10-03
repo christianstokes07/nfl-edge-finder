@@ -28,6 +28,12 @@
   const prob = a => (a > 0 ? 100 / (a + 100) : -a / (-a + 100));
   const devig = (a, b) => { const x = prob(a), y = prob(b); return x / (x + y); };
 
+  // Yes-only price (anytime TD): same curve as src/model.py yes_only_fair (fitted to Kalshi's prices)
+  function yesOnlyFair(a, curve, flat) {
+    const py = prob(a);
+    if (curve) return Math.min(py * clamp(curve[0] + curve[1] * py, curve[2], curve[3]), 0.99);
+    return Math.min(py / (1 + (flat || 0.12)), 0.99);
+  }
   function lognormalAtLeast(threshold, line, pOver, sigma) {
     const p = clamp(pOver, 1e-4, 1 - 1e-4), cut = Math.max(threshold - 0.5, 0.5);
     const mu = Math.log(line) - sigma * inv(1 - p);
@@ -71,12 +77,12 @@
   // Chance that player's stat is >= threshold ("Over X.5" = threshold X+1), from all books. Mirrors
   // src/model.py fair_probability with the Kalshi distance rule (custom lines may sit far from the book line).
   function playerAtLeast(D, player, stat, threshold) {
-    const M = D.model || {}, sig = (M.sigma || {})[stat], dist = M.dist || 0.5, tdVig = M.td_vig || 0.12;
+    const M = D.model || {}, sig = (M.sigma || {})[stat], dist = M.dist || 0.5, tdVig = M.td_vig;
     const probs = [], pts = [];
     for (const l of bookLines(D, player, stat)) {
       if (stat === TD) {
         if (l.a != null && l.b != null) probs.push(devig(l.a, l.b));
-        else if (l.a != null) probs.push(Math.min(prob(l.a) / (1 + tdVig), 0.99));
+        else if (l.a != null) probs.push(yesOnlyFair(l.a, M.td_curve, tdVig));
         continue;
       }
       if (l.a == null || l.b == null || !l.point) continue;
@@ -146,7 +152,7 @@
     return {hit: pick.side === "Under" ? 1 - r.p : r.p, n: r.n, unc: r.unc};
   }
 
-  const api = {cdf, inv, prob, devig, lognormalAtLeast, poissonAtLeast, normalOver, playerAtLeast, gameChance, price, bookLines, norm};
+  const api = {yesOnlyFair, cdf, inv, prob, devig, lognormalAtLeast, poissonAtLeast, normalOver, playerAtLeast, gameChance, price, bookLines, norm};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Model = api;
 })(this);

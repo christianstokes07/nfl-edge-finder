@@ -126,30 +126,47 @@
   }
 
   // One pick at any line: {kind:"player", player, stat, side:"Over"|"Under"|"Yes"|"No", line}
-  // or {kind:"game", g, stat:"game_ml"|"game_spread"|"game_total", team, side, line}. Returns {hit, n, unc} or null.
+  // or {kind:"game", g, stat:"game_ml"|"game_spread"|"game_total", team, side, line}.
+  // Returns {hit, push, n, unc} or null. A whole-number line can land exactly on the number: Over 3 wins at 4+,
+  // loses at 2 or fewer and PUSHES (stake back) at exactly 3, so win, push and loss are priced separately;
+  // a .5 line can't push.
   function price(D, pick) {
+    const whole = pick.line != null && Number.isInteger(pick.line);
     if (pick.kind === "game") {
       const gm = (D.games || {})[pick.g]; if (!gm) return null;
       if (pick.stat === "game_total") {
-        const r = gameChance(D, pick.g, "totals", pick.line); if (!r) return null;
-        return {hit: pick.side === "Under" ? 1 - r.p : r.p, n: r.n, unc: r.unc};
+        const L = pick.line;
+        const o = gameChance(D, pick.g, "totals", whole ? L + 0.5 : L), u = whole ? gameChance(D, pick.g, "totals", L - 0.5) : o;
+        if (!o || !u) return null;
+        const over = o.p, under = 1 - u.p, push = whole ? Math.max(0, 1 - over - under) : 0;
+        return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: o.unc};
       }
       const home = pick.team === gm.h;
       if (pick.stat === "game_ml") {
         const r = gameChance(D, pick.g, "h2h", null); if (!r) return null;
-        return {hit: home ? r.p : 1 - r.p, n: r.n, unc: r.unc};
+        return {hit: home ? r.p : 1 - r.p, push: 0, n: r.n, unc: r.unc};
       }
-      // spread from the picked team's side: team +3.5 = home spread +3.5 (home) or -3.5 (away)
-      const homeLine = home ? pick.line : -pick.line;
-      const r = gameChance(D, pick.g, "spreads", homeLine); if (!r) return null;
-      return {hit: home ? r.p : 1 - r.p, n: r.n, unc: r.unc};
+      // spread from the picked team's side: team +3 = home spread +3 (home) or -3 (away). Home covers spread H when
+      // margin + H > 0; with a whole number H it wins at margin >= 1 - H, pushes at margin = -H.
+      const H = home ? pick.line : -pick.line;
+      const a = gameChance(D, pick.g, "spreads", whole ? H - 0.5 : H), b = whole ? gameChance(D, pick.g, "spreads", H + 0.5) : a;
+      if (!a || !b) return null;
+      const homeWin = a.p, homeLose = 1 - b.p, push = whole ? Math.max(0, 1 - homeWin - homeLose) : 0;
+      return {hit: home ? homeWin : homeLose, push, n: a.n, unc: a.unc};
     }
     if (pick.stat === TD) {
       const r = playerAtLeast(D, pick.player, TD, 1); if (!r) return null;
-      return {hit: pick.side === "No" ? 1 - r.p : r.p, n: r.n, unc: r.unc};
+      return {hit: pick.side === "No" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc};
     }
-    const r = playerAtLeast(D, pick.player, pick.stat, Math.floor(pick.line) + 1); if (!r) return null;
-    return {hit: pick.side === "Under" ? 1 - r.p : r.p, n: r.n, unc: r.unc};
+    const L = pick.line;
+    if (whole) {
+      const o = playerAtLeast(D, pick.player, pick.stat, L + 1), atL = playerAtLeast(D, pick.player, pick.stat, L);
+      if (!o || !atL) return null;
+      const over = o.p, under = 1 - atL.p, push = Math.max(0, atL.p - o.p);
+      return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: Math.max(o.unc, atL.unc)};
+    }
+    const r = playerAtLeast(D, pick.player, pick.stat, Math.floor(L) + 1); if (!r) return null;
+    return {hit: pick.side === "Under" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc};
   }
 
   const api = {yesOnlyFair, cdf, inv, prob, devig, lognormalAtLeast, poissonAtLeast, normalOver, playerAtLeast, gameChance, price, bookLines, norm};

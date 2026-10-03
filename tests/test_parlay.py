@@ -8,7 +8,7 @@ import pytest
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="node not installed")
-@pytest.mark.parametrize("name", ["parlay.test.js", "analytics.test.js"])
+@pytest.mark.parametrize("name", ["parlay.test.js", "analytics.test.js", "model.test.js"])
 def test_js(name):
     test = Path(__file__).with_name(name)
     r = subprocess.run(["node", str(test)], capture_output=True, text=True, timeout=60)

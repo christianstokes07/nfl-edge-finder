@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-03 · TD fair odds fitted to Kalshi";
+const BUILD = "2026-10-03 · whole-number lines and pushes";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -151,8 +151,9 @@ let pickCache = new Map();
 function bumpData(){ pickCache = new Map(); roleFallback = null; namesCache = null; }
 function mk(c){
   c.implied = 1 / c.dec;
-  c.ev = c.hit * c.dec - 1;
-  c.evSafe = (c.hit - c.unc) * c.dec - 1;
+  c.push = c.push || 0;
+  c.ev = c.hit * c.dec + c.push - 1;                     // a push gives the stake back
+  c.evSafe = (c.hit - c.unc) * c.dec + c.push - 1;
   const who = P.norm(c.player);
   c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
   c.prop = who + "|" + c.m + "|" + c.pt;
@@ -193,7 +194,12 @@ function bookPicks(where){
     // on a single book, point out a clearly better price elsewhere (same line)
     let alt = null;
     if (where !== "best"){ const o = bestOf(p, s, Object.keys(p.b).filter(b => b !== where)); if (o && o.dec > best.dec + 0.02) alt = o; }
-    out.push(mk({plat:"book", book:best.b, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, american:best.a, dec:best.dec, alt, ...extra}));
+    const c = {plat:"book", book:best.b, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, american:best.a, dec:best.dec, alt, ...extra};
+    if (c.pt != null && Number.isInteger(c.pt) && c.stat !== TD && c.stat !== "game_ml"){
+      const r = M.price(D, edOf(c));                    // whole-number line: it can land exactly on the number
+      if (r){ c.hit = r.hit; c.push = r.push; }
+    }
+    out.push(mk(c));
   };
   for (const p of D.props || []){
     for (const s of [0, 1]){
@@ -473,7 +479,8 @@ const SCOPES = [["l5", "Last 5"], ["l10", "Last 10"], ["season", "This season"]]
 function scopeGames(all, scope){ return scope === "season" ? AN.thisSeason(A, all) : all.slice(scope === "l5" ? -5 : -10); }
 function hitRate(all, stat, line, side, scope){
   const L = scopeGames(all, scope);
-  return {n:L.length, hits:L.filter(x => AN.cleared(x.v, stat, line, side)).length};
+  const r = L.map(x => AN.cleared(x.v, stat, line, side));
+  return {n:L.length, hits:r.filter(x => x === true).length, pushes:r.filter(x => x === null).length};
 }
 function hitChart(all, stat, line, side, id){
   if (!all || !all.length) return "";
@@ -489,19 +496,21 @@ function hitChart(all, stat, line, side, id){
   const r = hitRate(all, stat, line, side, chartScope);
   const what = isTd ? (side === "No" ? "kept out of the end zone" : "scored") : (OVERSIDE.has(side) ? "went over " : "stayed under ") + fmtPt(line);
   let h = '<div class="hc" data-chart="' + esc(id) + '"><div class="hc-tabs" role="group" aria-label="Games shown">' + tabs + '</div>' +
-    '<p class="hc-sum"><b>' + r.hits + ' of ' + r.n + '</b> ' + what + ' (' + Math.round(r.hits / r.n * 100) + '%)' + '</p>' +
+    '<p class="hc-sum"><b>' + r.hits + ' of ' + r.n + '</b> ' + what + ' (' + Math.round(r.hits / r.n * 100) + '%)' +
+    (r.pushes ? ' · ' + r.pushes + (r.pushes === 1 ? " push" : " pushes") + ' (landed exactly on ' + fmtPt(line) + ')' : "") + '</p>' +
     '<div class="hc-plot" role="img" aria-label="' + esc(r.hits + " of " + r.n + " games " + what + ": " + L.map(x => AN.wkLabel(A, x) + " " + Math.round(x.v)).join(", ")) + '">';
   if (line != null) h += '<div class="hc-line" style="bottom:' + (line / max * 100).toFixed(1) + '%"><span>' + fmtPt(line) + '</span></div>';
   for (const x of L){
     const ok = AN.cleared(x.v, stat, line, side), hp = Math.max(x.v / max * 100, x.v > 0 ? 2 : 0.8);
-    h += '<div class="hc-col" tabindex="0" aria-label="' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " at ") + x.opp + ": " + Math.round(x.v) + " " + unit + ", " + (ok ? "hit" : "miss")) + '">' +
+    const word = ok === null ? "push" : ok ? "hit" : "miss", mark = ok === null ? "↺ push" : ok ? "✓ hit" : "✕ miss";
+    h += '<div class="hc-col" tabindex="0" aria-label="' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " at ") + x.opp + ": " + Math.round(x.v) + " " + unit + ", " + word) + '">' +
       '<span class="hc-v" style="bottom:calc(' + hp.toFixed(1) + '% + 3px)">' + Math.round(x.v) + '</span>' +
-      '<i class="hc-bar ' + (ok ? "hit" : "miss") + (x.season !== A.season ? " old" : "") + '" style="height:' + hp.toFixed(1) + '%"></i>' +
-      '<span class="hc-tip">' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " @ ") + x.opp + " · " + Math.round(x.v) + " " + unit + " · " + (ok ? "✓ hit" : "✕ miss")) + '</span></div>';
+      '<i class="hc-bar ' + (ok === null ? "push" : ok ? "hit" : "miss") + (x.season !== A.season ? " old" : "") + '" style="height:' + hp.toFixed(1) + '%"></i>' +
+      '<span class="hc-tip">' + esc(AN.wkLabel(A, x) + (x.home ? " vs " : " @ ") + x.opp + " · " + Math.round(x.v) + " " + unit + " · " + mark) + '</span></div>';
   }
   h += '</div><div class="hc-xs" aria-hidden="true">' + L.map(x => {
     const ok = AN.cleared(x.v, stat, line, side);
-    return '<span><b class="' + (ok ? "ok" : "no") + '">' + (ok ? "✓" : "✕") + '</b>' + (x.home ? "" : "@") + esc(x.opp) + '<small>' + esc(AN.wkLabel(A, x).replace("Wk ", "W")) + '</small></span>';
+    return '<span><b class="' + (ok === null ? "pu" : ok ? "ok" : "no") + '">' + (ok === null ? "↺" : ok ? "✓" : "✕") + '</b>' + (x.home ? "" : "@") + esc(x.opp) + '<small>' + esc(AN.wkLabel(A, x).replace("Wk ", "W")) + '</small></span>';
   }).join("") + '</div>' + (L.some(x => x.season !== A.season) ? '<p class="src">Faded bars are last season\'s games.</p>' : "") + '</div>';
   return h;
 }
@@ -538,7 +547,8 @@ function card(c){
     '<div class="price">' + priceText(c) + '</div>' +
     '<div class="game">' + esc(gameName(c.g)) + (kickText(c.g) ? " · " + esc(kickText(c.g)) : "") + '</div></div>' +
     '<div class="hit"><div class="pct">' + pct(c.hit) + '<sup>%</sup></div><div class="cap">hit chance<span class="ten">' + inTen(c.hit) +
-      '</span><span class="ten" title="What these odds would be with no house cut">fair ' + P.fmtAmerican(P.probToAmerican(c.hit)) + '</span></div></div>' +
+      '</span><span class="ten" title="What these odds would be with no house cut">fair ' + P.fmtAmerican(P.probToAmerican(c.hit / Math.max(1e-9, 1 - (c.push || 0)))) + '</span>' +
+      (c.push > 0.005 ? '<span class="ten" title="Lands exactly on the line: stake back">push ' + pct(c.push) + '%</span>' : "") + '</div></div>' +
     '<div class="meter" aria-hidden="true"><div class="bar"><i style="width:' + pct(c.hit) + '%"></i></div>' +
     '<span class="tier">' + tier(c.hit) + '</span></div>' +
     '<div class="foot">' + valueHtml(c) + '<div class="btns">' +
@@ -724,7 +734,7 @@ function toggleLeg(c){
 function repriceLeg(l){
   const r = M.price(D, l.ed);
   if (!r) return false;
-  Object.assign(l, {hit:r.hit, unc:r.unc, n:r.n, custom:true, plat:"custom", line:edLabel(l.ed),
+  Object.assign(l, {hit:r.hit, push:r.push || 0, unc:r.unc, n:r.n, custom:true, plat:"custom", line:edLabel(l.ed),
     key:"c|" + JSON.stringify(l.ed), prop:"c|" + (l.ed.player || l.ed.g) + "|" + l.ed.stat,
     dec:l.myOdds ? P.parseOdds(l.myOdds) : null,
     price:l.myOdds ? "your odds " + l.myOdds : "type your book's odds to check value"});
@@ -900,16 +910,19 @@ function renderCustom(pre){
     '<p class="hint">The hit chance comes from every book\'s price for this player, moved to your line with the same model the list uses. It only works where the last scan has sportsbook lines.</p></div>';
   fillCustom(!pre || pre.line == null);   // a pick opened from the list keeps its own line
   const sync = () => { readCustom(); outCustom(); };
-  $("cName").addEventListener("change", () => { pickName(names); fillCustom(true); });
-  $("cName").addEventListener("input", () => { if (names.some(n => n.label === $("cName").value)){ pickName(names); fillCustom(true); } });
+  $("cName").addEventListener("change", () => { if (pickName(names)) fillCustom(true); });
+  $("cName").addEventListener("input", () => { if (pickName(names)) fillCustom(true); });
   $("cStat").addEventListener("change", () => { cust.stat = $("cStat").value; fillCustom(true); });
   for (const id of ["cSide", "cLine", "cOdds"]) $(id).addEventListener("input", sync);
 }
 function pickName(names){
   const n = names.find(x => x.label === $("cName").value);
-  if (!n) return;
+  if (!n) return false;
+  // the same name again (the browser fires "change" when you leave the box): keep the prop, side and line
+  if (cust && (n.kind === "game" ? cust.kind === "game" && cust.g === n.g : cust.kind === "player" && P.norm(cust.player) === P.norm(n.player))) return false;
   cust = n.kind === "game" ? {kind:"game", g:n.g, stat:"game_spread", line:null, side:null, team:null}
                            : {kind:"player", player:n.player, g:n.g, stat:"", side:"Over", line:null};
+  return true;
 }
 function fillCustom(resetLine){
   const st = $("cStat"), sd = $("cSide");
@@ -966,11 +979,14 @@ function outCustom(){
       : "No sportsbook prices for this in the last scan, so there's nothing to price it from.") + '</div>';
     return;
   }
-  const fair = P.probToAmerican(r.hit), dec = P.parseOdds(cust.odds || "");
+  // fair odds at a book (which refunds pushes) = chance of winning among the bets that don't push
+  const fair = P.probToAmerican(r.hit / Math.max(1e-9, 1 - (r.push || 0))), dec = P.parseOdds(cust.odds || "");
   let h = '<div class="big">' + pct(r.hit) + '%</div><div class="sub"><b>' + esc(edLabel(ed)) + '</b> · ' + inTen(r.hit) + ' · fair odds ' + P.fmtAmerican(fair) +
-    ' · from ' + r.n + (r.n === 1 ? " book" : " books") + '</div>';
+    ' · from ' + r.n + (r.n === 1 ? " book" : " books") + '</div>' +
+    (r.push > 0.005 ? '<div class="sub">Whole-number line: ' + pct(r.push) + '% chance it lands exactly on ' + fmtPt(ed.line) + ' (a push: stake back). ' +
+      'Wins ' + pct(r.hit) + '%, loses ' + pct(Math.max(0, 1 - r.hit - r.push)) + '%.</div>' : "");
   if (dec){
-    const evS = (r.hit - r.unc) * dec - 1, ev = r.hit * dec - 1;
+    const evS = (r.hit - r.unc) * dec + (r.push || 0) - 1, ev = r.hit * dec + (r.push || 0) - 1;
     h += '<div class="sub">' + (evS >= 0 ? "✓ Good value at " + esc(cust.odds) + ": about " + money(ev) + " per $1 on average." :
       ev >= -0.06 ? "= Fair price at " + esc(cust.odds) + "." : "✕ Poor value at " + esc(cust.odds) + ": about " + money(ev) + " per $1 on average.") + '</div>';
     const s = stakeFor(r.hit - r.unc, dec);

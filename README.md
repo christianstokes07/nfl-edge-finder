@@ -22,6 +22,12 @@ chance doesn't make a bet profitable: the price still matters, and the page show
   `site/model.js` mirrors the Python math, and a test checks the two agree to 0.001 percentage points. Lines more than
   about 50% from the books' line (2 units for catches and attempts) aren't priced: that far out the model isn't reliable,
   and the page says so. Type your book's odds to see whether that line is good value.
+- **Whole-number lines and pushes.** A .5 line can't tie, but a whole number can: Over 4 catches wins at 5+, *pushes*
+  (stake back) at exactly 4, and loses at 3 or fewer. So Over 4 wins exactly as often as Over 4.5, and Under 4 exactly as
+  often as Under 3.5; the difference is the push. For whole-number lines (props, spreads, totals) the page prices win, push
+  and loss separately, shows "push X%", counts a push as your stake back when judging value, and gives fair odds among
+  the bets that don't push (how books settle them). Hit-rate charts mark a game that landed exactly on the line as a push
+  (↺, hatched bar), not a hit.
 - **Over / Under filter.** Overs only (over a line, YES on Kalshi, scores a TD) or unders only. Moneylines and spreads are
   hidden while it's on.
 - **Bankroll and stakes.** Set a bankroll (money only for betting) and every value pick shows a suggested stake:

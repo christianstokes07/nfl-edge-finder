@@ -501,10 +501,13 @@
   }
   const avg = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
   // did this game beat the pick? (TD: scored or not)
+  // did this game beat the pick? true / false, or null for a push (landed exactly on a whole-number line)
   function cleared(v, stat, line, side) {
     const over = OVER.has(side);
     if (stat === "player_anytime_td") return (v > 0) === over;
-    return line == null ? null : (v > line) === over;
+    if (line == null) return null;
+    if (v === line) return null;
+    return (v > line) === over;
   }
   function recentSection(A, p, stat, line, side) {
     const all = gameLog(A, p, stat), L = thisSeason(A, all), out = [], ly = lastYear(A, p, stat), isTd = stat === "player_anytime_td";
@@ -515,7 +518,7 @@
         last.map(x => fmtv(x.v, stat) + (x.home ? " vs " : " @ ") + x.opp + (x.season !== A.season ? " ('" + String(x.season).slice(2) + ")" : "")).join(", ") + " (newest first)"));
     }
     if (L.length) {
-      const hits = L.filter(x => cleared(x.v, stat, line, side));
+      const hits = L.filter(x => cleared(x.v, stat, line, side) === true);
       if (isTd) out.push(line_(null, "Scored in " + L.filter(x => x.v > 0).length + " of " + L.length + " games this season"));
       else if (line != null) out.push(line_(null, (OVER.has(side) ? "Over " : "Under ") + fmt(line) + " in " + hits.length + " of " + L.length + " games this season (average " + d1(avg(L.map(x => x.v))) + ")"));
       const H = L.filter(x => x.home), W = L.filter(x => !x.home);
@@ -609,7 +612,7 @@
     }
     const L = gameLog(A, p, stat).slice(-10);
     if (L.length >= 2) {
-      const hits = L.filter(x => cleared(x.v, stat, lineVal, c.side)).length, rate = hits / L.length;
+      const hits = L.filter(x => cleared(x.v, stat, lineVal, c.side) === true).length, rate = hits / L.length;
       add(1 + Math.abs(rate - 0.5) * 6 * Math.min(1, L.length / 6), rate > 0.5 ? 1 : rate < 0.5 ? -1 : 0,
         (stat === "player_anytime_td" ? (c.side === "No" ? "Kept out of the end zone in " + L.filter(x => x.v === 0).length : "Scored in " + L.filter(x => x.v > 0).length) + " of his last " + L.length + " games"
           : "This pick would have hit in " + hits + " of his last " + L.length + " games"));

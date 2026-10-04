@@ -28,6 +28,11 @@ chance doesn't make a bet profitable: the price still matters, and the page show
   and loss separately, shows "push X%", counts a push as your stake back when judging value, and gives fair odds among
   the bets that don't push (how books settle them). Hit-rate charts mark a game that landed exactly on the line as a push
   (↺, hatched bar), not a hit.
+- **No empty categories.** Kalshi contracts are kept per game *and* prop type (up to 16 each, taking turns across
+  players), so a slate full of tight markets can't squeeze one game's receiving or spread contracts out. On the page, if
+  the usual filters (prices shorter than −400, wide Kalshi spreads) would leave a prop type empty for the chosen game,
+  slate, search or prop, its picks show anyway, labeled "pays very little" or "thin market". The unfiltered default feed
+  is unchanged.
 - **Over / Under filter.** Overs only (over a line, YES on Kalshi, scores a TD) or unders only. Moneylines and spreads are
   hidden while it's on.
 - **Bankroll and stakes.** Set a bankroll (money only for betting) and every value pick shows a suggested stake:
@@ -283,7 +288,8 @@ Books only post the "Yes" side of anytime TDs, so the cut can't be removed by co
 prices with Kalshi's prices on the same players (Kalshi's fee is tiny, so its mid price is close to a fair chance) shows the
 cut is a bigger slice of longshots than of favorites. A +400 TD keeps about 83% of its implied chance; a −340 favorite keeps
 about 93%. So fair = implied × clamp(a + b × implied, 0.80, 0.93). The curve is re-fitted on every scan and Kalshi refresh
-from the current prices when 30+ players match: 307 players on 2026-10-03 gave a = 0.809, b = 0.184. Otherwise the
+from the current prices when 80+ players match, using only games that haven't kicked off (Kalshi trades on the live
+score once a game starts); otherwise the last good fit, saved in `data.json`, is kept: 307 players on 2026-10-03 gave a = 0.809, b = 0.184. Otherwise the
 configured curve is used (`TD_CURVE`). This replaced a flat 12% cut, which made favorites like Gibbs (−340 everywhere)
 look like 70% and poor value; he's about 73%.
 

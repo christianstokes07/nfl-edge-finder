@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-03 · whole-number lines and pushes";
+const BUILD = "2026-10-04 · no empty categories";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -160,19 +160,22 @@ function mk(c){
   c.group = c.game ? c.g + "|" + c.stat : who + "|" + c.stat;   // one pick per player & prop (per game & market)
   return c;
 }
-function kalshiPicks(){
+function kalshiPicks(relaxed){
   const out = [], P2 = D.params || {fee:.07, max_spread:8};
   const fee = c => P2.fee * c * (1 - c);
   for (const u of D.kalshi || []){
     const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
-    if (!q || !q.bid || !q.ask || q.ask >= 99 || q.ask - q.bid > P2.max_spread) continue;
+    if (!q || !q.bid || !q.ask || q.ask >= 99) continue;
+    const wide = q.ask - q.bid > P2.max_spread;
+    if (wide && !relaxed) continue;
     const fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
     for (const [side, hit, cost] of [["YES", fair, q.ask / 100], ["NO", 1 - fair, 1 - q.bid / 100]]){
       if (side === "NO" && (u.stat === TD || u.stat === "game_ml")) continue;
-      if (1 / (cost + fee(cost)) < MIN_DEC) continue;
+      const short = 1 / (cost + fee(cost)) < MIN_DEC;
+      if (short && !relaxed) continue;
       out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat, game:!!(STAT[u.stat] || {}).game,
                    team:u.team || null, km:!!u.km, pt:u.threshold, side, hit, unc:u.km ? 0.03 : (u.unc || .03), n:u.books,
-                   cents:Math.round(cost * 100), dec:1 / (cost + fee(cost))}));
+                   cents:Math.round(cost * 100), dec:1 / (cost + fee(cost)), relaxed:(wide ? "wide" : "") || (short ? "short" : "")}));
     }
   }
   return out;
@@ -185,16 +188,18 @@ function bestOf(p, s, books){
   }
   return best;
 }
-function bookPicks(where){
+function bookPicks(where, relaxed){
   const out = [];
   const add = (p, s, extra) => {
     const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
     const best = bestOf(p, s, books);
-    if (!best || best.dec < MIN_DEC) return;
+    if (!best) return;
+    const short = best.dec < MIN_DEC;
+    if (short && !relaxed) return;
     // on a single book, point out a clearly better price elsewhere (same line)
     let alt = null;
     if (where !== "best"){ const o = bestOf(p, s, Object.keys(p.b).filter(b => b !== where)); if (o && o.dec > best.dec + 0.02) alt = o; }
-    const c = {plat:"book", book:best.b, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, american:best.a, dec:best.dec, alt, ...extra};
+    const c = {plat:"book", book:best.b, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, american:best.a, dec:best.dec, alt, relaxed:short ? "short" : "", ...extra};
     if (c.pt != null && Number.isInteger(c.pt) && c.stat !== TD && c.stat !== "game_ml"){
       const r = M.price(D, edOf(c));                    // whole-number line: it can land exactly on the number
       if (r){ c.hit = r.hit; c.push = r.push; }
@@ -217,9 +222,10 @@ function bookPicks(where){
   }
   return out;
 }
-function picksFor(where){
-  if (!pickCache.has(where)) pickCache.set(where, where === "kalshi" ? kalshiPicks() : bookPicks(where));
-  return pickCache.get(where);
+function picksFor(where, relaxed){
+  const k = where + (relaxed ? "|all" : "");
+  if (!pickCache.has(k)) pickCache.set(k, where === "kalshi" ? kalshiPicks(relaxed) : bookPicks(where, relaxed));
+  return pickCache.get(k);
 }
 const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};
 function bestScore(c){
@@ -258,8 +264,27 @@ function matchesQuery(c){
   return [c.player, gm.a, gm.h, TEAM_ABBR[gm.a], TEAM_ABBR[gm.h]].some(x => x && P.norm(x).includes(q));
 }
 function filtered(where, sortKey){
-  const key = SORTKEY[sortKey] || SORTKEY.best, best = new Map();
-  for (const c of picksFor(where)){
+  const key = SORTKEY[sortKey] || SORTKEY.best;
+  let out = pickList(where, sortKey, key, false);
+  // No category is ever empty for a game: if the usual filters (prices shorter than -400, wide Kalshi spreads)
+  // leave a prop type with nothing, show its picks anyway, labeled. On "Everything" for one game or slate, every
+  // prop type that has a line gets at least its top picks.
+  const narrow = pref.prop !== "all" || pref.game !== "all" || pref.q;
+  if (narrow){
+    const have = new Set(out.map(c => c.stat));
+    const extra = pickList(where, sortKey, key, true).filter(c => !have.has(c.stat));
+    if (extra.length){
+      const perStat = new Map();
+      for (const c of extra) perStat.set(c.stat, (perStat.get(c.stat) || []).concat(c));
+      const add = [...perStat.values()].flatMap(l => pref.prop !== "all" || pref.q ? l : l.slice(0, 5));
+      out = out.concat(add);
+    }
+  }
+  return out;
+}
+function pickList(where, sortKey, key, relaxed){
+  const best = new Map();
+  for (const c of picksFor(where, relaxed)){
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
     if (pref.side !== "all" && sideOf(c) !== pref.side) continue;
     if (pref.q && !matchesQuery(c)) continue;
@@ -272,7 +297,7 @@ function filtered(where, sortKey){
   else out.sort((a, b) => key(b) - key(a));
   // Best bets on "Everything": take turns across prop types (TDs, rushing, receiving, catches, passing, game
   // lines...) so one type can't fill the whole first screen; each round goes in order of that round's best score
-  if (sortKey === "best" && pref.prop === "all" && !pref.q) return interleave(out, key);
+  if (sortKey === "best" && pref.prop === "all" && !pref.q && !relaxed) return interleave(out, key);
   return out;
 }
 function interleave(sorted, key){
@@ -304,7 +329,9 @@ function lineText(c){
   return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> " + s.u;
 }
 function priceText(c){
-  if (c.plat === "kalshi") return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on Kalshi";
+  if (c.plat === "kalshi") return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on Kalshi" +
+    (c.relaxed === "wide" ? ' <span class="relax">· thin market, check the price</span>' : c.relaxed === "short" ? ' <span class="relax">· pays very little</span>' : "");
+  if (c.relaxed && c.plat !== "kalshi") return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book)) + ' <span class="relax">· pays very little</span>';
   return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book)) +
     (c.alt ? ' <span class="alt">· ' + esc(bookName(c.alt.b)) + " pays " + P.fmtAmerican(c.alt.a) + "</span>" : "");
 }
@@ -745,7 +772,7 @@ function refreshSlip(){
   for (const l of slip){
     if (l.custom){ if (!repriceLeg(l)) l.stale = true; continue; }
     const w = l.plat === "kalshi" ? "kalshi" : l.book;
-    const c = picksFor(w).find(x => x.key === l.key);
+    const c = picksFor(w, true).find(x => x.key === l.key);   // relaxed list is a superset
     if (c) Object.assign(l, snapshot(c), {stale:false}); else l.stale = true;
   }
   saveSlip();

@@ -55,7 +55,8 @@ ANYTIME_TD_VIG = _f("ANYTIME_TD_VIG", 0.12)  # flat cut, only used if TD_CURVE i
 # Anytime-TD Yes prices -> fair chance: fair = implied x clamp(a + b x implied, 0.80, 0.93). Fitted to Kalshi's
 # prices on the same players (99 players, 2026-10-02); each scan re-fits it from the current Kalshi prices when
 # 30+ players match, and uses this as the fallback.
-TD_CURVE = (0.7915, 0.2341, 0.80, 0.93)
+TD_CURVE = (0.8092, 0.1843, 0.80, 0.93)
+TD_REFIT_MIN = _i("TD_REFIT_MIN", 80)   # matched players needed to re-fit (late Sunday only a few games are left)
 # Spread of a player's game-to-game output (lognormal sigma), used to price lines/rungs away from the
 # book line. The weekly analytics job measures these from last season's games (site/analytics.json
 # "sigma") and the scan uses those when present; these defaults are only the fallback.
@@ -81,7 +82,7 @@ MIN_EDGE = _f("MIN_EDGE", 0.05)                # 5 points after fees
 MIN_EDGE_TD = _f("MIN_EDGE_TD", 0.08)          # anytime-TD fair values are rougher, so demand more
 MAX_SPREAD_CENTS = _i("MAX_SPREAD_CENTS", 8)   # skip illiquid contracts
 TOP_N = _i("TOP_N", 10)
-KALSHI_ROWS_PER_STAT = _i("KALSHI_ROWS_PER_STAT", 100)   # Kalshi contracts per prop type written to the page
+KALSHI_ROWS_PER_GAME_STAT = _i("KALSHI_ROWS_PER_GAME_STAT", 16)   # Kalshi contracts per prop type written to the page
 LOG_PATH = os.environ.get("LOG_PATH", "data/picks_log.csv")
 SITE_DATA_PATH = os.environ.get("SITE_DATA_PATH", "site/data.json")
 ANALYTICS_PATH = os.environ.get("ANALYTICS_PATH", "site/analytics.json")

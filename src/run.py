@@ -415,11 +415,18 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
     books = [{"k": b, "name": C.BOOK_NAMES.get(b, b), "n": counts.get(b, 0), "paid": b in C.PAID_ONLY_BOOKS}
              for b in configured + sorted(set(counts) - set(configured))]
     used = {p["g"] for p in prop_list} | {u.get("g") for u in universe} | {p["g"] for p in game_props}
-    # cap per prop type (tightest markets first) so anytime-TD contracts can't crowd out yardage ones
-    by_stat = defaultdict(list)
+    # cap per GAME and prop type, so no game loses a category; within each, take turns across players
+    # (tightest market first for each), so every player keeps his rungs instead of one player's whole ladder
+    kalshi_rows = []
+    groups = defaultdict(lambda: defaultdict(list))
     for u in sorted(universe, key=_spread):
-        by_stat[u["stat"]].append(u)
-    kalshi_rows = [u for rows in by_stat.values() for u in rows[: C.KALSHI_ROWS_PER_STAT]]
+        groups[(u.get("g"), u["stat"])][u.get("player")].append(u)
+    for per_player in groups.values():
+        lists, taken, i = list(per_player.values()), [], 0
+        while len(taken) < C.KALSHI_ROWS_PER_GAME_STAT and any(i < len(l) for l in lists):
+            taken += [l[i] for l in lists if i < len(l)]
+            i += 1
+        kalshi_rows += taken[: C.KALSHI_ROWS_PER_GAME_STAT]
     return {
         "version": 2,
         "updated": now.isoformat(timespec="seconds"),
@@ -469,13 +476,27 @@ def apply_measured_spreads(a):
     C.TOTAL_SD = sd.get("total") or C.TOTAL_SD
 
 
-def refit_td_curve(lines, markets):
+def use_stored_td_curve(prev):
+    """Start from the last good TD curve (saved in data.json) so a thin re-fit doesn't fall back to defaults."""
+    c = ((prev or {}).get("model") or {}).get("td_curve")
+    if c and len(c) == 4:
+        C.TD_CURVE = tuple(c)
+
+
+def refit_td_curve(lines, markets, now=None):
     """Re-fit the anytime-TD curve from this scan: median book Yes price vs Kalshi's mid, per player
-    (tight Kalshi markets only). Keeps the configured curve if fewer than 30 players match."""
+    (tight Kalshi markets only, games that haven't kicked off: once a game starts Kalshi trades on the live
+    score). Keeps the configured curve if fewer than 30 players match."""
     from statistics import median
+    now = now or datetime.now(timezone.utc)
     yes = defaultdict(list)
     for ln in lines:
-        if ln["market"] == "player_anytime_td" and "Yes" in ln["prices"]:
+        kick = ln.get("kick")
+        try:
+            started = kick and datetime.fromisoformat(str(kick).replace("Z", "+00:00")) <= now
+        except ValueError:
+            started = False
+        if ln["market"] == "player_anytime_td" and "Yes" in ln["prices"] and not started:
             yes[model.norm_name(ln["player"])].append(model.american_to_prob(ln["prices"]["Yes"]))
     names = sorted(yes, key=len, reverse=True)
     pairs = []
@@ -487,12 +508,12 @@ def refit_td_curve(lines, markets):
         who = find_player(kalshi.market_text(m), names)
         if who and bid and ask and ask - bid <= 4 and len(yes[who]) >= 4:
             pairs.append((median(yes[who]), (bid + ask) / 200))
-    fit = model.fit_td_curve(pairs)
+    fit = model.fit_td_curve(pairs, min_n=C.TD_REFIT_MIN)
     if fit:
         C.TD_CURVE = tuple(round(x, 4) for x in fit[:4])
         print(f"[td] anytime-TD curve re-fitted from {fit[4]} players matched to Kalshi: {C.TD_CURVE}")
     else:
-        print(f"[td] only {len(pairs)} players matched to Kalshi; keeping the TD curve {C.TD_CURVE}")
+        print(f"[td] only {len(pairs)} players matched to Kalshi (need {C.TD_REFIT_MIN}); keeping the TD curve {C.TD_CURVE}")
     return fit
 
 
@@ -505,6 +526,7 @@ def kalshi_refresh(path=None, markets=None, now=None):
         return None
     now = now or datetime.now(timezone.utc)
     apply_measured_spreads(load_analytics())
+    use_stored_td_curve(prev)
     lines = props.lines_from_props(prev.get("props", []), prev.get("games", {}))
     gprops = [{k: v for k, v in p.items() if k != "id"} for p in prev.get("lines", [])]
     markets = markets if markets is not None else get_kalshi_markets()
@@ -563,6 +585,7 @@ def main():
     apply_measured_spreads(load_analytics())
     now = datetime.now(timezone.utc)
     prev = load_previous()
+    use_stored_td_curve(prev)
     carried, carried_games, markets_updated = carry_forward(prev, set(C.ODDS_MARKETS), now)
     stamp = now.isoformat(timespec="seconds")
     markets_updated.update({m: stamp for m in C.ODDS_MARKETS})

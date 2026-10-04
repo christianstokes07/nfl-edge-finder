@@ -143,13 +143,16 @@ def test_pick_log_records_analytics_verdict(tmp_path, monkeypatch):
     assert (v, proj) == ("n/a", "")
 
 
-def test_kalshi_rows_capped_per_prop_type(monkeypatch):
-    # anytime-TD contracts (tight spreads) must not crowd yardage contracts off the page
-    monkeypatch.setattr(C, "KALSHI_ROWS_PER_STAT", 2)
-    uni = [{"ticker": f"TD{i}", "stat": "player_anytime_td", "g": "g1", "bid": 10, "ask": 11} for i in range(5)] + \
-          [{"ticker": f"RY{i}", "stat": "player_rush_yds", "g": "g1", "bid": 40, "ask": 40 + i + 2} for i in range(5)]
-    data = run.site_data([], {}, uni, [], {"g1": {}})
-    assert [u["ticker"] for u in data["kalshi"]] == ["TD0", "TD1", "RY0", "RY1"]
+def test_kalshi_rows_capped_per_game_and_prop_type(monkeypatch):
+    # a slate full of tight markets elsewhere must not squeeze a game's category out (SNF receiving was empty);
+    # within a game+prop, players take turns so one player's ladder doesn't use up the cap
+    monkeypatch.setattr(C, "KALSHI_ROWS_PER_GAME_STAT", 3)
+    uni = [{"ticker": f"A{i}", "player": "Star", "stat": "player_reception_yds", "g": "g1", "bid": 40, "ask": 41} for i in range(6)] + \
+          [{"ticker": f"B{i}", "player": "Slot", "stat": "player_reception_yds", "g": "g1", "bid": 40, "ask": 43} for i in range(2)] + \
+          [{"ticker": f"S{i}", "player": "Late", "stat": "player_reception_yds", "g": "snf", "bid": 30, "ask": 37} for i in range(2)]
+    data = run.site_data([], {}, uni, [], {"g1": {}, "snf": {}})
+    got = [u["ticker"] for u in data["kalshi"]]
+    assert sorted(got) == ["A0", "A1", "B0", "S0", "S1"]
 
 
 def test_kalshi_ladder_rungs_far_from_line_are_priced():
@@ -196,3 +199,21 @@ def test_fit_td_curve_from_kalshi_pairs():
     a, b, lo, hi, n = model.fit_td_curve(pairs)
     assert n == 35 and abs(a - 0.8) < 1e-9 and abs(b - 0.2) < 1e-9
     assert model.fit_td_curve(pairs[:10]) is None                            # too few to trust
+
+
+def test_td_refit_ignores_games_in_progress(monkeypatch):
+    from datetime import timedelta
+    now = datetime(2026, 10, 4, 20, tzinfo=timezone.utc)
+    lines, markets = [], []
+    for i in range(40):
+        live = i < 20                                   # first 20 players' games already started
+        kick = (now - timedelta(hours=1) if live else now + timedelta(hours=5)).isoformat()
+        for b in ("dk", "fd", "mgm", "cz"):
+            lines.append({"player": f"Player {i}", "market": "player_anytime_td", "book": b, "point": None,
+                          "prices": {"Yes": 150}, "kick": kick})
+        mid = 2 if live else 34                        # live games: Kalshi already near 0
+        markets.append({"ticker": f"T{i}", "title": f"Will Player {i} score a touchdown?", "yes_bid": mid, "yes_ask": mid + 1})
+    monkeypatch.setattr(C, "TD_CURVE", C.TD_CURVE)
+    fit = run.refit_td_curve(lines, markets, now)
+    assert fit is None                                   # only 20 not-started players: below the 30 needed
+    assert C.TD_CURVE == C.TD_CURVE

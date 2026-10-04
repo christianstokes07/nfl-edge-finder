@@ -2019,3 +2019,542 @@ ts_utc,source,game,player,stat,line,side,price,hit_chance,value,books,where,anal
 2026-10-01T20:58:05+00:00,game,Tennessee Titans @ Baltimore Ravens,,game_ml,,Baltimore Ravens,-650,0.843,,8,draftkings,n/a,
 2026-10-01T20:58:05+00:00,game,Tennessee Titans @ Baltimore Ravens,,game_spread,11.5,Tennessee Titans,-110,0.501,,8,fanduel,n/a,
 2026-10-01T20:58:05+00:00,game,Tennessee Titans @ Baltimore Ravens,,game_total,42.5,Over,-108,0.512,,8,draftkings,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_receptions,3.5,NO,51,0.729,0.201,6,KXNFLREC-26OCT04DETCAR-CARDWALLER88-4,neutral,3.2
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_receptions,2.5,NO,72,0.906,0.171,3,KXNFLREC-26OCT04LACSEA-SEAGHOLANI36-3,agree,1.1
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_receptions,1.5,NO,66,0.844,0.168,5,KXNFLREC-26OCT04MIAMIN-MIAJWRIGHT5-2,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_receptions,4.5,NO,70,0.879,0.164,6,KXNFLREC-26OCT04DETCAR-CARDWALLER88-5,agree,3.2
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Evan Engram,player_receptions,1.5,YES,67,0.847,0.162,5,KXNFLREC-26OCT04DENSF-DENEENGRAM1-2,agree,2.1
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_receptions,1.5,YES,67,0.835,0.149,5,KXNFLREC-26OCT04DENSF-DENPBRYANT13-2,agree,2.2
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_rush_yds,9.5,YES,66,0.822,0.147,6,KXNFLRSHYDS-26OCT04KCLV-KCEJOHNSON10-10,agree,13.4
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_receptions,1.5,YES,80,0.957,0.146,6,KXNFLREC-26OCT04KCLV-LVTTUCKER1-2,agree,3.2
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_rush_yds,14.5,YES,69,0.850,0.145,5,KXNFLRSHYDS-26OCT04MIAMIN-MIAOGORDON0-15,neutral,14.7
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Bo Nix,player_rush_yds,9.5,YES,69,0.841,0.136,6,KXNFLRSHYDS-26OCT04DENSF-DENBNIX10-10,agree,12.1
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_reception_yds,39.5,NO,54,0.691,0.134,6,KXNFLRECYDS-26OCT04DETCAR-CARDWALLER88-40,agree,34.0
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_receptions,1.5,YES,80,0.944,0.133,6,KXNFLREC-26OCT04KCLV-KCXWORTHY1-2,agree,2.9
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_receptions,1.5,YES,81,0.953,0.133,5,KXNFLREC-26OCT05ATLNO-NOAKAMARA41-2,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_receptions,1.5,YES,69,0.837,0.132,6,KXNFLREC-26OCT04LACSEA-SEACKUPP10-2,agree,2.7
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_receptions,1.5,YES,82,0.959,0.128,5,KXNFLREC-26OCT04DENSF-DENCSUTTON14-2,agree,3.4
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_receptions,1.5,YES,82,0.959,0.128,6,KXNFLREC-26OCT04KCLV-LVAJEANTY2-2,agree,3.7
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_receptions,1.5,YES,81,0.947,0.126,6,KXNFLREC-26OCT04LACSEA-SEAABARNER88-2,agree,2.7
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_receptions,2.5,NO,68,0.821,0.126,6,KXNFLREC-26OCT04KCLV-LVJNAILOR9-3,agree,1.5
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_rush_yds,14.5,YES,63,0.770,0.123,6,KXNFLRSHYDS-26OCT04DENSF-SFKBLACK26-15,agree,27.6
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_receptions,2.5,NO,70,0.837,0.122,5,KXNFLREC-26OCT04DETCAR-CARTTREMBLE82-3,agree,1.9
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_receptions,2.5,NO,72,0.854,0.120,5,KXNFLREC-26OCT05ATLNO-ATLJDOTSON4-3,agree,1.3
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_rush_yds,19.5,YES,59,0.725,0.118,6,KXNFLRSHYDS-26OCT04MIAMIN-MIAOGORDON0-20,disagree,14.7
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_receptions,1.5,YES,84,0.965,0.116,5,KXNFLREC-26OCT04DENSF-DENRHARVEY12-2,agree,3.6
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_receptions,1.5,YES,77,0.896,0.114,6,KXNFLREC-26OCT05ATLNO-ATLKPITTS8-2,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_rush_yds,9.5,YES,67,0.794,0.109,6,KXNFLRSHYDS-26OCT04DENSF-DENRHARVEY12-10,agree,21.9
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jameson Williams,player_receptions,1.5,YES,85,0.967,0.108,5,KXNFLREC-26OCT04DETCAR-DETJWILLIAMS1-2,agree,3.1
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_anytime_td,,NO,67,0.793,0.108,7,KXNFLTD-26OCT04LACSEA-SEAGHOLANI36-1,neutral,0.240
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_receptions,1.5,YES,73,0.851,0.107,4,KXNFLREC-26OCT04MIAMIN-MIACBELL18-2,neutral,1.5
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_receptions,1.5,YES,78,0.898,0.106,6,KXNFLREC-26OCT04DETCAR-CARCHUBBARD30-2,agree,2.2
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_receptions,1.5,YES,77,0.888,0.106,6,KXNFLREC-26OCT04KCLV-LVMMAYER87-2,agree,3.3
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_reception_yds,109.5,YES,17,0.285,0.105,2,KXNFLRECYDS-26OCT04KCLV-LVBBOWERS89-110,disagree,62.8
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_receptions,2.5,NO,86,0.972,0.104,5,KXNFLREC-26OCT04MIAMIN-MIAJWRIGHT5-3,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_receptions,3.5,NO,87,0.981,0.103,3,KXNFLREC-26OCT04LACSEA-SEAGHOLANI36-4,agree,1.1
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_reception_yds,14.5,YES,65,0.768,0.102,7,KXNFLRECYDS-26OCT04LACSEA-SEACKUPP10-15,agree,30.8
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_receptions,4.5,NO,75,0.865,0.102,3,KXNFLREC-26OCT04LACSEA-LACTHARRIS9-5,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Emanuel Wilson,player_anytime_td,,NO,60,0.719,0.102,7,KXNFLTD-26OCT04LACSEA-SEAEWILSON23-1,disagree,0.341
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_receptions,1.5,YES,80,0.911,0.100,3,KXNFLREC-26OCT04LACSEA-LACTHARRIS9-2,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_receptions,3.5,NO,60,0.717,0.100,5,KXNFLREC-26OCT04KCLV-KCKWALKER9-4,neutral,3.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_receptions,1.5,YES,80,0.911,0.099,3,KXNFLREC-26OCT04LACSEA-LACQJOHNSTON1-2,agree,2.4
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_receptions,1.5,YES,81,0.920,0.099,5,KXNFLREC-26OCT04MIAMIN-MIAGDULCICH85-2,agree,2.1
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_receptions,2.5,NO,78,0.890,0.098,6,KXNFLREC-26OCT04KCLV-KCTTHORNTON2-3,agree,1.8
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Kendre Miller,player_rush_yds,14.5,YES,72,0.832,0.098,7,KXNFLRSHYDS-26OCT05ATLNO-NOKMILLER5-15,agree,21.7
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Tory Horton,player_receptions,1.5,YES,28,0.391,0.097,3,KXNFLREC-26OCT04LACSEA-SEATHORTON15-2,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_reception_yds,14.5,YES,61,0.723,0.096,7,KXNFLRECYDS-26OCT04KCLV-KCTTHORNTON2-15,agree,28.9
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_receptions,3.5,NO,67,0.782,0.096,4,KXNFLREC-26OCT04LACSEA-LACOGADSDEN86-4,agree,1.9
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_receptions,1.5,YES,80,0.906,0.095,5,KXNFLREC-26OCT04KCLV-KCKWALKER9-2,agree,3.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_receptions,1.5,YES,76,0.867,0.094,4,KXNFLREC-26OCT04LACSEA-LACOGADSDEN86-2,neutral,1.9
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_receptions,1.5,YES,81,0.915,0.094,3,KXNFLREC-26OCT04MIAMIN-MINAJONES33-2,agree,2.5
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_receptions,3.5,NO,85,0.952,0.094,6,KXNFLREC-26OCT04KCLV-LVJNAILOR9-4,agree,1.5
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_receptions,4.5,NO,76,0.866,0.093,3,KXNFLREC-26OCT04LACSEA-LACQJOHNSTON1-5,agree,2.4
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Mike Washington Jr.,player_rush_yds,9.5,YES,69,0.797,0.092,6,KXNFLRSHYDS-26OCT04KCLV-LVMWASHINGTON4-10,agree,26.1
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Juwan Johnson,player_receptions,1.5,YES,87,0.970,0.092,6,KXNFLREC-26OCT05ATLNO-NOJJOHNSON83-2,agree,4.2
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_receptions,1.5,NO,46,0.569,0.091,3,KXNFLREC-26OCT04LACSEA-SEAGHOLANI36-2,neutral,1.1
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_receptions,3.5,NO,59,0.698,0.091,3,KXNFLREC-26OCT04MIAMIN-MINAJONES33-4,agree,2.5
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_receptions,3.5,NO,60,0.708,0.091,3,KXNFLREC-26OCT04LACSEA-LACQJOHNSTON1-4,agree,2.4
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_receptions,3.5,NO,86,0.958,0.090,5,KXNFLREC-26OCT04DETCAR-CARTTREMBLE82-4,agree,1.9
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_receptions,3.5,NO,60,0.706,0.090,3,KXNFLREC-26OCT04LACSEA-LACTHARRIS9-4,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_rush_yds,24.5,YES,49,0.597,0.089,6,KXNFLRSHYDS-26OCT04MIAMIN-MIAOGORDON0-25,disagree,14.7
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,AJ Dillon,player_rush_yds,9.5,YES,60,0.706,0.089,6,KXNFLRSHYDS-26OCT04DETCAR-CARADILLON28-10,agree,13.2
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_reception_yds,14.5,YES,63,0.735,0.089,6,KXNFLRECYDS-26OCT04DENSF-DENPBRYANT13-15,agree,30.0
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_reception_yds,99.5,YES,23,0.331,0.088,7,KXNFLRECYDS-26OCT04KCLV-LVBBOWERS89-100,disagree,62.8
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_receptions,2.5,NO,34,0.444,0.088,6,KXNFLREC-26OCT04DETCAR-CARDWALLER88-3,disagree,3.2
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_receptions,2.5,YES,80,0.899,0.088,6,KXNFLREC-26OCT04DETCAR-DETSLAPORTA87-3,agree,3.9
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_reception_yds,24.5,NO,33,0.433,0.088,7,KXNFLRECYDS-26OCT04DETCAR-CARDWALLER88-25,disagree,34.0
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_receptions,4.5,NO,76,0.860,0.087,3,KXNFLREC-26OCT04MIAMIN-MINAJONES33-5,agree,2.5
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_receptions,1.5,YES,89,0.980,0.083,4,KXNFLREC-26OCT04MIAMIN-MIAMWASHINGTON6-2,agree,3.0
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_rush_yds,9.5,YES,68,0.777,0.082,7,KXNFLRSHYDS-26OCT04KCLV-KCPMAHOMES15-10,agree,16.9
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_rush_yds,9.5,YES,72,0.816,0.082,6,KXNFLRSHYDS-26OCT04DENSF-SFBPURDY13-10,agree,19.6
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_receptions,2.5,YES,76,0.854,0.082,6,KXNFLREC-26OCT05ATLNO-NODVELE14-3,neutral,3.0
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_reception_yds,109.5,YES,22,0.312,0.080,7,KXNFLRECYDS-26OCT04DETCAR-DETASTBROWN14-110,disagree,56.7
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_rush_yds,14.5,YES,51,0.608,0.080,6,KXNFLRSHYDS-26OCT04KCLV-KCEJOHNSON10-15,disagree,13.4
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_receptions,4.5,NO,56,0.657,0.080,4,KXNFLREC-26OCT04MIAMIN-MIAMWASHINGTON6-5,agree,3.0
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_rush_yds,129.5,YES,18,0.270,0.080,2,KXNFLRSHYDS-26OCT04KCLV-KCKWALKER9-130,disagree,64.2
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_receptions,4.5,NO,78,0.872,0.080,5,KXNFLREC-26OCT04KCLV-KCKWALKER9-5,agree,3.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_receptions,4.5,NO,82,0.910,0.079,4,KXNFLREC-26OCT04LACSEA-LACOGADSDEN86-5,agree,1.9
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Bo Nix,player_rush_yds,14.5,YES,54,0.637,0.079,6,KXNFLRSHYDS-26OCT04DENSF-DENBNIX10-15,disagree,12.1
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_pass_completions,24.5,YES,12,0.206,0.079,4,KXNFLPASSCOMP-26OCT04MIAMIN-MINKMURRAY1-25,disagree,16.0
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_receptions,5.5,NO,71,0.803,0.079,4,KXNFLREC-26OCT04MIAMIN-MIAMWASHINGTON6-6,agree,3.0
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_pass_completions,25.5,YES,15,0.238,0.079,5,KXNFLPASSCOMP-26OCT04KCLV-KCPMAHOMES15-26,disagree,23.6
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_receptions,2.5,YES,61,0.705,0.078,5,KXNFLREC-26OCT05ATLNO-NOAKAMARA41-3,neutral,2.3
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_receptions,2.5,YES,63,0.725,0.078,6,KXNFLREC-26OCT04KCLV-LVAJEANTY2-3,agree,3.7
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_receptions,3.5,NO,71,0.802,0.078,4,KXNFLREC-26OCT04MIAMIN-MIACBELL18-4,agree,1.5
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_receptions,3.5,NO,88,0.965,0.077,5,KXNFLREC-26OCT05ATLNO-ATLJDOTSON4-4,agree,1.3
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_receptions,1.5,YES,90,0.982,0.075,2,KXNFLREC-26OCT05ATLNO-NODVELE14-2,agree,3.0
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_receptions,2.5,YES,83,0.914,0.074,5,KXNFLREC-26OCT04DETCAR-DETJGIBBS0-3,agree,5.0
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_rush_yds,19.5,YES,52,0.611,0.073,6,KXNFLRSHYDS-26OCT04DENSF-SFKBLACK26-20,agree,27.6
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Noah Gray,player_receptions,2.5,NO,85,0.932,0.073,6,KXNFLREC-26OCT04KCLV-KCNGRAY83-3,agree,1.8
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_receptions,1.5,YES,65,0.738,0.072,6,KXNFLREC-26OCT04LACSEA-SEARSHAHEED22-2,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Travis Kelce,player_receptions,2.5,YES,80,0.883,0.072,6,KXNFLREC-26OCT04KCLV-KCTKELCE87-3,agree,5.0
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_reception_yds,14.5,YES,69,0.776,0.071,5,KXNFLRECYDS-26OCT04LACSEA-LACOGADSDEN86-15,agree,18.6
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_receptions,2.5,YES,63,0.718,0.071,6,KXNFLREC-26OCT04KCLV-LVTTUCKER1-3,agree,3.2
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_reception_yds,119.5,YES,23,0.314,0.071,7,KXNFLRECYDS-26OCT05ATLNO-NOCOLAVE12-120,disagree,76.5
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_receptions,2.5,NO,85,0.930,0.071,4,KXNFLREC-26OCT04KCLV-KCEJOHNSON10-3,agree,1.2
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_rush_yds,139.5,YES,20,0.282,0.071,6,KXNFLRSHYDS-26OCT04DETCAR-DETJGIBBS0-140,disagree,84.8
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_pass_yds,124.5,YES,85,0.927,0.068,7,KXNFLPASSYDS-26OCT04LACSEA-LACJHERBERT10-125,agree,172.1
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Isaac TeSlaa,player_receptions,2.5,NO,80,0.879,0.067,6,KXNFLREC-26OCT04DETCAR-DETITESLAA18-3,agree,1.3
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_receptions,2.5,YES,81,0.888,0.067,5,KXNFLREC-26OCT04DENSF-DENJWADDLE17-3,agree,4.2
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_reception_yds,14.5,YES,64,0.723,0.066,7,KXNFLRECYDS-26OCT04LACSEA-SEARSHAHEED22-15,agree,21.9
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_rush_yds,119.5,YES,23,0.309,0.066,7,KXNFLRSHYDS-26OCT04KCLV-KCKWALKER9-120,disagree,64.2
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,George Kittle,player_receptions,2.5,YES,85,0.925,0.066,5,KXNFLREC-26OCT04DENSF-SFGKITTLE85-3,agree,4.7
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_reception_yds,14.5,YES,77,0.848,0.066,4,KXNFLRECYDS-26OCT04LACSEA-SEAABARNER88-15,agree,25.2
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_receptions,2.5,YES,67,0.750,0.065,5,KXNFLREC-26OCT04DENSF-DENRHARVEY12-3,agree,3.6
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_reception_yds,24.5,NO,49,0.572,0.065,7,KXNFLRECYDS-26OCT04KCLV-LVMMAYER87-25,neutral,23.8
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Austin Hooper,player_receptions,2.5,NO,85,0.923,0.064,5,KXNFLREC-26OCT05ATLNO-ATLAHOOPER81-3,agree,1.8
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_receptions,3.5,NO,67,0.749,0.064,6,KXNFLREC-26OCT04KCLV-LVMMAYER87-4,neutral,3.3
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_receptions,3.5,YES,62,0.700,0.064,6,KXNFLREC-26OCT04DETCAR-DETSLAPORTA87-4,neutral,3.9
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_rush_yds,109.5,YES,28,0.358,0.064,7,KXNFLRSHYDS-26OCT04KCLV-KCKWALKER9-110,disagree,64.2
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_receptions,2.5,YES,83,0.903,0.064,6,KXNFLREC-26OCT05ATLNO-ATLBROBINSON7-3,agree,4.7
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_rush_yds,9.5,YES,72,0.798,0.063,7,KXNFLRSHYDS-26OCT05ATLNO-NOTSHOUGH6-10,agree,19.1
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Brian Robinson Jr.,player_rush_yds,14.5,YES,79,0.865,0.063,3,KXNFLRSHYDS-26OCT05ATLNO-ATLBROBINSON15-15,agree,27.7
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_reception_yds,14.5,YES,76,0.836,0.063,5,KXNFLRECYDS-26OCT04MIAMIN-MIAGDULCICH85-15,agree,33.8
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jameson Williams,player_receptions,2.5,YES,68,0.758,0.063,5,KXNFLREC-26OCT04DETCAR-DETJWILLIAMS1-3,agree,3.1
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_rush_yds,29.5,NO,55,0.630,0.062,6,KXNFLRSHYDS-26OCT04MIAMIN-MIAJWRIGHT5-30,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_receptions,3.5,NO,81,0.882,0.061,6,KXNFLREC-26OCT04LACSEA-SEARSHAHEED22-4,agree,2.3
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_rush_yds,24.5,NO,44,0.518,0.061,6,KXNFLRSHYDS-26OCT04MIAMIN-MIAJWRIGHT5-25,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Kyle Juszczyk,player_receptions,2.5,NO,86,0.929,0.061,3,KXNFLREC-26OCT04DENSF-SFKJUSZCZYK44-3,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Keaton Mitchell,player_rush_yds,9.5,YES,73,0.804,0.060,4,KXNFLRSHYDS-26OCT04LACSEA-LACKMITCHELL34-10,agree,22.2
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Tetairoa McMillan,player_receptions,2.5,YES,86,0.929,0.060,6,KXNFLREC-26OCT04DETCAR-CARTMCMILLAN4-3,agree,3.9
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_pass_yds,99.5,YES,88,0.947,0.060,6,KXNFLPASSYDS-26OCT04MIAMIN-MIAMWILLIS2-100,agree,191.1
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Olamide Zaccheaus,player_receptions,2.5,NO,86,0.928,0.060,4,KXNFLREC-26OCT05ATLNO-ATLOZACCHEAUS14-3,agree,1.9
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_rush_yds,99.5,YES,21,0.281,0.060,3,KXNFLRSHYDS-26OCT04DETCAR-CARCHUBBARD30-100,disagree,51.1
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Rashee Rice,player_receptions,2.5,YES,85,0.918,0.059,6,KXNFLREC-26OCT04KCLV-KCRRICE4-3,agree,5.2
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_receptions,2.5,YES,85,0.918,0.059,5,KXNFLREC-26OCT04DENSF-SFCMCCAFFREY23-3,agree,4.4
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_rush_yds,129.5,YES,25,0.322,0.059,6,KXNFLRSHYDS-26OCT04DETCAR-DETJGIBBS0-130,disagree,84.8
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_receptions,2.5,YES,61,0.686,0.059,6,KXNFLREC-26OCT04LACSEA-SEAABARNER88-3,neutral,2.7
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_receptions,2.5,YES,65,0.725,0.059,5,KXNFLREC-26OCT04DENSF-DENCSUTTON14-3,agree,3.4
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_reception_yds,14.5,YES,75,0.822,0.059,7,KXNFLRECYDS-26OCT05ATLNO-ATLKPITTS8-15,agree,21.8
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jared Goff,player_pass_yds,324.5,YES,19,0.259,0.058,7,KXNFLPASSYDS-26OCT04DETCAR-DETJGOFF16-325,disagree,239.8
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,George Kittle,player_reception_yds,89.5,YES,25,0.321,0.058,6,KXNFLRECYDS-26OCT04DENSF-SFGKITTLE85-90,disagree,55.7
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_receptions,4.5,NO,78,0.850,0.058,5,KXNFLREC-26OCT04MIAMIN-MIAGDULCICH85-5,agree,2.1
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_reception_yds,99.5,YES,29,0.362,0.058,7,KXNFLRECYDS-26OCT04DETCAR-DETASTBROWN14-100,disagree,56.7
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Noah Fant,player_reception_yds,14.5,YES,53,0.605,0.057,7,KXNFLRECYDS-26OCT05ATLNO-NONFANT87-15,agree,18.2
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_receptions,3.5,NO,61,0.684,0.057,5,KXNFLREC-26OCT04MIAMIN-MIAGDULCICH85-4,agree,2.1
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_reception_yds,14.5,YES,65,0.723,0.057,6,KXNFLRECYDS-26OCT04DENSF-DENRHARVEY12-15,agree,25.2
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Bryce Young,player_rush_yds,9.5,YES,59,0.664,0.057,7,KXNFLRSHYDS-26OCT04DETCAR-CARBYOUNG9-10,neutral,9.5
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_rush_yds,29.5,YES,41,0.484,0.057,6,KXNFLRSHYDS-26OCT04MIAMIN-MIAOGORDON0-30,disagree,14.7
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_pass_yds,124.5,YES,88,0.944,0.057,6,KXNFLPASSYDS-26OCT04MIAMIN-MINKMURRAY1-125,agree,143.6
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,J.K. Dobbins,player_rush_yds,89.5,YES,20,0.268,0.056,2,KXNFLRSHYDS-26OCT04DENSF-DENJDOBBINS27-90,disagree,53.4
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_receptions,3.5,NO,66,0.732,0.056,6,KXNFLREC-26OCT04DETCAR-CARCHUBBARD30-4,agree,2.2
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_rush_yds,14.5,YES,65,0.721,0.056,7,KXNFLRSHYDS-26OCT04LACSEA-LACJHERBERT10-15,agree,17.9
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_rush_yds,119.5,YES,24,0.308,0.055,7,KXNFLRSHYDS-26OCT05ATLNO-ATLBROBINSON7-120,disagree,86.4
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_rush_yds,24.5,YES,40,0.472,0.055,6,KXNFLRSHYDS-26OCT04DENSF-SFKBLACK26-25,agree,27.6
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_reception_yds,109.5,YES,29,0.359,0.054,7,KXNFLRECYDS-26OCT05ATLNO-NOCOLAVE12-110,disagree,76.5
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Bryce Young,player_pass_yds,349.5,YES,9,0.149,0.053,7,KXNFLPASSYDS-26OCT04DETCAR-CARBYOUNG9-350,disagree,234.5
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_rush_yds,109.5,YES,29,0.357,0.053,7,KXNFLRSHYDS-26OCT05ATLNO-ATLBROBINSON7-110,disagree,86.4
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jared Goff,player_pass_yds,374.5,YES,8,0.138,0.052,7,KXNFLPASSYDS-26OCT04DETCAR-DETJGOFF16-375,disagree,239.8
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Sam Darnold,player_pass_completions,26.5,YES,15,0.211,0.052,4,KXNFLPASSCOMP-26OCT04LACSEA-SEASDARNOLD14-27,disagree,18.1
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Jared Goff,player_pass_yds,349.5,YES,13,0.190,0.052,7,KXNFLPASSYDS-26OCT04DETCAR-DETJGOFF16-350,disagree,239.8
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_receptions,4.5,NO,86,0.921,0.052,4,KXNFLREC-26OCT04MIAMIN-MIACBELL18-5,agree,1.5
+2026-10-04T19:36:18+00:00,kalshi,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_rush_yds,89.5,YES,26,0.326,0.052,6,KXNFLRSHYDS-26OCT04MIAMIN-MINAJONES33-90,disagree,51.5
+2026-10-04T19:36:18+00:00,kalshi,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_pass_completions,25.5,YES,15,0.211,0.052,3,KXNFLPASSCOMP-26OCT04DENSF-SFBPURDY13-26,disagree,20.3
+2026-10-04T19:36:18+00:00,kalshi,Los Angeles Chargers @ Seattle Seahawks,Seattle Seahawks,game_spread,2.0,NO,29,0.356,0.051,8,KXNFLSPREAD-26OCT04LACSEA-SEA3,n/a,
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_reception_yds,89.5,YES,32,0.387,0.051,7,KXNFLRECYDS-26OCT04KCLV-LVBBOWERS89-90,disagree,62.8
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_pass_yds,324.5,YES,17,0.231,0.051,7,KXNFLPASSYDS-26OCT05ATLNO-NOTSHOUGH6-325,disagree,222.1
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_receptions,4.5,NO,83,0.891,0.051,6,KXNFLREC-26OCT04KCLV-LVMMAYER87-5,agree,3.3
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_receptions,3.5,NO,92,0.976,0.051,6,KXNFLREC-26OCT04KCLV-KCTTHORNTON2-4,agree,1.8
+2026-10-04T19:36:18+00:00,kalshi,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_pass_yds,349.5,YES,11,0.167,0.050,7,KXNFLPASSYDS-26OCT05ATLNO-NOTSHOUGH6-350,disagree,222.1
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Darren Waller,player_receptions,1.5,YES,84,0.900,0.050,6,KXNFLREC-26OCT04DETCAR-CARDWALLER88-2,agree,3.2
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_receptions,4.5,NO,82,0.881,0.050,6,KXNFLREC-26OCT04DETCAR-CARCHUBBARD30-5,agree,2.2
+2026-10-04T19:36:18+00:00,kalshi,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_receptions,2.5,YES,61,0.677,0.050,6,KXNFLREC-26OCT04KCLV-KCXWORTHY1-3,neutral,2.9
+2026-10-04T19:36:18+00:00,kalshi,Detroit Lions @ Carolina Panthers,Bryce Young,player_pass_yds,324.5,YES,15,0.209,0.050,7,KXNFLPASSYDS-26OCT04DETCAR-CARBYOUNG9-325,disagree,234.5
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_anytime_td,,Yes,130,0.408,,7,betmgm,neutral,0.380
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_reception_yds,16.5,Under,-110,0.510,,7,espnbet,agree,8.1
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_receptions,3.5,Under,-159,0.584,,5,betparx,agree,2.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Alvin Kamara,player_rush_yds,37.5,Under,-112,0.503,,7,betparx,agree,33.0
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Atlanta Falcons D/ST,player_anytime_td,,Yes,650,0.118,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Atlanta Falcons Defense,player_anytime_td,,Yes,600,0.120,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Austin Hooper,player_anytime_td,,Yes,800,0.100,,7,betparx,agree,0.415
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Austin Hooper,player_reception_yds,11.5,Under,-118,0.524,,5,draftkings,disagree,17.6
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Austin Hooper,player_receptions,1.5,Under,-175,0.612,,5,betparx,neutral,1.8
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Barion Brown,player_anytime_td,,Yes,900,0.084,,3,betparx,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_anytime_td,,Yes,-220,0.650,,7,fanduel,disagree,0.567
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_reception_yds,39.5,Over,-111,0.501,,7,betmgm,neutral,39.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_receptions,4.5,Under,-114,0.504,,6,draftkings,neutral,4.7
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Bijan Robinson,player_rush_yds,86.5,Under,-112,0.501,,7,draftkings,neutral,86.4
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Brian Robinson Jr.,player_anytime_td,,Yes,330,0.218,,7,draftkings,disagree,0.144
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Brian Robinson Jr.,player_rush_yds,29.5,Over,-114,0.517,,7,fanduel,neutral,27.7
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Bryce Lance,player_anytime_td,,Yes,550,0.141,,7,betmgm,disagree,0.029
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,CJ Donaldson,player_anytime_td,,Yes,950,0.107,,7,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Charlie Woerner,player_anytime_td,,Yes,2500,0.050,,7,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Chris Blair,player_anytime_td,,Yes,4000,0.039,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_anytime_td,,Yes,120,0.428,,7,betmgm,disagree,0.363
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_reception_yds,84.5,Over,-114,0.502,,7,betparx,disagree,76.5
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Chris Olave,player_receptions,6.5,Over,-135,0.550,,6,betmgm,neutral,6.2
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_anytime_td,,Yes,240,0.270,,7,betmgm,neutral,0.226
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_reception_yds,44.5,Over,-110,0.503,,7,espnbet,disagree,34.1
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Devaughn Vele,player_receptions,4.5,Under,-145,0.600,,6,draftkings,agree,3.0
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Drake London,player_anytime_td,,Yes,140,0.386,,7,fanduel,disagree,0.269
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Drake London,player_reception_yds,76.5,Over,-115,0.517,,7,betparx,disagree,68.6
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Drake London,player_receptions,5.5,Over,-122,0.544,,6,betparx,neutral,5.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Elijah Dotson,player_reception_yds,19.5,Under,-125,0.520,,1,espnbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Elijah Dotson,player_receptions,1.5,Over,-125,0.520,,1,espnbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_anytime_td,,Yes,500,0.156,,7,betmgm,disagree,0.094
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_reception_yds,18.5,Under,-111,0.515,,6,betmgm,agree,12.9
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Jahan Dotson,player_receptions,1.5,Over,-125,0.534,,5,fanduel,neutral,1.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Juwan Johnson,player_anytime_td,,Yes,245,0.259,,7,betparx,neutral,0.291
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Juwan Johnson,player_reception_yds,40.5,Over,-109,0.501,,7,draftkings,neutral,41.7
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Juwan Johnson,player_receptions,3.5,Under,-107,0.506,,6,betparx,disagree,4.2
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Kendre Miller,player_anytime_td,,Yes,340,0.237,,7,draftkings,disagree,0.186
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Kendre Miller,player_rush_yds,27.5,Under,-112,0.509,,7,betparx,agree,21.7
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_anytime_td,,Yes,450,0.179,,7,draftkings,neutral,0.159
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_reception_yds,26.5,Over,-117,0.528,,7,betparx,disagree,21.8
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Kyle Pitts,player_receptions,2.5,Over,-135,0.548,,6,espnbet,neutral,2.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Michael Penix Jr.,player_anytime_td,,Yes,950,0.101,,7,betmgm,disagree,0.047
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Michael Penix Jr.,player_pass_completions,20.5,Under,-110,0.502,,4,draftkings,agree,17.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Michael Penix Jr.,player_pass_yds,224.5,Under,-110,0.501,,7,espnbet,agree,197.0
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Michael Penix Jr.,player_rush_yds,5.5,Over,-113,0.503,,4,draftkings,agree,6.4
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,New Orleans Saints D/ST,player_anytime_td,,Yes,600,0.137,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,New Orleans Saints Defense,player_anytime_td,,Yes,700,0.105,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Nick Muse,player_anytime_td,,Yes,4000,0.030,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Noah Fant,player_anytime_td,,Yes,500,0.157,,7,draftkings,neutral,0.166
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Noah Fant,player_reception_yds,17.5,Over,-110,0.500,,7,betparx,neutral,18.2
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Noah Fant,player_receptions,1.5,Over,-165,0.676,,6,hardrockbet,agree,2.5
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Olamide Zaccheaus,player_anytime_td,,Yes,775,0.112,,7,betmgm,neutral,0.152
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Olamide Zaccheaus,player_reception_yds,7.5,Over,-113,0.506,,4,draftkings,agree,9.3
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Olamide Zaccheaus,player_receptions,1.5,Under,-200,0.627,,4,fanduel,neutral,1.9
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Oscar Delp,player_anytime_td,,Yes,4000,0.040,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Treyton Welch,player_anytime_td,,Yes,4000,0.040,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_anytime_td,,Yes,310,0.225,,7,fanduel,neutral,0.236
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_pass_completions,23.5,Under,-120,0.513,,5,hardrockbet,neutral,22.4
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_pass_yds,258.5,Under,-114,0.512,,7,betparx,agree,222.1
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Tyler Shough,player_rush_yds,16.5,Under,-110,0.507,,7,espnbet,disagree,19.1
+2026-10-04T19:36:18+00:00,book,Atlanta Falcons @ New Orleans Saints,Zachariah Branch,player_anytime_td,,Yes,1350,0.076,,7,betmgm,neutral,0.032
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_anytime_td,,Yes,290,0.252,,7,draftkings,agree,0.309
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_reception_yds,29.5,Over,-113,0.515,,7,betparx,disagree,25.2
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,AJ Barner,player_receptions,3.5,Under,-160,0.604,,6,espnbet,agree,2.7
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Alec Ingold,player_anytime_td,,Yes,4000,0.037,,7,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Brady Russell,player_anytime_td,,Yes,4000,0.035,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Brenen Thompson,player_anytime_td,,Yes,1500,0.059,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_anytime_td,,Yes,340,0.210,,7,draftkings,neutral,0.192
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_reception_yds,24.5,Under,-114,0.504,,7,draftkings,disagree,30.8
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Cooper Kupp,player_receptions,2.5,Under,-145,0.563,,6,draftkings,neutral,2.7
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Derius Davis,player_anytime_td,,Yes,1500,0.058,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Elijah Arroyo,player_anytime_td,,Yes,1300,0.070,,7,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Emanuel Wilson,player_anytime_td,,Yes,235,0.281,,7,draftkings,agree,0.341
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Emanuel Wilson,player_rush_yds,39.5,Under,-112,0.504,,7,betparx,agree,30.7
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Eric Saubert,player_anytime_td,,Yes,1300,0.067,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_anytime_td,,Yes,330,0.207,,7,fanduel,neutral,0.240
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_reception_yds,7.5,Over,-114,0.503,,3,fanduel,agree,8.2
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,George Holani,player_receptions,1.5,Under,-151,0.569,,3,draftkings,neutral,1.1
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Hayden Rucci,player_anytime_td,,Yes,2200,0.048,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_anytime_td,,Yes,145,0.375,,7,fanduel,disagree,0.184
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_reception_yds,9.5,Over,-109,0.507,,7,betparx,disagree,4.4
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_receptions,1.5,Over,-110,0.503,,6,betmgm,disagree,0.9
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jadarian Price,player_rush_yds,40.5,Over,-114,0.500,,7,betparx,disagree,33.6
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jaxon Smith-Njigba,player_anytime_td,,Yes,100,0.483,,7,betmgm,neutral,0.449
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jaxon Smith-Njigba,player_reception_yds,91.5,Under,-114,0.501,,7,draftkings,disagree,100.8
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Jaxon Smith-Njigba,player_receptions,6.5,Over,-134,0.546,,6,betparx,agree,7.4
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_anytime_td,,Yes,600,0.137,,7,draftkings,neutral,0.110
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_pass_completions,18.5,Over,-120,0.517,,4,draftkings,neutral,18.2
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_pass_yds,197.5,Over,-111,0.507,,7,draftkings,disagree,172.1
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Justin Herbert,player_rush_yds,21.5,Under,-110,0.508,,7,betparx,agree,17.9
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Keaton Mitchell,player_anytime_td,,Yes,600,0.133,,7,betmgm,neutral,0.165
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Keaton Mitchell,player_rush_yds,16.5,Over,-112,0.503,,4,draftkings,agree,22.2
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Kimani Vidal,player_anytime_td,,Yes,1600,0.054,,7,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Ladd McConkey,player_anytime_td,,Yes,320,0.219,,7,draftkings,neutral,0.184
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Ladd McConkey,player_reception_yds,46.5,Under,-114,0.506,,4,betparx,agree,34.9
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Ladd McConkey,player_receptions,4.5,Under,-159,0.618,,3,betparx,agree,3.4
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Los Angeles Chargers D/ST,player_anytime_td,,Yes,700,0.108,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Los Angeles Chargers Defense,player_anytime_td,,Yes,1300,0.059,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Marquez Valdes-Scantling,player_anytime_td,,Yes,1200,0.084,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Montorie Foster Jr.,player_anytime_td,,Yes,2500,0.039,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Nick Kallerup,player_anytime_td,,Yes,2400,0.044,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Omarion Hampton,player_anytime_td,,Yes,115,0.425,,7,ballybet,neutral,0.401
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Omarion Hampton,player_rush_yds,45.5,Over,-113,0.504,,7,betparx,agree,50.5
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_anytime_td,,Yes,425,0.193,,7,betmgm,neutral,0.188
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_reception_yds,24.5,Over,-112,0.507,,5,betparx,disagree,18.6
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Oronde Gadsden II,player_receptions,2.5,Under,-115,0.511,,4,betparx,agree,1.9
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_anytime_td,,Yes,370,0.202,,7,ballybet,neutral,0.154
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_reception_yds,33.5,Over,-113,0.504,,3,betparx,disagree,24.6
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Quentin Johnston,player_receptions,2.5,Over,-157,0.581,,3,betparx,neutral,2.4
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_anytime_td,,Yes,325,0.207,,7,ballybet,disagree,0.152
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_reception_yds,21.5,Over,-110,0.513,,7,draftkings,neutral,21.9
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Rashid Shaheed,player_receptions,2.5,Under,-182,0.676,,6,betparx,neutral,2.3
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Sam Darnold,player_anytime_td,,Yes,950,0.084,,7,draftkings,disagree,0.016
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Sam Darnold,player_pass_completions,21.5,Under,-123,0.523,,4,draftkings,agree,18.1
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Sam Darnold,player_pass_yds,233.5,Over,-114,0.501,,7,fanduel,neutral,217.6
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Sam Darnold,player_rush_yds,4.5,Over,-112,0.502,,5,draftkings,agree,5.2
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Seattle Seahawks D/ST,player_anytime_td,,Yes,500,0.144,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Seattle Seahawks Defense,player_anytime_td,,Yes,700,0.105,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tory Horton,player_anytime_td,,Yes,850,0.096,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tory Horton,player_reception_yds,11.5,Over,-114,0.502,,3,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tory Horton,player_receptions,1.5,Under,-172,0.609,,3,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_anytime_td,,Yes,425,0.178,,7,draftkings,neutral,0.198
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_reception_yds,32.5,Over,-112,0.503,,4,betparx,disagree,22.4
+2026-10-04T19:36:18+00:00,book,Los Angeles Chargers @ Seattle Seahawks,Tre Harris,player_receptions,2.5,Over,-155,0.582,,3,espnbet,neutral,2.3
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,AJ Dillon,player_anytime_td,,Yes,700,0.115,,7,draftkings,neutral,0.078
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,AJ Dillon,player_rush_yds,13.5,Over,-110,0.500,,6,draftkings,neutral,13.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_anytime_td,,Yes,-111,0.505,,7,betmgm,neutral,0.491
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_reception_yds,76.5,Over,-115,0.508,,7,draftkings,disagree,56.7
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Amon-Ra St. Brown,player_receptions,6.5,Over,-145,0.561,,6,hardrockbet,neutral,6.1
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Anthony Tyus III,player_anytime_td,,Yes,4000,0.031,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Brock Wright,player_anytime_td,,Yes,850,0.097,,7,betparx,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Bryce Young,player_anytime_td,,Yes,600,0.149,,7,betmgm,neutral,0.151
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Bryce Young,player_pass_completions,21.5,Under,-112,0.507,,5,draftkings,agree,19.6
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Bryce Young,player_pass_yds,251.5,Under,-113,0.507,,7,betparx,neutral,234.5
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Bryce Young,player_rush_yds,12.5,Over,-114,0.501,,7,fanduel,disagree,9.5
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Brycen Tremayne,player_anytime_td,,Yes,800,0.105,,7,betparx,neutral,0.055
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Carolina Panthers D/ST,player_anytime_td,,Yes,650,0.116,,2,betmgm,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Carolina Panthers Defense,player_anytime_td,,Yes,750,0.099,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_anytime_td,,Yes,-130,0.529,,7,draftkings,disagree,0.423
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_reception_yds,18.5,Under,-108,0.502,,7,draftkings,agree,13.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_receptions,2.5,Over,-122,0.552,,6,betparx,neutral,2.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Chuba Hubbard,player_rush_yds,68.5,Under,-113,0.516,,7,betparx,agree,51.1
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Darren Waller,player_anytime_td,,Yes,285,0.236,,7,betparx,neutral,0.220
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Darren Waller,player_reception_yds,27.5,Over,-115,0.502,,7,draftkings,agree,34.0
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Darren Waller,player_receptions,2.5,Over,-125,0.556,,6,betmgm,agree,3.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,David Moore,player_anytime_td,,Yes,2250,0.048,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Detroit Lions D/ST,player_anytime_td,,Yes,500,0.148,,2,betmgm,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Detroit Lions Defense,player_anytime_td,,Yes,800,0.093,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Feleipe Franks,player_anytime_td,,Yes,4000,0.026,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Isaac TeSlaa,player_anytime_td,,Yes,475,0.153,,7,draftkings,neutral,0.174
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Isaac TeSlaa,player_reception_yds,17.5,Over,-113,0.509,,7,draftkings,neutral,18.5
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Isaac TeSlaa,player_receptions,1.5,Under,-115,0.511,,6,betmgm,neutral,1.3
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Ja'Tavion Sanders,player_anytime_td,,Yes,3500,0.023,,1,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jackson Meeks,player_anytime_td,,Yes,2200,0.041,,7,betparx,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jacob Saylors,player_anytime_td,,Yes,4000,0.044,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_anytime_td,,Yes,-325,0.727,,7,betmgm,neutral,0.691
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_reception_yds,35.5,Over,-109,0.500,,6,draftkings,neutral,35.9
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_receptions,4.5,Over,-112,0.522,,5,betparx,neutral,5.0
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jahmyr Gibbs,player_rush_yds,96.5,Under,-115,0.503,,6,betparx,agree,84.8
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jalen Coker,player_anytime_td,,Yes,235,0.280,,7,betparx,disagree,0.230
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jalen Coker,player_reception_yds,49.5,Under,-111,0.505,,5,draftkings,agree,45.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jalen Coker,player_receptions,4.5,Under,-121,0.526,,4,draftkings,neutral,4.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jameson Williams,player_anytime_td,,Yes,210,0.296,,7,betmgm,disagree,0.164
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jameson Williams,player_reception_yds,51.5,Under,-114,0.507,,7,draftkings,agree,39.4
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jameson Williams,player_receptions,3.5,Under,-119,0.521,,5,draftkings,neutral,3.1
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jared Goff,player_anytime_td,,Yes,1400,0.064,,7,betparx,neutral,0.037
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jared Goff,player_pass_completions,23.5,Under,-109,0.516,,5,draftkings,neutral,22.5
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Jared Goff,player_pass_yds,265.5,Under,-115,0.509,,7,betparx,agree,239.8
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,John Metchie III,player_anytime_td,,Yes,775,0.126,,7,betmgm,agree,0.275
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Mitchell Evans,player_anytime_td,,Yes,900,0.092,,7,betparx,neutral,0.106
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_anytime_td,,Yes,195,0.310,,7,betmgm,neutral,0.276
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_reception_yds,49.5,Under,-113,0.510,,7,betparx,neutral,49.9
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Sam LaPorta,player_receptions,4.5,Under,-113,0.514,,6,draftkings,agree,3.9
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Sione Vaki,player_anytime_td,,Yes,700,0.126,,7,fanduel,disagree,0.070
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Sione Vaki,player_rush_yds,9.5,Over,-114,0.514,,6,fanduel,agree,13.7
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tay Martin,player_anytime_td,,Yes,4000,0.032,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tetairoa McMillan,player_anytime_td,,Yes,155,0.371,,7,draftkings,disagree,0.309
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tetairoa McMillan,player_reception_yds,70.5,Over,-114,0.500,,7,fanduel,disagree,54.0
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tetairoa McMillan,player_receptions,4.5,Over,-140,0.561,,6,espnbet,disagree,3.9
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tom Kennedy,player_anytime_td,,Yes,3000,0.043,,7,betmgm,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_anytime_td,,Yes,600,0.137,,7,betparx,neutral,0.107
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_reception_yds,12.5,Over,-114,0.515,,7,fanduel,agree,17.2
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tommy Tremble,player_receptions,1.5,Over,-137,0.563,,5,betparx,neutral,1.9
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Tyler Conklin,player_anytime_td,,Yes,2200,0.043,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Detroit Lions @ Carolina Panthers,Xavier Legette,player_anytime_td,,Yes,700,0.165,,4,betmgm,neutral,0.196
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Adam Prentice,player_anytime_td,,Yes,3000,0.034,,5,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Adam Trautman,player_anytime_td,,Yes,1000,0.087,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Bo Nix,player_anytime_td,,Yes,370,0.193,,6,fanduel,neutral,0.173
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Bo Nix,player_pass_completions,21.5,Over,-108,0.511,,3,betparx,neutral,22.0
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Bo Nix,player_pass_yds,224.5,Under,-112,0.508,,6,draftkings,neutral,220.6
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Bo Nix,player_rush_yds,19.5,Under,-118,0.542,,6,betparx,agree,12.1
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brandin Cooks,player_anytime_td,,Yes,850,0.100,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brayden Willis,player_anytime_td,,Yes,3000,0.031,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_anytime_td,,Yes,375,0.194,,6,ballybet,disagree,0.093
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_pass_completions,20.5,Under,-117,0.511,,3,draftkings,neutral,20.3
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_pass_yds,233.5,Under,-115,0.508,,6,betparx,neutral,234.8
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Brock Purdy,player_rush_yds,17.5,Under,-114,0.516,,6,betparx,disagree,19.6
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_anytime_td,,Yes,-186,0.606,,6,ballybet,agree,0.661
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_reception_yds,39.5,Over,-110,0.505,,6,betparx,disagree,36.1
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_receptions,4.5,Over,-130,0.533,,5,hardrockbet,neutral,4.4
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Christian McCaffrey,player_rush_yds,64.5,Over,-113,0.506,,6,draftkings,disagree,49.4
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_anytime_td,,Yes,230,0.266,,6,ballybet,neutral,0.311
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_reception_yds,38.5,Over,-109,0.502,,6,draftkings,neutral,40.3
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Courtland Sutton,player_receptions,3.5,Under,-141,0.561,,5,draftkings,neutral,3.4
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Dallen Bentley,player_anytime_td,,Yes,1400,0.063,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Deebo Samuel,player_anytime_td,,Yes,185,0.323,,6,ballybet,neutral,0.306
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Denver Broncos D/ST,player_anytime_td,,Yes,600,0.120,,1,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Denver Broncos Defense,player_anytime_td,,Yes,700,0.105,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Evan Engram,player_anytime_td,,Yes,500,0.150,,6,draftkings,neutral,0.126
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Evan Engram,player_reception_yds,17.5,Over,-108,0.502,,6,draftkings,agree,21.2
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Evan Engram,player_receptions,2.5,Under,-132,0.546,,5,draftkings,neutral,2.1
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,George Kittle,player_anytime_td,,Yes,160,0.353,,6,fanduel,neutral,0.350
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,George Kittle,player_reception_yds,64.5,Under,-114,0.501,,6,fanduel,agree,55.7
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,George Kittle,player_receptions,4.5,Over,-127,0.551,,5,draftkings,neutral,4.7
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,J.K. Dobbins,player_anytime_td,,Yes,120,0.426,,6,fanduel,neutral,0.401
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,J.K. Dobbins,player_rush_yds,59.5,Over,-113,0.503,,6,draftkings,disagree,53.4
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Jacob Cowing,player_anytime_td,,Yes,850,0.101,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,James Jordan,player_anytime_td,,Yes,2500,0.043,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_anytime_td,,Yes,215,0.293,,6,draftkings,disagree,0.204
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_reception_yds,57.5,Under,-114,0.507,,6,draftkings,agree,53.3
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Jaylen Waddle,player_receptions,4.5,Under,-120,0.538,,5,draftkings,neutral,4.2
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Jordan Watkins,player_anytime_td,,Yes,1300,0.075,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_anytime_td,,Yes,320,0.213,,6,draftkings,agree,0.294
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Kaelon Black,player_rush_yds,23.5,Under,-114,0.502,,6,fanduel,disagree,27.6
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,KhaDarel Hodge,player_anytime_td,,Yes,800,0.093,,3,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Kyle Juszczyk,player_anytime_td,,Yes,700,0.112,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Kyle Juszczyk,player_reception_yds,8.5,Under,-114,0.502,,3,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Kyle Juszczyk,player_receptions,1.5,Under,-200,0.629,,3,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Lil'Jordan Humphrey,player_anytime_td,,Yes,1600,0.061,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Luke Farrell,player_anytime_td,,Yes,1500,0.064,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Marvin Mims Jr.,player_anytime_td,,Yes,1000,0.086,,6,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Mike Evans,player_anytime_td,,Yes,188,0.321,,6,ballybet,disagree,0.266
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Nate Adkins,player_anytime_td,,Yes,1200,0.069,,6,draftkings,agree,0.146
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_anytime_td,,Yes,390,0.180,,6,ballybet,neutral,0.138
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_reception_yds,21.5,Over,-118,0.528,,6,betparx,agree,30.0
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Pat Bryant,player_receptions,2.5,Under,-136,0.566,,5,draftkings,neutral,2.2
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_anytime_td,,Yes,220,0.290,,6,fanduel,agree,0.354
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_reception_yds,22.5,Under,-112,0.512,,6,draftkings,disagree,25.2
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_receptions,3.5,Under,-121,0.530,,5,draftkings,neutral,3.6
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,RJ Harvey,player_rush_yds,16.5,Under,-109,0.512,,6,draftkings,disagree,21.9
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,San Francisco 49ers D/ST,player_anytime_td,,Yes,500,0.141,,1,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,San Francisco 49ers Defense,player_anytime_td,,Yes,800,0.093,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Troy Franklin,player_anytime_td,,Yes,1000,0.079,,6,draftkings,agree,0.176
+2026-10-04T19:36:18+00:00,book,Denver Broncos @ San Francisco 49ers,Tyler Badie,player_anytime_td,,Yes,1100,0.077,,6,draftkings,agree,0.132
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_anytime_td,,Yes,-145,0.567,,7,betmgm,disagree,0.438
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_reception_yds,18.5,Over,-115,0.502,,3,draftkings,disagree,16.2
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_receptions,2.5,Over,-169,0.592,,3,draftkings,neutral,2.5
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Aaron Jones,player_rush_yds,66.5,Over,-111,0.502,,6,draftkings,disagree,51.5
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Caleb Douglas,player_anytime_td,,Yes,500,0.146,,4,ballybet,agree,0.322
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_anytime_td,,Yes,750,0.136,,7,draftkings,disagree,0.033
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_reception_yds,31.5,Over,-114,0.513,,5,betparx,neutral,31.8
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Chris Bell,player_receptions,2.5,Under,-123,0.539,,4,draftkings,agree,1.5
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,DJ Herman,player_anytime_td,,Yes,2250,0.043,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,DeeJay Dallas,player_anytime_td,,Yes,800,0.104,,7,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Demond Claiborne,player_anytime_td,,Yes,1400,0.060,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Gavin Bartholomew,player_anytime_td,,Yes,1600,0.058,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_anytime_td,,Yes,650,0.123,,7,draftkings,agree,0.251
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_reception_yds,27.5,Over,-117,0.528,,5,betparx,agree,33.8
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Greg Dulcich,player_receptions,2.5,Over,-159,0.606,,5,betparx,neutral,2.1
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jalen Tolbert,player_anytime_td,,Yes,4000,0.028,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jauan Jennings,player_anytime_td,,Yes,425,0.176,,7,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_anytime_td,,Yes,370,0.206,,7,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_reception_yds,6.5,Under,-122,0.516,,2,betparx,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_receptions,0.5,Over,-215,0.781,,5,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jaylen Wright,player_rush_yds,22.5,Over,-112,0.534,,6,betparx,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Jordan Addison,player_anytime_td,,Yes,140,0.385,,7,betmgm,disagree,0.270
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Justin Jefferson,player_anytime_td,,Yes,135,0.391,,7,ballybet,neutral,0.428
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Justin Joly,player_anytime_td,,Yes,4000,0.023,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Kevin Coleman Jr.,player_anytime_td,,Yes,1300,0.073,,7,ballybet,neutral,0.026
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_anytime_td,,Yes,360,0.194,,7,betmgm,disagree,0.126
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_pass_completions,19.5,Under,-106,0.503,,4,betparx,agree,16.0
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_pass_yds,209.5,Under,-115,0.511,,6,betparx,agree,143.6
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Kyler Murray,player_rush_yds,20.5,Over,-114,0.507,,6,fanduel,agree,25.6
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_anytime_td,,Yes,470,0.170,,7,fanduel,neutral,0.210
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_reception_yds,38.5,Under,-114,0.506,,5,betparx,agree,28.7
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_receptions,3.5,Over,-148,0.562,,4,fanduel,disagree,3.0
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Washington,player_rush_yds,4.5,Over,-110,0.531,,3,espnbet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_anytime_td,,Yes,425,0.179,,7,draftkings,disagree,0.071
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_pass_completions,15.5,Over,-103,0.514,,4,betparx,disagree,12.3
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_pass_yds,163.5,Over,-113,0.532,,6,ballybet,agree,191.1
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Malik Willis,player_rush_yds,27.5,Over,-117,0.520,,6,betparx,neutral,26.5
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Max Bredeson,player_anytime_td,,Yes,2000,0.045,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Miami Dolphins D/ST,player_anytime_td,,Yes,775,0.104,,2,betmgm,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Miami Dolphins Defense,player_anytime_td,,Yes,650,0.112,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Minnesota Vikings D/ST,player_anytime_td,,Yes,475,0.172,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Minnesota Vikings Defense,player_anytime_td,,Yes,550,0.130,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Myles Price,player_anytime_td,,Yes,1150,0.079,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_anytime_td,,Yes,320,0.240,,7,draftkings,disagree,0.184
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Ollie Gordon II,player_rush_yds,28.5,Over,-115,0.505,,6,betparx,disagree,14.7
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Ryan Miller,player_anytime_td,,Yes,2250,0.043,,7,hardrockbet,neutral,0.032
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Seydou Traore,player_anytime_td,,Yes,4000,0.023,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,T.J. Hockenson,player_anytime_td,,Yes,210,0.312,,7,betmgm,neutral,0.305
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Tai Felton,player_anytime_td,,Yes,1050,0.089,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Miami Dolphins @ Minnesota Vikings,Will Kacmarek,player_anytime_td,,Yes,2250,0.047,,7,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_anytime_td,,Yes,-135,0.534,,7,draftkings,agree,0.608
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_reception_yds,18.5,Over,-118,0.547,,7,betparx,agree,23.7
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_receptions,3.5,Under,-135,0.561,,6,betmgm,neutral,3.7
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ashton Jeanty,player_rush_yds,56.5,Over,-114,0.509,,7,fanduel,disagree,52.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ben VanSumeren,player_anytime_td,,Yes,2500,0.032,,3,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Brashard Smith,player_anytime_td,,Yes,700,0.123,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_anytime_td,,Yes,195,0.312,,7,draftkings,agree,0.418
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_reception_yds,72.5,Over,-114,0.504,,7,fanduel,disagree,62.8
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Brock Bowers,player_receptions,6.5,Over,-130,0.548,,6,betparx,neutral,6.3
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Cody White,player_anytime_td,,Yes,600,0.124,,7,draftkings,agree,0.259
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Connor Heyward,player_anytime_td,,Yes,1800,0.051,,7,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Cyrus Allen,player_anytime_td,,Yes,2250,0.072,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Dareke Young,player_anytime_td,,Yes,1500,0.069,,6,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Dylan Laube,player_anytime_td,,Yes,2200,0.061,,7,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_anytime_td,,Yes,425,0.174,,7,draftkings,disagree,0.082
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_reception_yds,6.5,Over,-112,0.588,,5,betparx,agree,19.9
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_receptions,1.5,Under,-194,0.632,,4,fanduel,neutral,1.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Emmett Johnson,player_rush_yds,17.5,Under,-110,0.506,,6,betparx,agree,13.4
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Ian Thomas,player_anytime_td,,Yes,2500,0.054,,6,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jake Briningstool,player_anytime_td,,Yes,2250,0.052,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_anytime_td,,Yes,500,0.164,,7,betmgm,neutral,0.148
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_reception_yds,19.5,Over,-114,0.503,,7,fanduel,disagree,15.5
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jalen Nailor,player_receptions,1.5,Over,-157,0.588,,6,draftkings,neutral,1.5
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jalen Royals,player_anytime_td,,Yes,1100,0.074,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Jared Wiley,player_anytime_td,,Yes,2400,0.035,,6,ballybet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kansas City Chiefs D/ST,player_anytime_td,,Yes,575,0.127,,2,betmgm,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kansas City Chiefs Defense,player_anytime_td,,Yes,650,0.112,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_anytime_td,,Yes,-170,0.589,,7,draftkings,neutral,0.593
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_reception_yds,20.5,Over,-112,0.516,,7,betparx,agree,29.6
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_receptions,2.5,Over,-150,0.571,,5,hardrockbet,agree,3.3
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kenneth Walker III,player_rush_yds,86.5,Under,-114,0.501,,7,fanduel,agree,64.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kirk Cousins,player_anytime_td,,Yes,1900,0.055,,7,fanduel,neutral,0.016
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kirk Cousins,player_pass_completions,21.5,Over,-120,0.518,,5,betmgm,disagree,18.6
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Kirk Cousins,player_pass_yds,227.5,Under,-115,0.521,,7,betparx,agree,169.0
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Las Vegas Raiders D/ST,player_anytime_td,,Yes,600,0.131,,2,draftkings,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Las Vegas Raiders Defense,player_anytime_td,,Yes,650,0.112,,1,fanduel,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Malik Benson,player_anytime_td,,Yes,1100,0.072,,7,draftkings,disagree,0.018
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_anytime_td,,Yes,430,0.169,,7,fanduel,neutral,0.178
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_reception_yds,20.5,Over,-113,0.528,,7,betparx,agree,23.8
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Michael Mayer,player_receptions,2.5,Over,-121,0.531,,6,betparx,agree,3.3
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Mike Washington Jr.,player_anytime_td,,Yes,650,0.145,,7,betmgm,neutral,0.096
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Mike Washington Jr.,player_rush_yds,16.5,Under,-114,0.507,,6,fanduel,disagree,26.1
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Nikko Remigio,player_anytime_td,,Yes,3000,0.037,,6,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Noah Gray,player_anytime_td,,Yes,750,0.109,,7,draftkings,neutral,0.091
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Noah Gray,player_reception_yds,8.5,Over,-112,0.517,,7,draftkings,agree,12.1
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Noah Gray,player_receptions,1.5,Under,-200,0.636,,6,espnbet,neutral,1.8
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_anytime_td,,Yes,425,0.180,,7,betmgm,disagree,0.128
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_pass_completions,20.5,Over,-110,0.525,,5,betparx,agree,23.6
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_pass_yds,234.5,Over,-114,0.513,,7,ballybet,neutral,241.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Patrick Mahomes,player_rush_yds,15.5,Over,-114,0.503,,7,fanduel,agree,16.9
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Rashee Rice,player_anytime_td,,Yes,165,0.349,,7,betmgm,agree,0.429
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Rashee Rice,player_reception_yds,54.5,Over,-114,0.504,,7,fanduel,neutral,53.7
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Rashee Rice,player_receptions,4.5,Over,-125,0.533,,6,hardrockbet,agree,5.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Travis Kelce,player_anytime_td,,Yes,165,0.341,,7,betmgm,disagree,0.233
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Travis Kelce,player_reception_yds,46.5,Over,-114,0.513,,7,betparx,neutral,47.9
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Travis Kelce,player_receptions,4.5,Under,-125,0.547,,6,betmgm,disagree,5.0
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_anytime_td,,Yes,310,0.232,,7,draftkings,disagree,0.172
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_reception_yds,39.5,Under,-114,0.511,,7,betparx,agree,36.5
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tre Tucker,player_receptions,3.5,Under,-140,0.569,,6,betmgm,neutral,3.2
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_anytime_td,,Yes,500,0.158,,7,draftkings,disagree,0.083
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_reception_yds,22.5,Under,-114,0.512,,7,fanduel,disagree,28.9
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Tyquan Thornton,player_receptions,1.5,Under,-120,0.534,,6,espnbet,neutral,1.8
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_anytime_td,,Yes,270,0.256,,7,betmgm,neutral,0.223
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_reception_yds,33.5,Over,-113,0.506,,7,draftkings,disagree,23.7
+2026-10-04T19:36:18+00:00,book,Kansas City Chiefs @ Las Vegas Raiders,Xavier Worthy,player_receptions,3.5,Under,-165,0.613,,6,betmgm,agree,2.9
+2026-10-04T19:36:18+00:00,game,Atlanta Falcons @ New Orleans Saints,,game_ml,,New Orleans Saints,-125,0.543,,8,espnbet,n/a,
+2026-10-04T19:36:18+00:00,game,Atlanta Falcons @ New Orleans Saints,,game_spread,-2.0,New Orleans Saints,-110,0.500,,8,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,game,Atlanta Falcons @ New Orleans Saints,,game_total,47.5,Over,-109,0.500,,8,betparx,n/a,
+2026-10-04T19:36:18+00:00,game,Los Angeles Chargers @ Seattle Seahawks,,game_ml,,Seattle Seahawks,-350,0.746,,8,betmgm,n/a,
+2026-10-04T19:36:18+00:00,game,Los Angeles Chargers @ Seattle Seahawks,,game_spread,-7.0,Seattle Seahawks,-106,0.502,,8,ballybet,n/a,
+2026-10-04T19:36:18+00:00,game,Los Angeles Chargers @ Seattle Seahawks,,game_total,43.0,Under,-110,0.504,,8,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,game,Detroit Lions @ Carolina Panthers,,game_ml,,Detroit Lions,-198,0.642,,8,draftkings,n/a,
+2026-10-04T19:36:18+00:00,game,Detroit Lions @ Carolina Panthers,,game_spread,4.0,Carolina Panthers,-110,0.504,,8,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,game,Detroit Lions @ Carolina Panthers,,game_total,51.5,Under,-108,0.503,,8,draftkings,n/a,
+2026-10-04T19:36:18+00:00,game,Denver Broncos @ San Francisco 49ers,,game_ml,,San Francisco 49ers,-152,0.589,,8,fanduel,n/a,
+2026-10-04T19:36:18+00:00,game,Denver Broncos @ San Francisco 49ers,,game_spread,3.0,Denver Broncos,-110,0.501,,8,ballybet,n/a,
+2026-10-04T19:36:18+00:00,game,Denver Broncos @ San Francisco 49ers,,game_total,48.5,Under,-110,0.510,,8,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,game,Miami Dolphins @ Minnesota Vikings,,game_ml,,Minnesota Vikings,-510,0.811,,8,fanduel,n/a,
+2026-10-04T19:36:18+00:00,game,Miami Dolphins @ Minnesota Vikings,,game_spread,10.0,Miami Dolphins,-110,0.508,,8,hardrockbet,n/a,
+2026-10-04T19:36:18+00:00,game,Miami Dolphins @ Minnesota Vikings,,game_total,38.0,Over,-112,0.509,,8,ballybet,n/a,
+2026-10-04T19:36:18+00:00,game,Kansas City Chiefs @ Las Vegas Raiders,,game_ml,,Kansas City Chiefs,-225,0.668,,8,draftkings,n/a,
+2026-10-04T19:36:18+00:00,game,Kansas City Chiefs @ Las Vegas Raiders,,game_spread,-4.5,Kansas City Chiefs,-108,0.512,,8,betmgm,n/a,
+2026-10-04T19:36:18+00:00,game,Kansas City Chiefs @ Las Vegas Raiders,,game_total,47.5,Over,-105,0.501,,8,draftkings,n/a,

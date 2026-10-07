@@ -366,6 +366,13 @@ look like 70% and poor value; he's about 73%.
 
 ## Live Kalshi prices
 
+**The slate rolls over by itself.** The Kalshi refresh runs every 3 hours, every day. Each run drops games that
+kicked off more than 4 hours ago (and their lines), and adds the next 9 days of games from a free schedule: The Odds
+API's `/events` list (0 credits) or ESPN's public scoreboard. From Monday night on, the page shows next week's games
+with Kalshi's prices, and "Best price anywhere" uses Kalshi for anything no sportsbook has priced yet. Sportsbook
+lines arrive with Thursday's scan. The stats job also runs Tuesday, so projections, matchups and injuries move to the
+new week. The page never shows a game that has already started.
+
 **Kalshi refresh (free):** `.github/workflows/kalshi.yml` runs `python -m src.run --kalshi-only` every 3 hours from
 Thursday to Monday. It pulls Kalshi's current player-prop contracts and re-prices them against the sportsbook lines
 already stored in `data.json`, using 0 Odds API credits, so new Kalshi games and ladders show up between sportsbook

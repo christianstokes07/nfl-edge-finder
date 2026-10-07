@@ -1,10 +1,10 @@
 name: Kalshi refresh
 
-# Re-prices Kalshi contracts against the sportsbook lines already in site/data.json.
-# Uses 0 Odds API credits (Kalshi's API is free), so it can run often on game days.
+# Re-prices Kalshi contracts against the sportsbook lines already in site/data.json, drops finished games and
+# adds the upcoming week's games from the free schedule (Odds API /events = 0 credits, or ESPN). 0 credits.
 on:
   schedule:
-    - cron: "30 */3 * * 4,5,6,0,1"   # every 3 hours, Thursday through Monday (UTC)
+    - cron: "30 */3 * * *"   # every 3 hours, every day: also rolls the page to the next week's slate
   workflow_dispatch:
 
 permissions:
@@ -25,6 +25,8 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m src.run --kalshi-only
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}   # only the free /events schedule list (0 credits)
       - name: Commit
         run: |
           git config user.name "edge-bot"

@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-04 · no empty categories";
+const BUILD = "2026-10-06 · slate rolls to next week";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -224,7 +224,16 @@ function bookPicks(where, relaxed){
 }
 function picksFor(where, relaxed){
   const k = where + (relaxed ? "|all" : "");
-  if (!pickCache.has(k)) pickCache.set(k, where === "kalshi" ? kalshiPicks(relaxed) : bookPicks(where, relaxed));
+  if (!pickCache.has(k)){
+    let list = where === "kalshi" ? kalshiPicks(relaxed) : bookPicks(where, relaxed);
+    // "Best price anywhere" also covers what no sportsbook has priced yet (e.g. next week's games before
+    // Thursday's scan): Kalshi's picks for any player/game + prop type with no sportsbook line
+    if (where === "best"){
+      const have = new Set(list.map(c => c.group));
+      list = list.concat(kalshiPicks(relaxed).filter(c => !have.has(c.group)));
+    }
+    pickCache.set(k, list);
+  }
   return pickCache.get(k);
 }
 const VBONUS = {agree:0.03, neutral:0, "n/a":-0.02, disagree:-0.06};
@@ -284,7 +293,9 @@ function filtered(where, sortKey){
 }
 function pickList(where, sortKey, key, relaxed){
   const best = new Map();
+  const now = Date.now();
   for (const c of picksFor(where, relaxed)){
+    if (kickMs(c.g) < now) continue;          // game already started: last scan's prices are no good now
     if (pref.prop !== "all" && c.stat !== pref.prop) continue;
     if (pref.side !== "all" && sideOf(c) !== pref.side) continue;
     if (pref.q && !matchesQuery(c)) continue;
@@ -1325,7 +1336,13 @@ async function live(){
 }
 function statusLine(){
   const hrs = (Date.now() - new Date(D.updated)) / 36e5;
-  let h = (D.demo ? '<span class="demo">Demo data, made up</span>' : "") + "<span>Lines from " + ago(D.updated) + "</span>";
+  let h = D.demo ? '<span class="demo">Demo data, made up</span>' : "";
+  if (!(D.props || []).length && !(D.lines || []).length){
+    h += "<span>New week: sportsbook lines arrive with Thursday's scan. Until then picks use Kalshi's prices" +
+      (D.kalshi_updated ? " (updated " + ago(D.kalshi_updated) + ")" : "") + ".</span>";
+    return h;
+  }
+  h += "<span>Lines from " + ago(D.updated) + "</span>";
   if (hrs > 72) h += '<span class="warnline">Old data: run a new scan</span>';
   const older = Object.entries(D.markets_updated || {}).filter(([, t]) => t && (new Date(D.updated) - new Date(t)) > 6 * 36e5);
   if (older.length) h += "<span>" + older.map(([m]) => (STAT[m] || {t:m}).t).join(", ") + " from " + ago(older[0][1]) + "</span>";

@@ -217,3 +217,23 @@ def test_td_refit_ignores_games_in_progress(monkeypatch):
     fit = run.refit_td_curve(lines, markets, now)
     assert fit is None                                   # only 20 not-started players: below the 30 needed
     assert C.TD_CURVE == C.TD_CURVE
+
+
+def test_kalshi_refresh_rolls_to_next_weeks_slate(tmp_path, monkeypatch):
+    path = tmp_path / "data.json"
+    now = datetime(2026, 10, 6, 15, tzinfo=timezone.utc)
+    old_games = {"old": {"a": "Pittsburgh Steelers", "h": "Cleveland Browns", "t": "2026-10-04T17:00:00Z"}}
+    ps = _build([_ln("draftkings", 55.5, -110, -110), _ln("fanduel", 55.5, -110, -110)])
+    for p in ps:
+        p["g"] = "old"
+    run.write_site(run.site_data([], {}, [], ps, old_games, {}, datetime(2026, 10, 1, tzinfo=timezone.utc)), str(path))
+    nxt = {"new1": {"a": "Tampa Bay Buccaneers", "h": "Dallas Cowboys", "t": "2026-10-09T00:15:00Z"}}
+    monkeypatch.setattr(run.schedule, "upcoming", lambda key, now=None, days=9: nxt)
+    mk = [{"ticker": "R60", "title": "CeeDee Lamb: 60+ receiving yards", "_sub_title": "TB vs DAL (Oct 8)", "yes_bid": 50, "yes_ask": 52},
+          {"ticker": "G1", "title": "Dallas wins", "_sub_title": "TB vs DAL (Oct 8)", "yes_bid": 60, "yes_ask": 61}]
+    mk[1]["ticker"] = "KXNFLGAME-26OCT08TBDAL-DAL"
+    d = run.kalshi_refresh(str(path), markets=mk, now=now)
+    assert list(d["games"]) == ["new1"] and d["props"] == []           # last week's game and its lines are gone
+    rows = {u["ticker"]: u for u in d["kalshi"]}
+    assert rows["R60"]["player"] == "CeeDee Lamb" and rows["R60"]["g"] == "new1" and rows["R60"]["km"] == 1
+    assert rows["KXNFLGAME-26OCT08TBDAL-DAL"]["team"] == "Dallas Cowboys"

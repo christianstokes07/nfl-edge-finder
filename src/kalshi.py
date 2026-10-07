@@ -132,6 +132,17 @@ GAME_TOTAL = re.compile(r"over (\d+(?:\.\d+)?) points scored", re.I)
 PAIR = re.compile(r"^([A-Z]{2,3}) vs ([A-Z]{2,3})")
 
 
+def player_from_title(title):
+    """'Jaylen Warren: 60+ rushing yards' -> 'Jaylen Warren'; 'Will X score a touchdown?' -> 'X'."""
+    t = (title or "").strip()
+    m = re.match(r"^will (.+?) score", t, re.I)
+    if m:
+        return m.group(1).strip()
+    if ":" in t:
+        return t.split(":", 1)[0].strip() or None
+    return None
+
+
 def parse_game_contract(m):
     """Game contracts -> {kind, team (abbr or None), threshold, pair: (abbr, abbr)} or None.
     KXNFLGAME 'Cleveland wins' (ticker ends -CLE); KXNFLSPREAD 'PIT Steelers wins by over 20.5 points?';

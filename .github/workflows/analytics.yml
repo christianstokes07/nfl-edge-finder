@@ -5,6 +5,7 @@ name: NFL analytics
 on:
   schedule:
     # Thursday ~11am ET: the week's stats, lines and first injury report (before the noon scan).
+    - cron: "0 15 * * 2"   # Tuesday ~11am ET: roll stats, matchups and injuries to the new week
     - cron: "0 15 * * 4"
     # Sunday ~11:45am ET: refresh injury designations and forecasts before the Sunday scan.
     - cron: "45 15 * * 0"

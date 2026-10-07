@@ -9,13 +9,13 @@ import json
 import os
 import sys
 from collections import defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import requests
 
 from . import config as C
 from . import games as games_mod
-from . import kalshi, model, odds, props, teams, verdict
+from . import kalshi, model, odds, props, schedule, teams, verdict
 
 STAT_LABEL = {
     "game_ml": "moneyline", "game_spread": "spread", "game_total": "game total",
@@ -215,6 +215,15 @@ def evaluate(lines, markets, universe=None, game_lines=(), games=None):
         stats["parsed"] += 1
         player = find_player(kalshi.market_text(m), names)
         if not player:
+            # a game no sportsbook scan has covered yet (e.g. Tuesday, next week's slate): Kalshi's own price
+            gid = _game_for_pair(kalshi.PAIR.match(m.get("_sub_title", "") or "") and
+                                 kalshi.PAIR.match(m.get("_sub_title", "")).groups(), games)
+            who = kalshi.player_from_title(m.get("title", ""))
+            if gid and who and bid and ask and ask < 99 and (ask - bid) <= C.MAX_SPREAD_CENTS and universe is not None \
+                    and 3 < (bid + ask) / 2 < 97:
+                universe.append({"ticker": m.get("ticker", ""), "player": who, "g": gid, "stat": c["stat"],
+                                 "threshold": c["threshold"], "fair": round((bid + ask) / 200, 3), "books": 0, "km": 1,
+                                 "unc": 0.0, "bid": bid, "ask": ask})
             continue
         book_lines = idx.get((player, c["stat"]))
         display, gid, gname = player_game[player]
@@ -476,6 +485,13 @@ def apply_measured_spreads(a):
     C.TOTAL_SD = sd.get("total") or C.TOTAL_SD
 
 
+def _kick(g):
+    try:
+        return datetime.fromisoformat(str(g.get("t")).replace("Z", "+00:00"))
+    except (ValueError, TypeError):
+        return None
+
+
 def use_stored_td_curve(prev):
     """Start from the last good TD curve (saved in data.json) so a thin re-fit doesn't fall back to defaults."""
     c = ((prev or {}).get("model") or {}).get("td_curve")
@@ -527,6 +543,22 @@ def kalshi_refresh(path=None, markets=None, now=None):
     now = now or datetime.now(timezone.utc)
     apply_measured_spreads(load_analytics())
     use_stored_td_curve(prev)
+    # roll the slate: drop games that kicked off more than 4 hours ago (and their lines), add the upcoming
+    # week's games from the free schedule so Kalshi's contracts for them show up before Thursday's scan
+    cutoff = now - timedelta(hours=4)
+    keep = {g: v for g, v in (prev.get("games") or {}).items() if _kick(v) and _kick(v) > cutoff}
+    sched = schedule.upcoming(C.ODDS_API_KEY or None, now)
+    known = {frozenset((teams.abbr(v["a"]), teams.abbr(v["h"]))): g for g, v in keep.items()}
+    added = 0
+    for gid, v in sched.items():
+        if _kick(v) and _kick(v) > cutoff and frozenset((teams.abbr(v["a"]), teams.abbr(v["h"]))) not in known:
+            keep[gid] = v
+            added += 1
+    print(f"[schedule] {len(keep)} games on the page ({added} new from the schedule, "
+          f"{len(prev.get('games') or {}) - (len(keep) - added)} finished games dropped)")
+    prev = {**prev, "games": keep,
+            "props": [p for p in prev.get("props", []) if p.get("g") in keep],
+            "lines": [p for p in prev.get("lines", []) if p.get("g") in keep]}
     lines = props.lines_from_props(prev.get("props", []), prev.get("games", {}))
     gprops = [{k: v for k, v in p.items() if k != "id"} for p in prev.get("lines", [])]
     markets = markets if markets is not None else get_kalshi_markets()
@@ -544,7 +576,9 @@ def kalshi_refresh(path=None, markets=None, now=None):
     universe = []
     picks, stats = evaluate(lines, markets, universe, games_mod.lines_from_props(gprops), prev.get("games"))
     stats["credits_used"] = 0
-    data = site_data(picks, stats, universe, prop_list, prev.get("games"), prev.get("markets_updated"),
+    still = {p["m"] for p in prop_list}
+    data = site_data(picks, stats, universe, prop_list, prev.get("games"),
+                     {m: t for m, t in (prev.get("markets_updated") or {}).items() if m in still},
                      datetime.fromisoformat(prev["updated"]), gprops)
     data["kalshi_updated"] = now.isoformat(timespec="seconds")
     write_site(data, path)

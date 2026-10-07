@@ -10,6 +10,7 @@ from collections import defaultdict
 from . import model
 
 TD = "player_anytime_td"
+DFS = {"underdog", "prizepicks", "pick6", "dabble_us_dfs"}
 STATS = {"player_rush_yds", "player_reception_yds", "player_pass_yds", "player_pass_tds",
          "player_receptions", "player_anytime_td", "player_pass_completions", "player_pass_attempts",
          "player_rush_attempts", "player_pass_interceptions", "player_rush_reception_yds"}
@@ -41,7 +42,8 @@ def build_props(lines, sigma_map, main_dist, alt_dist, td_vig, min_books=1):
     where p = fair chance the Over (or Yes) side hits at this point and n = books behind that number."""
     consensus = defaultdict(list)  # (norm player, stat) -> main-market lines, used for fair values
     for ln in lines:
-        if is_main(ln):
+        # DFS pick'em "odds" are indicative only: their lines are shown, but they don't set the hit chance
+        if is_main(ln) and ln.get("book") not in DFS:
             consensus[(model.norm_name(ln["player"]), ln["market"])].append(ln)
 
     groups = {}

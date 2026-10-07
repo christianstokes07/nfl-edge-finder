@@ -289,6 +289,10 @@ ol.picks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .hc-bar.push{background:repeating-linear-gradient(135deg,var(--miss) 0 3px,var(--surface) 3px 6px)}
 .hc-xs b.pu{color:var(--ink2)}
 .hc-xs small{display:block;font-size:9.5px}
+.opt.chk .box{flex:none;width:22px;height:22px;border-radius:6px;border:2px solid var(--mute);display:grid;place-items:center}
+.opt.chk[aria-checked="true"] .box{border-color:var(--accent);background:var(--accent)}
+.opt.chk[aria-checked="true"] .box::after{content:"✓";color:var(--accent-ink);font-size:14px;font-weight:900;line-height:1}
+.sheet-foot{position:sticky;bottom:-18px;background:var(--surface);padding:12px 0 6px;margin-top:8px}
 .relax{color:var(--warn);font-weight:600;font-size:13px}
 .tag.heads{border-color:var(--warn);color:var(--warn)}
 .sec .sv li{padding-left:0}
@@ -497,9 +501,9 @@ table.tr td.r,table.tr th.r{text-align:right}
 </div>
 <div class="toast" id="toast" role="status" hidden></div>
 
-<script src="parlay.js?v=20261006"></script>
-<script src="model.js?v=20261006"></script>
-<script src="analytics.js?v=20261006"></script>
-<script src="app.js?v=20261006"></script>
+<script src="parlay.js?v=20261006b"></script>
+<script src="model.js?v=20261006b"></script>
+<script src="analytics.js?v=20261006b"></script>
+<script src="app.js?v=20261006b"></script>
 </body>
 </html>

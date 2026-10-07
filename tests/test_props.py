@@ -98,13 +98,13 @@ def test_carry_forward_keeps_unfetched_markets_for_future_games():
 def test_site_data_lists_books_with_counts_and_stays_small():
     data = demo.build(now=datetime(2026, 10, 1, 12, tzinfo=timezone.utc))
     books = {b["k"]: b for b in data["books"]}
-    assert books["williamhill_us"]["name"] == "Caesars" and books["williamhill_us"]["paid"]
-    assert books["williamhill_us"]["n"] == 0 and books["draftkings"]["n"] > 0
+    assert books["underdog"]["name"] == "Underdog" and books["underdog"]["dfs"] and not books["draftkings"]["dfs"]
+    assert books["draftkings"]["n"] > 0 and books["underdog"]["n"] > 0
     assert all(p["g"] in data["games"] for p in data["props"])
     assert all(u["g"] in data["games"] for u in data["kalshi"])
     size = len(json.dumps(data, separators=(",", ":")))
     per_prop = size / len(data["props"])
-    assert per_prop < 400, per_prop  # ~600 props on a full Sunday slate stays well under 300 KB
+    assert per_prop < 500, per_prop  # 10 books incl. Underdog/PrizePicks: a full slate stays ~300-400 KB (~40 KB gzipped)
 
 
 def test_bookmakers_fit_in_one_region():
@@ -237,3 +237,30 @@ def test_kalshi_refresh_rolls_to_next_weeks_slate(tmp_path, monkeypatch):
     rows = {u["ticker"]: u for u in d["kalshi"]}
     assert rows["R60"]["player"] == "CeeDee Lamb" and rows["R60"]["g"] == "new1" and rows["R60"]["km"] == 1
     assert rows["KXNFLGAME-26OCT08TBDAL-DAL"]["team"] == "Dallas Cowboys"
+
+
+def test_dfs_lines_shown_but_not_in_consensus():
+    ps = _build([_ln("draftkings", 55.5, -110, -110), _ln("fanduel", 55.5, -110, -110),
+                 _ln("underdog", 55.5, -400, 300)])          # wild DFS "odds" must not move the hit chance
+    p = [x for x in ps if x["pt"] == 55.5][0]
+    assert "underdog" in p["b"] and abs(p["p"] - 0.5) < 1e-6 and p["n"] == 2
+
+
+def test_polymarket_markets_translate_to_kalshi_shape():
+    from src import polymarket as PM, kalshi
+    ev = [{"title": "Buccaneers vs. Cowboys", "markets": [
+            {"id": 1, "active": True, "closed": False, "question": "Buccaneers vs. Cowboys", "outcomes": '["Buccaneers", "Cowboys"]', "bestBid": 0.2, "bestAsk": 0.21},
+            {"id": 2, "active": True, "closed": False, "question": "Spread: Cowboys (-1.5)", "outcomes": '["Cowboys", "Buccaneers"]', "bestBid": 0.76, "bestAsk": 0.78},
+            {"id": 3, "active": True, "closed": False, "question": "Buccaneers vs. Cowboys: O/U 47.5", "outcomes": '["Over", "Under"]', "bestBid": 0.5, "bestAsk": 0.52},
+            {"id": 4, "active": True, "closed": False, "question": "Buccaneers vs. Cowboys: 1H O/U 23.5", "outcomes": '["Over", "Under"]', "bestBid": 0.5, "bestAsk": 0.52}]},
+          {"title": "Buccaneers vs. Cowboys - Player Props", "markets": [
+            {"id": 5, "active": True, "closed": False, "question": "CeeDee Lamb: Receiving Yards O/U 75.5", "outcomes": '["Over", "Under"]', "bestBid": 0.48, "bestAsk": 0.5},
+            {"id": 6, "active": True, "closed": False, "question": "Bucky Irving: Anytime Touchdown", "outcomes": '["Yes", "No"]', "bestBid": 0.4, "bestAsk": 0.42},
+            {"id": 7, "active": True, "closed": False, "question": "Bucky Irving: 2+ Touchdowns", "outcomes": '["Yes", "No"]', "bestBid": 0.1, "bestAsk": 0.12}]}]
+    c = {x["ticker"]: x for x in PM.to_contracts(ev)}
+    assert set(c) == {"KXNFLGAME-PM1-TB", "KXNFLGAME-PM1x-DAL", "KXNFLSPREAD-PM2", "KXNFLTOTAL-PM3", "PM-5", "PM-6"}
+    assert c["KXNFLGAME-PM1x-DAL"]["yes_bid"] == 79 and c["KXNFLGAME-PM1x-DAL"]["yes_ask"] == 80 and c["KXNFLGAME-PM1x-DAL"]["pf"] == 1
+    assert kalshi.parse_game_contract(c["KXNFLSPREAD-PM2"]) == {"kind": "game_spread", "team": "DAL", "threshold": 1.5, "pair": ("TB", "DAL")}
+    assert kalshi.parse_game_contract(c["KXNFLTOTAL-PM3"])["threshold"] == 47.5
+    assert kalshi.parse_contract(c["PM-5"]) == {"stat": "player_reception_yds", "threshold": 76.0}
+    assert kalshi.parse_contract(c["PM-6"])["stat"] == "player_anytime_td"

@@ -19,7 +19,7 @@ from . import games as games_mod
 from . import model, props, run, teams
 
 ALT_BOOKS = {"draftkings", "fanduel"}
-BOOKS = ["draftkings", "fanduel", "betmgm", "espnbet", "betrivers", "hardrockbet", "betparx", "ballybet"]
+BOOKS = ["draftkings", "fanduel", "betmgm", "espnbet", "betrivers", "hardrockbet", "betparx", "ballybet", "underdog", "prizepicks"]
 
 # (away, home, hours from now, players: (name, team side, rush, rec, pass, td_yes_odds))
 GAMES = [

@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-06 · slate rolls to next week";
+const BUILD = "2026-10-06 · Polymarket, Underdog, multi-platform";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -50,6 +50,7 @@ const VWORD = {agree:"✓ Stats agree", neutral:"= Stats neutral", disagree:"✕
 const DESK = window.matchMedia("(min-width:1180px)");
 
 let A = null, aNote = "", openWhy = new Set();
+let PQ = null;   // live Polymarket prices {market id: {bid, ask}} in cents
 let D = null, Q = null, liveAt = null, shown = PAGE, current = new Map(), lastTrigger = null, sheetMode = null;
 const pref = {where:store.get("ps_where") || "best", prop:store.get("ps_prop") || "all", side:store.get("ps_side") || "all",
               game:store.get("ps_slate") || "all", sort:store.get("ps_sort2") || "best", legsN:Number(store.get("ps_legsN")) || 3, q:""};
@@ -112,6 +113,7 @@ function gameFilterLabel(){
 function kickMs(gid){ const g = game(gid); return g && g.t ? +new Date(g.t) : Infinity; }
 function bookName(k){
   if (k === "kalshi") return "Kalshi";
+  if (k === "poly") return "Polymarket";
   const b = D && (D.books || []).find(x => x.k === k);
   return b ? b.name : k;
 }
@@ -155,50 +157,64 @@ function mk(c){
   c.ev = c.hit * c.dec + c.push - 1;                     // a push gives the stake back
   c.evSafe = (c.hit - c.unc) * c.dec + c.push - 1;
   const who = P.norm(c.player);
-  c.key = (c.plat === "kalshi" ? "k|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
+  c.key = (isMkt(c) ? c.plat[0] + "|" + c.ticker : "b|" + c.book + "|" + who + "|" + c.m + "|" + c.pt) + "|" + c.side;
   c.prop = who + "|" + c.m + "|" + c.pt;
   c.group = c.game ? c.g + "|" + c.stat : who + "|" + c.stat;   // one pick per player & prop (per game & market)
   return c;
 }
-function kalshiPicks(relaxed){
-  const out = [], P2 = D.params || {fee:.07, max_spread:8};
-  const fee = c => P2.fee * c * (1 - c);
-  for (const u of D.kalshi || []){
-    const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
+// prediction markets (Kalshi, Polymarket): rows priced against the sportsbook consensus, or the market's own mid
+const MKT = {kalshi:{name:"Kalshi", rows:() => D.kalshi || [], fee:() => (D.params || {}).fee ?? 0.07},
+             poly:{name:"Polymarket", rows:() => D.poly || [], fee:() => 0}};
+const isMkt = c => c.plat === "kalshi" || c.plat === "poly";
+function livePrice(plat, u){
+  if (plat === "kalshi") return (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask};
+  const q = PQ && PQ[u.pm];
+  if (!q) return {bid:u.bid, ask:u.ask};
+  return u.pf ? {bid:100 - q.ask, ask:100 - q.bid} : q;   // pf: this row is the market's second outcome
+}
+function marketPicks(plat, relaxed){
+  const out = [], spread = (D.params || {}).max_spread || 8, rate = MKT[plat].fee();
+  const fee = c => rate * c * (1 - c);
+  for (const u of MKT[plat].rows()){
+    const q = livePrice(plat, u);
     if (!q || !q.bid || !q.ask || q.ask >= 99) continue;
-    const wide = q.ask - q.bid > P2.max_spread;
+    const wide = q.ask - q.bid > spread;
     if (wide && !relaxed) continue;
     const fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
     for (const [side, hit, cost] of [["YES", fair, q.ask / 100], ["NO", 1 - fair, 1 - q.bid / 100]]){
       if (side === "NO" && (u.stat === TD || u.stat === "game_ml")) continue;
       const short = 1 / (cost + fee(cost)) < MIN_DEC;
       if (short && !relaxed) continue;
-      out.push(mk({plat:"kalshi", book:"kalshi", ticker:u.ticker, player:u.player, g:u.g, stat:u.stat, m:u.stat, game:!!(STAT[u.stat] || {}).game,
+      out.push(mk({plat, book:plat, ticker:u.ticker, pm:u.pm, pf:u.pf, player:u.player, g:u.g, stat:u.stat, m:u.stat, game:!!(STAT[u.stat] || {}).game,
                    team:u.team || null, km:!!u.km, pt:u.threshold, side, hit, unc:u.km ? 0.03 : (u.unc || .03), n:u.books,
                    cents:Math.round(cost * 100), dec:1 / (cost + fee(cost)), relaxed:(wide ? "wide" : "") || (short ? "short" : "")}));
     }
   }
   return out;
 }
+function kalshiPicks(relaxed){ return marketPicks("kalshi", relaxed); }
 function bestOf(p, s, books){
   let best = null;
   for (const b of books){
+    if (!p.b[b]) continue;
     const a = p.b[b][s], dec = a == null ? null : P.americanToDecimal(a);
     if (dec && (!best || dec > best.dec)) best = {b, a, dec};
   }
   return best;
 }
-function bookPicks(where, relaxed){
-  const out = [];
+const isDfs = b => !!((D.books || []).find(x => x.k === b) || {}).dfs;
+// sportsbooks: each pick at the best price among `books` (null = every non-DFS book)
+function bookPicks(books, relaxed){
+  const out = [], single = books && books.length === 1 ? books[0] : null;
   const add = (p, s, extra) => {
-    const books = where === "best" ? Object.keys(p.b) : (p.b[where] ? [where] : []);
-    const best = bestOf(p, s, books);
+    const avail = Object.keys(p.b).filter(b => !isDfs(b) && (!books || books.includes(b)));
+    const best = bestOf(p, s, avail);
     if (!best) return;
     const short = best.dec < MIN_DEC;
     if (short && !relaxed) return;
     // on a single book, point out a clearly better price elsewhere (same line)
     let alt = null;
-    if (where !== "best"){ const o = bestOf(p, s, Object.keys(p.b).filter(b => b !== where)); if (o && o.dec > best.dec + 0.02) alt = o; }
+    if (single){ const o = bestOf(p, s, Object.keys(p.b).filter(b => b !== single && !isDfs(b))); if (o && o.dec > best.dec + 0.02) alt = o; }
     const c = {plat:"book", book:best.b, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, american:best.a, dec:best.dec, alt, relaxed:short ? "short" : "", ...extra};
     if (c.pt != null && Number.isInteger(c.pt) && c.stat !== TD && c.stat !== "game_ml"){
       const r = M.price(D, edOf(c));                    // whole-number line: it can land exactly on the number
@@ -222,15 +238,43 @@ function bookPicks(where, relaxed){
   }
   return out;
 }
+// DFS pick'em (Underdog, PrizePicks): that site's line, the hit chance at it from the sportsbooks, and value
+// against pick'em break-even (a 3-pick power play pays 6x, so each pick needs ~55%)
+function dfsPicks(book){
+  const out = [], be = D.dfs_breakeven || 0.5503;
+  for (const p of D.props || []){
+    if (!p.b[book] || p.stat === TD) continue;
+    for (const s of [0, 1]){
+      const c = {plat:"dfs", book, g:p.g, stat:p.stat, m:p.m, unc:p.unc, n:p.n, dec:1 / be, player:p.player, pt:p.pt,
+                 side:s ? "Under" : "Over", hit:s ? 1 - p.p : p.p};
+      if (Number.isInteger(c.pt)){ const r = M.price(D, edOf(c)); if (r){ c.hit = r.hit; c.push = r.push; } }
+      out.push(mk(c));
+    }
+  }
+  return out;
+}
+const wherePlats = w => String(w || "best").split(",").filter(Boolean);
 function picksFor(where, relaxed){
   const k = where + (relaxed ? "|all" : "");
   if (!pickCache.has(k)){
-    let list = where === "kalshi" ? kalshiPicks(relaxed) : bookPicks(where, relaxed);
-    // "Best price anywhere" also covers what no sportsbook has priced yet (e.g. next week's games before
-    // Thursday's scan): Kalshi's picks for any player/game + prop type with no sportsbook line
-    if (where === "best"){
-      const have = new Set(list.map(c => c.group));
-      list = list.concat(kalshiPicks(relaxed).filter(c => !have.has(c.group)));
+    const parts = wherePlats(where);
+    let list;
+    if (parts.length === 1 && parts[0] === "best"){
+      // every sportsbook, plus Kalshi then Polymarket for anything no sportsbook has priced yet
+      list = bookPicks(null, relaxed);
+      for (const plat of ["kalshi", "poly"]){
+        const have = new Set(list.map(c => c.group));
+        list = list.concat(marketPicks(plat, relaxed).filter(c => !have.has(c.group)));
+      }
+    } else {
+      const books = parts.filter(x => !MKT[x] && !isDfs(x));
+      list = books.length ? bookPicks(books, relaxed) : [];
+      for (const x of parts){
+        if (MKT[x]) list = list.concat(marketPicks(x, relaxed));
+        else if (isDfs(x)) list = list.concat(dfsPicks(x));
+      }
+      // several platforms: keep each platform's own version of a pick (sportsbooks count as one)
+      if (parts.length > 1) for (const c of list) c.group = (c.plat === "book" ? "book" : c.book) + "|" + c.group;
     }
     pickCache.set(k, list);
   }
@@ -329,34 +373,42 @@ function lineText(c){
     const tn = c.team ? esc(teamShort(c.team)) : "";
     if (c.stat === "game_ml") return "<b>" + tn + "</b> to win";
     if (c.stat === "game_spread"){
-      if (c.plat === "kalshi") return (c.side === "YES" ? "<b>" + tn + " win by " : "<b>" + tn + " don't win by ") + (Math.floor(c.pt) + 1) + "+</b>";
+      if (isMkt(c)) return (c.side === "YES" ? "<b>" + tn + " win by " : "<b>" + tn + " don't win by ") + (Math.floor(c.pt) + 1) + "+</b>";
       return "<b>" + tn + " " + (c.pt === 0 ? "pick'em" : sgnPt(c.pt)) + "</b> (spread)";
     }
-    if (c.plat === "kalshi") return "<b>" + (c.side === "YES" ? "Over " : "Under ") + fmtPt(c.pt) + "</b> total points";
+    if (isMkt(c)) return "<b>" + (c.side === "YES" ? "Over " : "Under ") + fmtPt(c.pt) + "</b> total points";
     return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> total points";
   }
   if (c.stat === TD) return OVERSIDE.has(c.side) ? "<b>Scores a TD</b> (anytime)" : "<b>No TD</b>";
-  if (c.plat === "kalshi") return c.side === "YES" ? "<b>" + fmtPt(c.pt) + "+</b> " + s.u : "<b>Under " + fmtPt(c.pt) + "</b> " + s.u;
+  if (c.plat === "poly") return "<b>" + (c.side === "YES" ? "Over " : "Under ") + fmtPt(c.pt - 0.5) + "</b> " + s.u;   // Polymarket's own wording
+  if (isMkt(c)) return c.side === "YES" ? "<b>" + fmtPt(c.pt) + "+</b> " + s.u : "<b>Under " + fmtPt(c.pt) + "</b> " + s.u;
+  if (c.plat === "dfs") return "<b>" + (c.side === "Over" ? "Higher" : "Lower") + " " + fmtPt(c.pt) + "</b> " + s.u;
   return "<b>" + c.side + " " + fmtPt(c.pt) + "</b> " + s.u;
 }
 function priceText(c){
-  if (c.plat === "kalshi") return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on Kalshi" +
+  if (c.plat === "dfs") return "<b>" + esc(bookName(c.book)) + "</b> pick'em · needs " + pct(1 / c.dec) + "% to beat a 3-pick (6x)";
+  if (isMkt(c)) return "Buy <b>" + c.side + "</b> at <b>" + c.cents + "¢</b> on " + MKT[c.plat].name +
     (c.relaxed === "wide" ? ' <span class="relax">· thin market, check the price</span>' : c.relaxed === "short" ? ' <span class="relax">· pays very little</span>' : "");
-  if (c.relaxed && c.plat !== "kalshi") return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book)) + ' <span class="relax">· pays very little</span>';
+  if (c.relaxed && !isMkt(c)) return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book)) + ' <span class="relax">· pays very little</span>';
   return "<b>" + P.fmtAmerican(c.american) + "</b> at " + esc(bookName(c.book)) +
     (c.alt ? ' <span class="alt">· ' + esc(bookName(c.alt.b)) + " pays " + P.fmtAmerican(c.alt.a) + "</span>" : "");
 }
 function valueHtml(c){
-  const k = c.plat === "kalshi";
+  const k = isMkt(c), mname = isMkt(c) ? MKT[c.plat].name : "";
+  if (c.plat === "dfs"){
+    if (c.hit - c.unc >= 1 / c.dec) return '<div class="value good"><span class="ic" aria-hidden="true">✓</span><span class="txt">Good pick\'em leg: above the ' + pct(1 / c.dec) + '% break-even<small>Even after the safety margin</small></span></div>';
+    if (c.hit >= 1 / c.dec) return '<div class="value"><span class="ic" aria-hidden="true">=</span><span class="txt">Borderline: just above break-even<small>' + pct(1 / c.dec) + '% needed per pick</small></span></div>';
+    return '<div class="value"><span class="ic" aria-hidden="true">−</span><span class="txt">Below pick\'em break-even<small>' + pct(1 / c.dec) + '% needed per pick</small></span></div>';
+  }
   if (c.km) return '<div class="value"><span class="ic" aria-hidden="true">?</span><span class="txt">Value: n/a' +
-    '<small>Only Kalshi prices this, so there\'s no outside price to compare</small></span></div>';
+    '<small>Only ' + mname + ' prices this, so there\'s no outside price to compare</small></span></div>';
   if (c.evSafe >= 0)
     return '<div class="value good"><span class="ic" aria-hidden="true">✓</span><span class="txt">Good value: ' +
-      (k ? "Kalshi's price is below what it's worth" : "this book pays more than it's worth") +
+      (k ? mname + "'s price is below what it's worth" : "this book pays more than it's worth") +
       '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
   if (c.ev >= -0.06)
     return '<div class="value"><span class="ic" aria-hidden="true">=</span><span class="txt">Fair price: about what it\'s worth' +
-      '<small>' + (k ? "after Kalshi's fee" : "the book's usual cut is built in") + '</small></span></div>';
+      '<small>' + (k ? (c.plat === "kalshi" ? "after Kalshi's fee" : "Polymarket charges no fee here") : "the book's usual cut is built in") + '</small></span></div>';
   return '<div class="value"><span class="ic" aria-hidden="true">−</span><span class="txt">Poor value: pays less than it\'s worth' +
     '<small>On average about ' + money(c.ev) + " per $1 bet</small></span></div>";
 }
@@ -365,9 +417,9 @@ function valueHtml(c){
 function edOf(c){
   if (c.game){
     const gm = game(c.g) || {};
-    if (c.stat === "game_total") return {kind:"game", g:c.g, stat:c.stat, team:null, side:c.plat === "kalshi" ? (c.side === "YES" ? "Over" : "Under") : c.side, line:c.pt};
+    if (c.stat === "game_total") return {kind:"game", g:c.g, stat:c.stat, team:null, side:isMkt(c) ? (c.side === "YES" ? "Over" : "Under") : c.side, line:c.pt};
     if (c.stat === "game_ml") return {kind:"game", g:c.g, stat:c.stat, team:c.team, side:c.team, line:null};
-    if (c.plat === "kalshi"){
+    if (isMkt(c)){
       const other = c.team === gm.h ? gm.a : gm.h;
       return c.side === "YES" ? {kind:"game", g:c.g, stat:c.stat, team:c.team, side:c.team, line:-c.pt}
                               : {kind:"game", g:c.g, stat:c.stat, team:other, side:other, line:c.pt};
@@ -375,7 +427,7 @@ function edOf(c){
     return {kind:"game", g:c.g, stat:c.stat, team:c.team, side:c.team, line:c.pt};
   }
   if (c.stat === TD) return {kind:"player", player:c.player, g:c.g, stat:TD, side:OVERSIDE.has(c.side) ? "Yes" : "No", line:null};
-  return {kind:"player", player:c.player, g:c.g, stat:c.stat, side:OVERSIDE.has(c.side) ? "Over" : "Under", line:c.plat === "kalshi" ? c.pt - 0.5 : c.pt};
+  return {kind:"player", player:c.player, g:c.g, stat:c.stat, side:OVERSIDE.has(c.side) ? "Over" : "Under", line:isMkt(c) ? c.pt - 0.5 : c.pt};
 }
 function edLabel(ed){
   const s = STAT[ed.stat] || {u:""};
@@ -409,7 +461,7 @@ function anaFor(c){
   if (p){ const G = (A.games || {})[p.t], O = G && A.teams[G.opp]; stale = !G || !O || (teams.length && !teams.includes(O.name)); }
   // projection, with injured teammates' targets/carries handed to the players still active
   const pj = p && !stale ? AN.adjustProjection(c.stat, (p.pj || {})[c.stat], AN.injuryAdjust(A, p, c.stat)) : null;
-  const lineVal = c.stat === TD ? null : c.plat === "kalshi" ? c.pt - 0.5 : c.pt;
+  const lineVal = c.stat === TD ? null : isMkt(c) ? c.pt - 0.5 : c.pt;
   const overP = c.stat === TD ? (OVERSIDE.has(c.side) ? c.hit : 1 - c.hit) : null;
   const v = AN.verdict(c.stat, c.side, lineVal, pj, overP);
   const fl = p && !stale ? AN.flags(A, p, c.stat, c.side, c.prop_mv ? {mv:c.prop_mv} : null, D.updated) : [];
@@ -597,7 +649,13 @@ function card(c){
 }
 
 /* ---------- render ---------- */
-function whereLabel(k){ return k === "best" ? "Best price anywhere" : bookName(k); }
+function bookName2(k){ return MKT[k] ? MKT[k].name : bookName(k); }
+function whereLabel(k){
+  const parts = wherePlats(k);
+  if (parts.length === 1) return parts[0] === "best" ? "Best price anywhere" : bookName2(parts[0]);
+  return parts.length === 2 ? parts.map(bookName2).join(" + ") : bookName2(parts[0]) + " + " + (parts.length - 1) + " more";
+}
+const hasPlat = (w, x) => wherePlats(w).includes(x);
 function render(){
   if (!D) return;
   $("v-where").textContent = whereLabel(pref.where);
@@ -614,7 +672,7 @@ function render(){
     (exact.length >= 1 && exact.length <= 3 ? exact.map(n => ' · <button type="button" class="linkbtn" data-player="' + esc(n) + '">' + esc(n) + "'s page</button>").join("") : "");
   $("v-game").textContent = gameFilterLabel();
   $("v-sort").textContent = (SORTS.find(s => s.k === pref.sort) || SORTS[0]).t;
-  if (pref.where !== "kalshi") $("live").textContent = "";
+  if (!hasPlat(pref.where, "kalshi") && !hasPlat(pref.where, "poly")) $("live").textContent = "";
   const list = filtered(pref.where, pref.sort);
   current = new Map(list.map(c => [c.key, c]));
   $("list").innerHTML = list.slice(0, shown).map(card).join("");
@@ -630,9 +688,8 @@ function render(){
   $("betsN").hidden = !$("betsN").textContent;
 }
 function emptyText(){
-  if (pref.where === "kalshi")
-    return (D.kalshi || []).length ? "No Kalshi contracts with a tight enough price for this filter right now."
-      : "The last scan didn't match any Kalshi contracts to sportsbook lines.";
+  if (wherePlats(pref.where).every(x => MKT[x]))
+    return "No " + wherePlats(pref.where).map(bookName2).join(" or ") + " markets for this filter right now. They list more as the game gets closer.";
   const b = (D.books || []).find(x => x.k === pref.where);
   if (b && !b.n) return "No " + b.name + " lines in the last scan." +
     (b.paid ? " The Odds API only sends " + b.name + " on paid plans." : " Try another book or Best price anywhere.");
@@ -648,16 +705,21 @@ function opt(value, title, desc, checked, dim){
     '<span class="o-d">' + esc(desc) + '</span></span></button>';
 }
 const PICKERS = {
-  where: {t:"Where I bet", d:"See each pick at your book's own line and odds", build(){
-    let h = opt("best", "Best price anywhere", "Each pick at whichever book pays the most", pref.where === "best");
+  where: {t:"Where I bet", d:"Pick one or more. Each platform's own lines and prices", multi:true, build(){
+    const sel = new Set(wherePlats(pref.where)), books = D.books || [];
+    const chk = (k, t, d, dim) => '<button class="opt chk' + (dim ? " dim" : "") + '" type="button" role="checkbox" aria-checked="' + sel.has(k) + '" data-v="' + esc(k) + '">' +
+      '<span class="box" aria-hidden="true"></span><span class="o-x"><span class="o-t">' + esc(t) + '</span><span class="o-d">' + esc(d) + '</span></span></button>';
+    let h = chk("best", "Best price anywhere", "Every sportsbook's best price, plus Kalshi and Polymarket for anything books haven't priced");
+    const nP = (D.poly || []).length, nK = (D.kalshi || []).length;
+    h += '<div class="opt-sec">Prediction markets</div>' +
+      chk("kalshi", "Kalshi", nK ? nK + " contracts · prices in cents, live" : "No contracts right now", !nK) +
+      chk("poly", "Polymarket", nP ? nP + " markets · prices in cents, live" : "No markets right now", !nP);
+    const dfs = books.filter(b => b.dfs);
+    if (dfs.length) h += '<div class="opt-sec">Pick\'em (DFS)</div>' + dfs.map(b => chk(b.k, b.name, b.n ? b.n + " lines · Higher/Lower picks" : "No lines in the last scan (Thursday's scan adds them)", !b.n)).join("");
     h += '<div class="opt-sec">Sportsbooks</div>';
-    for (const b of D.books || []){
-      const desc = b.n ? b.n + " props in the last scan" : b.paid ? "No lines: The Odds API only sends this book on paid plans" : "No lines in the last scan";
-      h += opt(b.k, b.name, desc, pref.where === b.k, !b.n);
-    }
-    h += '<div class="opt-sec">Prediction market</div>';
-    h += opt("kalshi", "Kalshi", (D.kalshi || []).length ? "Prices in cents, refreshed live every 30 seconds" : "No contracts matched in the last scan", pref.where === "kalshi", !(D.kalshi || []).length);
-    return h;
+    for (const b of books.filter(b => !b.dfs))
+      h += chk(b.k, b.name, b.n ? b.n + " props in the last scan" : b.paid ? "No lines: The Odds API only sends this book on paid plans" : "No lines in the last scan", !b.n);
+    return h + '<div class="sheet-foot"><button class="primary" type="button" data-done>Show picks</button></div>';
   }},
   prop: {t:"Prop", d:"Which stat the bet is about", build(){
     const have = new Set([...(D.props || []).map(p => p.stat), ...(D.kalshi || []).map(u => u.stat), ...(D.lines || []).map(p => p.stat)]);
@@ -735,14 +797,26 @@ document.addEventListener("keydown", e => {
 });
 $("sheet").addEventListener("click", e => {
   if (e.target.closest("[data-close]")) return closeSheet();
+  if (sheetMode === "where" && e.target.closest("[data-done]")){ closeSheet(); return; }
   const o = e.target.closest(".opt");
+  if (o && sheetMode === "where"){
+    let sel = wherePlats(pref.where).filter(x => x !== "best");
+    const v = o.dataset.v;
+    if (v === "best") sel = ["best"];
+    else sel = sel.includes(v) ? sel.filter(x => x !== v) : sel.concat(v);
+    if (!sel.length) sel = ["best"];
+    pref.where = sel.join(","); store.set("ps_where", pref.where);
+    for (const b of $("sheet").querySelectorAll(".chk")) b.setAttribute("aria-checked", sel.includes(b.dataset.v));
+    shown = PAGE; render(); live();
+    return;
+  }
   if (o && sheetMode && PICKERS[sheetMode]){
     pref[sheetMode] = o.dataset.v;
     if (sheetMode === "game") store.set("ps_slate", o.dataset.v.startsWith("slate:") || o.dataset.v === "all" ? o.dataset.v : "");
     else store.set("ps_" + (sheetMode === "sort" ? "sort2" : sheetMode), o.dataset.v);
     shown = PAGE;
     closeSheet(); render();
-    if (pref.where === "kalshi") live();
+    live();
     return;
   }
   if (sheetMode === "slip") slipClick(e);
@@ -782,7 +856,7 @@ function refreshSlip(){
   if (!D) return;
   for (const l of slip){
     if (l.custom){ if (!repriceLeg(l)) l.stale = true; continue; }
-    const w = l.plat === "kalshi" ? "kalshi" : l.book;
+    const w = l.plat === "kalshi" || l.plat === "poly" ? l.plat : l.book;
     const c = picksFor(w, true).find(x => x.key === l.key);   // relaxed list is a superset
     if (c) Object.assign(l, snapshot(c), {stale:false}); else l.stale = true;
   }
@@ -1097,7 +1171,7 @@ function toast(msg){ const t = $("toast"); t.textContent = msg; t.hidden = false
 let curPlayer = null, namesCache = null;
 function playerNames(){
   if (!D) return [];
-  if (!namesCache) namesCache = [...new Set([...(D.props || []).map(p => p.player), ...(D.kalshi || []).filter(u => !(STAT[u.stat] || {}).game).map(u => u.player)])].sort();
+  if (!namesCache) namesCache = [...new Set([...(D.props || []).map(p => p.player), ...[...(D.kalshi || []), ...(D.poly || [])].filter(u => !(STAT[u.stat] || {}).game).map(u => u.player)])].sort();
   return namesCache;
 }
 function openPlayer(name, g, trigger){
@@ -1111,6 +1185,7 @@ function renderPlayer(){
   const name = curPlayer.name, k = P.norm(name);
   const props = (D.props || []).filter(p => P.norm(p.player) === k);
   const krows = (D.kalshi || []).filter(u => P.norm(u.player) === k);
+  const prows = (D.poly || []).filter(u => P.norm(u.player) === k);
   const g = curPlayer.g || (props[0] || krows[0] || {}).g, gm = game(g) || {};
   const ap = A ? AN.findPlayer(A, name, [gm.a, gm.h]) : null;
   $("shTitle").textContent = name;
@@ -1124,7 +1199,7 @@ function renderPlayer(){
     if (ap.inj && ap.inj[0]) h += '<div class="pp-inj">⚠ ' + esc(ap.inj[0] + (ap.inj[1] ? " (" + ap.inj[1] + ")" : "") + (ap.inj[4] ? ": " + ap.inj[4] : "")) + '</div>';
   }
   h += '</div></div>';
-  const stats = [...new Set([...props.map(p => p.stat), ...krows.map(u => u.stat)])].sort((a, b) => STAT_ORDER.indexOf(a) - STAT_ORDER.indexOf(b));
+  const stats = [...new Set([...props.map(p => p.stat), ...krows.map(u => u.stat), ...prows.map(u => u.stat)])].sort((a, b) => STAT_ORDER.indexOf(a) - STAT_ORDER.indexOf(b));
   if (!stats.length) h += '<p class="src">No lines for ' + esc(name) + ' in the last scan.</p>';
   for (const st of stats){
     const all = props.filter(p => p.stat === st).sort((a, b) => (a.pt || 0) - (b.pt || 0));
@@ -1159,6 +1234,11 @@ function renderPlayer(){
     if (ks.length) h += '<div class="pp-k"><b>Kalshi</b> ' + ks.map(u => {
       const q = (Q && Q[u.ticker]) || {bid:u.bid, ask:u.ask}, fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
       return '<span class="lc">' + (st === TD ? "TD" : fmtPt(u.threshold) + "+") + ' <b>' + Math.round(q.ask) + '¢</b> · ' + pct(fair) + '%' + (u.km ? "" : (fair - q.ask / 100 > 0.02 ? " ✓" : "")) + '</span>';
+    }).join("") + '</div>';
+    const ps2 = prows.filter(u => u.stat === st).sort((a, b) => (a.threshold || 0) - (b.threshold || 0));
+    if (ps2.length) h += '<div class="pp-k"><b>Polymarket</b> ' + ps2.map(u => {
+      const q = livePrice("poly", u), fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
+      return '<span class="lc">' + (st === TD ? "TD" : "Over " + fmtPt(u.threshold - 0.5)) + ' <b>' + Math.round(q.ask) + '¢</b> · ' + pct(fair) + '%' + (q.ask - q.bid > 8 ? " (thin)" : "") + '</span>';
     }).join("") + '</div>';
     if (main && main.pt != null) h += '<p style="margin:6px 0 0"><button type="button" class="mini" data-ppcustom="' + esc(st) + '">Price a different line…</button></p>';
     h += '</section>';
@@ -1317,22 +1397,27 @@ $("theme").onclick = () => { theme = THEMES[(THEMES.indexOf(theme) + 1) % 3]; st
 
 /* ---------- data ---------- */
 async function live(){
-  const needs = D && (D.kalshi || []).length && (pref.where === "kalshi" || slip.some(l => l.plat === "kalshi"));
-  if (!needs || document.hidden) return;
-  const tickers = D.kalshi.map(u => u.ticker), out = {};
-  try{
-    for (let i = 0; i < tickers.length; i += 400){
-      const r = await fetch("/api/prices?tickers=" + encodeURIComponent(tickers.slice(i, i + 400).join(",")), {cache:"no-store"});
+  if (!D || document.hidden) return;
+  const wantK = (D.kalshi || []).length && (hasPlat(pref.where, "kalshi") || hasPlat(pref.where, "best") || slip.some(l => l.plat === "kalshi"));
+  const wantP = (D.poly || []).length && (hasPlat(pref.where, "poly") || hasPlat(pref.where, "best") || slip.some(l => l.plat === "poly"));
+  if (!wantK && !wantP) return;
+  const grab = async (url, ids) => {
+    const out = {};
+    for (let i = 0; i < ids.length; i += 400){
+      const r = await fetch(url + encodeURIComponent(ids.slice(i, i + 400).join(",")), {cache:"no-store"});
       if (!r.ok) throw new Error(r.status);
       Object.assign(out, await r.json());
     }
-    Q = out; liveAt = new Date(); bumpData();
-    refreshSlip(); render();
-    if (sheetMode === "slip") renderSlip();
-    $("live").textContent = pref.where === "kalshi" ? "Kalshi prices live as of " + liveAt.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"}) : "";
-  }catch(e){
-    if (pref.where === "kalshi") $("live").textContent = "Live Kalshi prices unavailable, showing prices from the last scan.";
-  }
+    return out;
+  };
+  const got = [];
+  try{ if (wantK){ Q = await grab("/api/prices?tickers=", D.kalshi.map(u => u.ticker)); got.push("Kalshi"); } }catch(e){}
+  try{ if (wantP){ PQ = await grab("/api/poly?ids=", [...new Set(D.poly.map(u => u.pm).filter(Boolean))]); got.push("Polymarket"); } }catch(e){}
+  if (got.length){ liveAt = new Date(); bumpData(); refreshSlip(); render(); if (sheetMode === "slip") renderSlip(); }
+  const showing = wherePlats(pref.where).some(x => MKT[x]);
+  $("live").textContent = !showing ? "" : got.length
+    ? got.join(" and ") + " prices live as of " + liveAt.toLocaleTimeString([], {hour:"numeric", minute:"2-digit", second:"2-digit"})
+    : "Live prices unavailable, showing prices from the last refresh.";
 }
 function statusLine(){
   const hrs = (Date.now() - new Date(D.updated)) / 36e5;
@@ -1360,8 +1445,9 @@ async function load(){
     D = null; return;
   }
   bumpData();
-  const valid = new Set(["best", "kalshi", ...(D.books || []).map(b => b.k)]);
-  if (!valid.has(pref.where)) pref.where = "best";
+  const valid = new Set(["best", "kalshi", "poly", ...(D.books || []).map(b => b.k)]);
+  const okParts = wherePlats(pref.where).filter(x => valid.has(x));
+  pref.where = okParts.length ? okParts.join(",") : "best";
   if (pref.game !== "all" && !pref.game.startsWith("slate:") && !game(pref.game)) pref.game = "all";
   $("status").innerHTML = statusLine();
   const s = D.stats || {};

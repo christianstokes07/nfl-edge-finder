@@ -295,18 +295,26 @@ look like 70% and poor value; he's about 73%.
 
 ## Platforms
 
-- **Sportsbooks** (Odds API keys): `draftkings`, `fanduel`, `betmgm`, `williamhill_us` (Caesars),
-  `espnbet` (theScore Bet), `fanatics`, `betrivers`, `hardrockbet`, `betparx`, `ballybet`. Change them with
-  the `BOOKMAKERS` env var, and keep it at 10 or fewer.
-  **Caesars and Fanatics only return data on paid Odds API plans.** They're still listed (they cost nothing
-  extra while there are 10 or fewer books). On the free plan the page shows "No lines: The Odds API only
-  sends this book on paid plans" for them.
-- **Kalshi:** read from Kalshi's public API (free, no key). It doesn't use Odds API credits. Series used: rushing,
-  receiving and passing yards, rush + receiving yards, receptions, passing attempts, completions, rushing attempts,
-  passing TDs, interceptions, anytime TD, plus game winner, "wins by over X" and total-points ladders.
-- **Polymarket: not included.** I checked its public API (gamma-api.polymarket.com) twice on 2026-10-01.
-  Its NFL markets are season-long (MVP, stat leaders, season rushing totals) and team-level game markets
-  (spread, totals, team touchdowns). There are no single-game player props to price, so there's nothing to compare.
+**Where I bet is multi-select.** Tick any mix of platforms (say Underdog + Polymarket) and the feed shows each one's
+own version of a pick. "Best price anywhere" means every sportsbook's best price, plus Kalshi and Polymarket for anything
+no sportsbook has priced yet. The choice is remembered on your device.
+
+- **Sportsbooks** (Odds API keys): `draftkings`, `fanduel`, `betmgm`, `espnbet` (theScore Bet), `betrivers`,
+  `hardrockbet`, `betparx`, `ballybet`. Change them with `BOOKMAKERS` (10 or fewer keeps the cost the same).
+- **Pick'em / DFS: Underdog and PrizePicks** (`underdog`, `prizepicks`, in The Odds API's free DFS coverage). They
+  replaced Caesars and Fanatics, which only return data on paid Odds API plans, so the scan still uses 10 books (1 region)
+  and costs the same. Pick'em sites pay fixed multipliers, so their "odds" are only indicative. Their lines are shown
+  ("Higher 45.5 receiving yards on Underdog") but kept **out** of the hit-chance consensus, which is still the sportsbooks.
+  Value is judged against pick'em break-even: a 3-pick power play pays 6x, so each pick needs about 55% (`DFS_BREAKEVEN`).
+  Underdog and PrizePicks lines arrive with Thursday's scan, like every sportsbook.
+- **Kalshi:** public API, free, no key. Live prices through `functions/api/prices.js`.
+- **Polymarket:** public API (gamma-api.polymarket.com), free, no key. Each game has a moneyline, spread ladders and total
+  ladders, and a separate "<game> - Player Props" event (receiving/rushing/passing yards, receptions, passing TDs, attempts,
+  completions, anytime TD). They're translated to the same shape as Kalshi contracts and priced the same way: the
+  sportsbook consensus where books have the line, otherwise Polymarket's own mid price (labeled). Live prices come
+  through `functions/api/poly.js`. Player-prop markets are thin early in the week (a few cents of liquidity, 1¢/98¢ quotes).
+  Markets up to 20¢ wide are kept and labeled "thin market"; wider ones are skipped. Liquidity grows toward kickoff.
+  Polymarket's fee is treated as 0; check its current fee schedule.
 
 ## Reading the page
 

@@ -15,7 +15,7 @@ import requests
 
 from . import config as C
 from . import games as games_mod
-from . import kalshi, model, odds, props, schedule, teams, verdict
+from . import kalshi, model, odds, polymarket, props, schedule, teams, verdict
 
 STAT_LABEL = {
     "game_ml": "moneyline", "game_spread": "spread", "game_total": "game total",
@@ -145,7 +145,7 @@ def _game_for_pair(pair, games):
     return None
 
 
-def evaluate(lines, markets, universe=None, game_lines=(), games=None):
+def evaluate(lines, markets, universe=None, game_lines=(), games=None, own_spread=None):
     """Pure function: book lines + Kalshi markets -> (picks, stats).
 
     Player contracts are priced from the sportsbook consensus. Kalshi player contracts with no sportsbook
@@ -193,7 +193,7 @@ def evaluate(lines, markets, universe=None, game_lines=(), games=None):
             home_is_team = gc["team"] is not None and teams.abbr(gc["team"]) == teams.abbr(g["h"])
             if not gl_by_game.get(gid):
                 # no sportsbook game lines yet: show it at Kalshi's own price (no value judgment)
-                if bid and ask and ask < 99 and (ask - bid) <= C.MAX_SPREAD_CENTS and universe is not None and 3 < (bid + ask) / 2 < 97:
+                if bid and ask and ask < 99 and (ask - bid) <= (own_spread or C.MAX_SPREAD_CENTS) and universe is not None and 3 < (bid + ask) / 2 < 97:
                     team = (g["h"] if home_is_team else g["a"]) if gc["team"] else None
                     universe.append({"ticker": m.get("ticker", ""), "player": team or "Game total", "g": gid, "stat": gc["kind"],
                                      "threshold": gc["threshold"], "team": team, "fair": round((bid + ask) / 200, 3),
@@ -219,7 +219,7 @@ def evaluate(lines, markets, universe=None, game_lines=(), games=None):
             gid = _game_for_pair(kalshi.PAIR.match(m.get("_sub_title", "") or "") and
                                  kalshi.PAIR.match(m.get("_sub_title", "")).groups(), games)
             who = kalshi.player_from_title(m.get("title", ""))
-            if gid and who and bid and ask and ask < 99 and (ask - bid) <= C.MAX_SPREAD_CENTS and universe is not None \
+            if gid and who and bid and ask and ask < 99 and (ask - bid) <= (own_spread or C.MAX_SPREAD_CENTS) and universe is not None \
                     and 3 < (bid + ask) / 2 < 97:
                 universe.append({"ticker": m.get("ticker", ""), "player": who, "g": gid, "stat": c["stat"],
                                  "threshold": c["threshold"], "fair": round((bid + ask) / 200, 3), "books": 0, "km": 1,
@@ -230,7 +230,7 @@ def evaluate(lines, markets, universe=None, game_lines=(), games=None):
         row = {"ticker": m.get("ticker", ""), "player": display, "g": gid, "stat": c["stat"], "threshold": c["threshold"]}
         if not book_lines:
             # no sportsbook line for this stat: Kalshi's own price is the only market
-            if bid and ask and ask < 99 and (ask - bid) <= C.MAX_SPREAD_CENTS and universe is not None:
+            if bid and ask and ask < 99 and (ask - bid) <= (own_spread or C.MAX_SPREAD_CENTS) and universe is not None:
                 mid = (bid + ask) / 200
                 if 0.03 < mid < 0.97:
                     universe.append({**row, "fair": round(mid, 3), "books": 0, "km": 1, "unc": 0.0, "bid": bid, "ask": ask})
@@ -412,7 +412,7 @@ def _spread(u):
     return (u["ask"] - u["bid"]) if u.get("bid") and u.get("ask") else 99
 
 
-def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updated=None, now=None, game_props=()):
+def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updated=None, now=None, game_props=(), poly=()):
     """Everything site/index.html needs. Kept compact: per-book prices are [over/yes, under/no] pairs."""
     now = now or datetime.now(timezone.utc)
     games = games or {}
@@ -421,21 +421,11 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
         for b in p["b"]:
             counts[b] += 1
     configured = [b.strip() for b in C.BOOKMAKERS.split(",") if b.strip()]
-    books = [{"k": b, "name": C.BOOK_NAMES.get(b, b), "n": counts.get(b, 0), "paid": b in C.PAID_ONLY_BOOKS}
+    books = [{"k": b, "name": C.BOOK_NAMES.get(b, b), "n": counts.get(b, 0), "paid": b in C.PAID_ONLY_BOOKS,
+              "dfs": b in C.DFS_BOOKS}
              for b in configured + sorted(set(counts) - set(configured))]
-    used = {p["g"] for p in prop_list} | {u.get("g") for u in universe} | {p["g"] for p in game_props}
-    # cap per GAME and prop type, so no game loses a category; within each, take turns across players
-    # (tightest market first for each), so every player keeps his rungs instead of one player's whole ladder
-    kalshi_rows = []
-    groups = defaultdict(lambda: defaultdict(list))
-    for u in sorted(universe, key=_spread):
-        groups[(u.get("g"), u["stat"])][u.get("player")].append(u)
-    for per_player in groups.values():
-        lists, taken, i = list(per_player.values()), [], 0
-        while len(taken) < C.KALSHI_ROWS_PER_GAME_STAT and any(i < len(l) for l in lists):
-            taken += [l[i] for l in lists if i < len(l)]
-            i += 1
-        kalshi_rows += taken[: C.KALSHI_ROWS_PER_GAME_STAT]
+    used = {p["g"] for p in prop_list} | {u.get("g") for u in universe} | {p["g"] for p in game_props} | {u.get("g") for u in poly}
+    kalshi_rows, poly_rows_ = cap_rows(universe), cap_rows(poly)
     return {
         "version": 2,
         "updated": now.isoformat(timespec="seconds"),
@@ -450,13 +440,31 @@ def site_data(picks, stats, universe=(), prop_list=(), games=None, markets_updat
         "lines": [{"id": f"q{i}", **p} for i, p in enumerate(game_props)],   # moneyline / spread / total
         "game_sd": {"margin": C.MARGIN_SD, "total": C.TOTAL_SD},
         # what site/model.js needs to price custom lines exactly like the scan does
+        "dfs_breakeven": C.DFS_BREAKEVEN,
         "model": {"sigma": C.SIGMA, "td_curve": list(C.TD_CURVE), "dist": C.KALSHI_LINE_DISTANCE},
         "kalshi": kalshi_rows,  # the page re-prices these live
+        "poly": poly_rows_,     # Polymarket, same shape + pm (market id) and pf (price is for the other outcome)
         "picks": [
             {**p, "label": STAT_LABEL[p["stat"]], "fair": round(p["fair"], 3), "edge": round(p["edge"], 3)}
             for p in picks[: C.TOP_N]
         ],
     }
+
+
+def cap_rows(universe):
+    """Cap per GAME and prop type, so no game loses a category; within each, take turns across players
+    (tightest market first for each), so every player keeps his rungs instead of one player's whole ladder."""
+    rows = []
+    groups = defaultdict(lambda: defaultdict(list))
+    for u in sorted(universe, key=_spread):
+        groups[(u.get("g"), u["stat"])][u.get("player")].append(u)
+    for per_player in groups.values():
+        lists, taken, i = list(per_player.values()), [], 0
+        while len(taken) < C.KALSHI_ROWS_PER_GAME_STAT and any(i < len(l) for l in lists):
+            taken += [l[i] for l in lists if i < len(l)]
+            i += 1
+        rows += taken[: C.KALSHI_ROWS_PER_GAME_STAT]
+    return rows
 
 
 def write_site(data, path=None):
@@ -490,6 +498,18 @@ def _kick(g):
         return datetime.fromisoformat(str(g.get("t")).replace("Z", "+00:00"))
     except (ValueError, TypeError):
         return None
+
+
+def poly_rows(lines, game_lines, games, contracts=None):
+    """Polymarket contracts priced like Kalshi's (sportsbook consensus, or Polymarket's own mid when no book has
+    the line). Thin markets up to POLY_MAX_SPREAD cents are kept; the page labels them."""
+    contracts = contracts if contracts is not None else polymarket.fetch_contracts()
+    pm = {c["ticker"]: (c["pm"], c["pf"]) for c in contracts}
+    u = []
+    evaluate(lines, contracts, u, game_lines, games, own_spread=C.POLY_MAX_SPREAD)
+    for r in u:
+        r["pm"], r["pf"] = pm.get(r["ticker"], (None, 0))
+    return [r for r in u if r.get("bid") and r.get("ask") and r["ask"] - r["bid"] <= C.POLY_MAX_SPREAD]
 
 
 def use_stored_td_curve(prev):
@@ -576,16 +596,21 @@ def kalshi_refresh(path=None, markets=None, now=None):
     universe = []
     picks, stats = evaluate(lines, markets, universe, games_mod.lines_from_props(gprops), prev.get("games"))
     stats["credits_used"] = 0
+    try:
+        poly = poly_rows(lines, games_mod.lines_from_props(gprops), prev.get("games"))
+    except Exception as e:  # noqa: BLE001
+        print(f"[poly] skipped: {e}")
+        poly = [u for u in prev.get("poly", []) if u.get("g") in prev.get("games", {})]
     still = {p["m"] for p in prop_list}
     data = site_data(picks, stats, universe, prop_list, prev.get("games"),
                      {m: t for m, t in (prev.get("markets_updated") or {}).items() if m in still},
-                     datetime.fromisoformat(prev["updated"]), gprops)
+                     datetime.fromisoformat(prev["updated"]), gprops, poly)
     data["kalshi_updated"] = now.isoformat(timespec="seconds")
     write_site(data, path)
     by = defaultdict(int)
     for u in data["kalshi"]:
         by[u["stat"]] += 1
-    print(f"[kalshi-only] {len(data['kalshi'])} Kalshi contracts from {len(lines)} stored book lines: {dict(by)}")
+    print(f"[kalshi-only] {len(data['kalshi'])} Kalshi contracts, {len(data['poly'])} Polymarket, from {len(lines)} stored book lines: {dict(by)}")
     return data
 
 
@@ -644,7 +669,12 @@ def main():
     msg = build_message(picks, stats)
     print(msg)
     if not args.no_send:
-        write_site(site_data(picks, stats, universe, prop_list, games, markets_updated, now, gprops))
+        try:
+            poly = poly_rows(lines, game_lines, games)
+        except Exception as e:  # noqa: BLE001
+            print(f"[poly] skipped: {e}")
+            poly = []
+        write_site(site_data(picks, stats, universe, prop_list, games, markets_updated, now, gprops, poly))
         send_discord(msg)
         log_picks(picks, book_log_rows(prop_list, games) + game_log_rows(gprops, games), load_analytics())
 

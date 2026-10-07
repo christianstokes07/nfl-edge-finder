@@ -31,14 +31,21 @@ ODDS_MARKETS = [m for m in _list("ODDS_MARKETS", "player_rush_yds,player_recepti
 # plans; they're listed so they show up if you upgrade, and they cost nothing extra while <= 10 books.
 BOOKMAKERS = os.environ.get(
     "BOOKMAKERS",
-    "draftkings,fanduel,betmgm,williamhill_us,espnbet,fanatics,betrivers,hardrockbet,betparx,ballybet",
+    # 10 books = 1 region = the cheapest tier. Underdog and PrizePicks (DFS pick'em, free tier) replaced Caesars
+    # and Fanatics, which only return data on paid Odds API plans.
+    "draftkings,fanduel,betmgm,espnbet,betrivers,hardrockbet,betparx,ballybet,underdog,prizepicks",
 )
 BOOK_NAMES = {
     "draftkings": "DraftKings", "fanduel": "FanDuel", "betmgm": "BetMGM", "williamhill_us": "Caesars",
     "espnbet": "theScore Bet", "fanatics": "Fanatics", "betrivers": "BetRivers", "hardrockbet": "Hard Rock Bet",
     "betparx": "betPARX", "ballybet": "Bally Bet", "bovada": "Bovada", "betonlineag": "BetOnline",
     "mybookieag": "MyBookie", "lowvig": "LowVig", "betus": "BetUS", "fliff": "Fliff",
+    "underdog": "Underdog", "prizepicks": "PrizePicks", "pick6": "DraftKings Pick6", "dabble_us_dfs": "Dabble",
 }
+# DFS pick'em sites: fixed-payout picks, so their "odds" are only indicative. Their lines are shown, but kept out
+# of the hit-chance consensus, and value is judged against pick'em break-even instead of a price.
+DFS_BOOKS = {"underdog", "prizepicks", "pick6", "dabble_us_dfs"}
+DFS_BREAKEVEN = _f("DFS_BREAKEVEN", 0.5503)   # per pick, 3-pick power play paying 6x: (1/6) ** (1/3)
 PAID_ONLY_BOOKS = {"williamhill_us", "fanatics"}
 WINDOW_HOURS = _f("WINDOW_HOURS", 110)   # only look at games kicking off within this many hours
 CREDIT_RESERVE = _i("CREDIT_RESERVE", 15)  # stop calling the API if credits drop below this
@@ -82,7 +89,8 @@ MIN_EDGE = _f("MIN_EDGE", 0.05)                # 5 points after fees
 MIN_EDGE_TD = _f("MIN_EDGE_TD", 0.08)          # anytime-TD fair values are rougher, so demand more
 MAX_SPREAD_CENTS = _i("MAX_SPREAD_CENTS", 8)   # skip illiquid contracts
 TOP_N = _i("TOP_N", 10)
-KALSHI_ROWS_PER_GAME_STAT = _i("KALSHI_ROWS_PER_GAME_STAT", 16)   # Kalshi contracts per prop type written to the page
+KALSHI_ROWS_PER_GAME_STAT = _i("KALSHI_ROWS_PER_GAME_STAT", 16)
+POLY_MAX_SPREAD = _i("POLY_MAX_SPREAD", 20)   # Polymarket player props are thin early in the week: keep up to 20c wide   # Kalshi contracts per prop type written to the page
 LOG_PATH = os.environ.get("LOG_PATH", "data/picks_log.csv")
 SITE_DATA_PATH = os.environ.get("SITE_DATA_PATH", "site/data.json")
 ANALYTICS_PATH = os.environ.get("ANALYTICS_PATH", "site/analytics.json")

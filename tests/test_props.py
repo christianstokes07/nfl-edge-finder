@@ -170,6 +170,7 @@ def test_kalshi_refresh_reprices_without_odds_api(tmp_path, monkeypatch):
     old = run.site_data([], {}, [], ps, games, {}, datetime(2026, 10, 1, 13, tzinfo=timezone.utc))
     run.write_site(old, str(path))
     monkeypatch.setattr(run.odds, "event_props", lambda *a, **k: (_ for _ in ()).throw(AssertionError("Odds API called")))
+    monkeypatch.setattr(run.schedule, "upcoming", lambda key, now=None, days=9: {})
     mk = [{"ticker": "R40", "title": "Jaylen Warren: 40+ rushing yards", "yes_bid": 60, "yes_ask": 62}]
     new = run.kalshi_refresh(str(path), markets=mk)
     assert [u["ticker"] for u in new["kalshi"]] == ["R40"] and new["kalshi"][0]["stat"] == "player_rush_yds"
@@ -264,3 +265,13 @@ def test_polymarket_markets_translate_to_kalshi_shape():
     assert kalshi.parse_game_contract(c["KXNFLTOTAL-PM3"])["threshold"] == 47.5
     assert kalshi.parse_contract(c["PM-5"]) == {"stat": "player_reception_yds", "threshold": 76.0}
     assert kalshi.parse_contract(c["PM-6"])["stat"] == "player_anytime_td"
+
+
+def test_schedule_keeps_only_the_current_nfl_week():
+    from src import schedule
+    now = datetime(2026, 10, 7, 12, tzinfo=timezone.utc)                        # Wednesday
+    g = {"tnf": {"t": "2026-10-09T00:15Z"}, "sun": {"t": "2026-10-11T17:00Z"}, "mnf": {"t": "2026-10-13T00:15Z"},
+         "next_tnf": {"t": "2026-10-16T00:15:00Z"}, "next_sun": {"t": "2026-10-18T17:00Z"}}
+    assert set(schedule.this_week(g, now)) == {"tnf", "sun", "mnf"}
+    # Tuesday after Monday night: next week becomes the current week
+    assert set(schedule.this_week(g, datetime(2026, 10, 13, 12, tzinfo=timezone.utc))) == {"next_tnf", "next_sun"}

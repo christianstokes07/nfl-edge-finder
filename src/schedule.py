@@ -35,6 +35,27 @@ def from_espn(now, days, session=None):
     return out
 
 
+def week_end(kicks, now):
+    """End of the current NFL week: the first Tuesday 10:00 UTC (after Monday night's game) following the
+    earliest kickoff still to come. Games after it belong to next week's slate."""
+    future = sorted(k for k in kicks if k > now)
+    if not future:
+        return now
+    t = future[0]
+    days = (1 - t.weekday()) % 7 or 7          # weekday 1 = Tuesday
+    end = (t + timedelta(days=days)).replace(hour=10, minute=0, second=0, microsecond=0)
+    return end
+
+
+def this_week(games, now=None):
+    """Only the games of the current NFL week (drops next week's Thursday game, etc.)."""
+    now = now or datetime.now(timezone.utc)
+    kicks = {g: _ts(v["t"]) for g, v in games.items() if v.get("t")}
+    start = now - timedelta(hours=4)             # a game that kicked off 4+ hours ago is over
+    end = week_end(kicks.values(), start)
+    return {g: v for g, v in games.items() if g in kicks and start < kicks[g] < end}
+
+
 def upcoming(api_key=None, now=None, days=9):
     """{game id: {a, h, t}} for the next `days` days. Odds API ids when a key is set (so Thursday's scan
     lines up with them); ESPN otherwise or if that call fails."""
@@ -42,7 +63,7 @@ def upcoming(api_key=None, now=None, days=9):
     if api_key:
         try:
             evs, _ = odds.upcoming_events(api_key, days * 24)
-            return {e["id"]: {"a": e["away_team"], "h": e["home_team"], "t": e["commence_time"]} for e in evs}
+            return this_week({e["id"]: {"a": e["away_team"], "h": e["home_team"], "t": e["commence_time"]} for e in evs}, now)
         except Exception as e:  # noqa: BLE001
             print(f"[schedule] Odds API /events failed ({e}); using ESPN")
-    return from_espn(now, days)
+    return this_week(from_espn(now, days), now)

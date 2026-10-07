@@ -574,6 +574,8 @@ def kalshi_refresh(path=None, markets=None, now=None):
         if _kick(v) and _kick(v) > cutoff and frozenset((teams.abbr(v["a"]), teams.abbr(v["h"]))) not in known:
             keep[gid] = v
             added += 1
+    keep = schedule.this_week(keep, now)        # never next week's games (e.g. its Thursday game)
+    added = sum(1 for g in keep if g in sched and g not in (prev.get("games") or {}))
     print(f"[schedule] {len(keep)} games on the page ({added} new from the schedule, "
           f"{len(prev.get('games') or {}) - (len(keep) - added)} finished games dropped)")
     prev = {**prev, "games": keep,

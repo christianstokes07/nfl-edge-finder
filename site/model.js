@@ -77,7 +77,8 @@
   // Chance that player's stat is >= threshold ("Over X.5" = threshold X+1), from all books. Mirrors
   // src/model.py fair_probability with the Kalshi distance rule (custom lines may sit far from the book line).
   function playerAtLeast(D, player, stat, threshold) {
-    const M = D.model || {}, sig = (M.sigma || {})[stat], dist = M.dist || 0.5, tdVig = M.td_vig;
+    const M = D.model || {}, sig = (M.sigma || {})[stat], dist0 = M.dist || 0.5, tdVig = M.td_vig;
+    const dist = Math.max(dist0, 0.8);   // custom lines may sit far out: priced up to 80% away, flagged "rough"
     const probs = [], pts = [];
     for (const l of bookLines(D, player, stat)) {
       if (stat === TD) {
@@ -96,15 +97,90 @@
         if (near) { probs.push(lognormalAtLeast(threshold, l.point, pOver, sig)); pts.push(l.point); }
       }
     }
-    if (!probs.length) return null;
+    if (!probs.length) return marketAtLeast(D, player, stat, threshold);
     const p = probs.reduce((s, x) => s + x, 0) / probs.length;
-    let unc = 0.04;
+    let unc = 0.04, rough = false;
     if (POISSON.has(stat)) unc = 0.03;
     else if (stat !== TD) {
       const d = Math.min(...pts.map(x => Math.abs(threshold - x) / x));
-      unc = 0.02 + 0.06 * Math.min(1, d / dist);
+      unc = 0.02 + 0.06 * Math.min(1, d / dist0) + (d > dist0 ? 0.04 : 0);
+      rough = d > dist0;
     }
-    return {p, n: probs.length, unc};
+    return {p, n: probs.length, unc, src: "books", rough};
+  }
+
+  // ---- no sportsbook line: Kalshi / Polymarket ladders -----------------------------------------------------
+  // Their contracts are rungs ("60+ rushing yards" at 41c). Each rung says P(stat >= t) = its fair chance (the
+  // sportsbook-based fair when the scan priced it, else the market's mid price). A lognormal is fitted through the
+  // rungs (least squares on the probit scale), which prices any line between and a little beyond them.
+  function marketRows(D, test) {
+    const out = [];
+    for (const [src, rows] of [["Kalshi", D.kalshi || []], ["Polymarket", D.poly || []]])
+      for (const u of rows) if (test(u)) {
+        const f = u.km ? (u.bid + u.ask) / 200 : u.fair;
+        if (f > 0.01 && f < 0.99) out.push({t: u.threshold, p: f, team: u.team, src});
+      }
+    return out;
+  }
+  function marketAtLeast(D, player, stat, threshold) {
+    const k = norm(player);
+    const rungs = marketRows(D, u => u.stat === stat && norm(u.player) === k);
+    if (!rungs.length) return null;
+    const srcs = [...new Set(rungs.map(r => r.src))].join(" + ");
+    if (stat === TD) {
+      const p = rungs.reduce((s, r) => s + r.p, 0) / rungs.length;
+      return {p, n: rungs.length, unc: 0.04, src: srcs};
+    }
+    // average rungs at the same threshold (Kalshi and Polymarket often both list one)
+    const by = new Map();
+    for (const r of rungs) by.set(r.t, (by.get(r.t) || []).concat(r.p));
+    const pts = [...by.entries()].map(([t, ps]) => ({t, p: ps.reduce((a, b) => a + b, 0) / ps.length})).sort((a, b) => a.t - b.t);
+    const exact = pts.find(x => Math.abs(x.t - threshold) < 1e-9);
+    const lo = pts[0].t, hi = pts[pts.length - 1].t;
+    const beyond = threshold < lo ? (lo - threshold) / lo : threshold > hi ? (threshold - hi) / hi : 0;
+    if (beyond > 0.5) return null;                                  // too far outside the ladder
+    const unc = 0.03 + 0.06 * Math.min(1, beyond / 0.25);
+    if (exact) return {p: exact.p, n: pts.length, unc: 0.03, src: srcs};
+    if (POISSON.has(stat)) {                                         // small counts: Poisson from the nearest rung
+      const near = pts.reduce((a, b) => Math.abs(b.t - threshold) < Math.abs(a.t - threshold) ? b : a);
+      return {p: poissonAtLeast(threshold, near.t - 0.5, near.p), n: pts.length, unc, src: srcs};
+    }
+    const sig0 = ((D.model || {}).sigma || {})[stat] || 0.5;
+    // z = (ln(t - 0.5) - mu) / sigma where z = inv(1 - p); fit z = a + b * ln(t - 0.5)
+    const xs = pts.map(x => Math.log(Math.max(x.t - 0.5, 0.5))), zs = pts.map(x => inv(clamp(1 - x.p, 1e-3, 1 - 1e-3)));
+    const ws = pts.map(x => x.p * (1 - x.p));
+    let sigma = sig0, mu;
+    if (pts.length >= 2) {
+      const W = ws.reduce((a, b) => a + b, 0), mx = xs.reduce((s, x, i) => s + ws[i] * x, 0) / W, mz = zs.reduce((s, z, i) => s + ws[i] * z, 0) / W;
+      const sxx = xs.reduce((s, x, i) => s + ws[i] * (x - mx) ** 2, 0), sxz = xs.reduce((s, x, i) => s + ws[i] * (x - mx) * (zs[i] - mz), 0);
+      const b = sxx > 1e-9 ? sxz / sxx : 0;
+      sigma = b > 0 ? clamp(1 / b, sig0 * 0.5, sig0 * 2) : sig0;
+      mu = mx - sigma * mz;
+    } else mu = xs[0] - sigma * zs[0];
+    const p = 1 - cdf((Math.log(Math.max(threshold - 0.5, 0.5)) - mu) / sigma);
+    return {p, n: pts.length, unc, src: srcs};
+  }
+  // games from market ladders: estimate the expected home margin / total from every rung (normal, measured spread)
+  function marketGame(D, gid, kind) {
+    const gm = (D.games || {})[gid]; if (!gm) return null;
+    const sd = D.game_sd || {}, msd = sd.margin || 12.7, tsd = sd.total || 13.0;
+    const stat = kind === "totals" ? "game_total" : kind === "h2h" ? "game_ml" : "game_spread";
+    const rows = marketRows(D, u => u.g === gid && (u.stat === stat || (kind !== "totals" && (u.stat === "game_spread" || u.stat === "game_ml"))));
+    if (!rows.length) return null;
+    let sw = 0, sm = 0;
+    for (const r of rows) {
+      const q = clamp(r.p, 0.02, 0.98), w = q * (1 - q);           // rungs near 50/50 say the most
+      let m;
+      if (kind === "totals") m = r.t + tsd * inv(q);
+      else {
+        const x = r.t == null ? 0 : r.t;                            // moneyline = wins by over 0
+        // P(team margin > x) = q  ->  home margin mean
+        m = r.team === gm.h ? x + msd * inv(q) : -(x + msd * inv(q));
+      }
+      sw += w; sm += w * m;
+    }
+    const mu = sm / sw;
+    return {mu, sd: kind === "totals" ? tsd : msd, n: rows.length, src: [...new Set(rows.map(r => r.src))].join(" + ")};
   }
 
   // Game lines: kind h2h -> home wins; spreads -> home covers `line` (home spread); totals -> over `line`.
@@ -121,8 +197,13 @@
         else { probs.push(normalOver(line, p.pt, q, sd.total || 13.0)); exact = exact && p.pt === line; }
       }
     }
-    if (!probs.length) return null;
-    return {p: probs.reduce((s, x) => s + x, 0) / probs.length, n: probs.length, unc: kind === "h2h" || exact ? 0.02 : 0.03};
+    if (!probs.length) {
+      const m = marketGame(D, gid, kind); if (!m) return null;
+      const over = x => 1 - cdf((x - m.mu) / m.sd);
+      const p = kind === "h2h" ? over(0) : kind === "spreads" ? over(-line) : over(line);
+      return {p, n: m.n, unc: 0.04, src: m.src};
+    }
+    return {p: probs.reduce((s, x) => s + x, 0) / probs.length, n: probs.length, unc: kind === "h2h" || exact ? 0.02 : 0.03, src: "books"};
   }
 
   // One pick at any line: {kind:"player", player, stat, side:"Over"|"Under"|"Yes"|"No", line}
@@ -131,20 +212,30 @@
   // loses at 2 or fewer and PUSHES (stake back) at exactly 3, so win, push and loss are priced separately;
   // a .5 line can't push.
   function price(D, pick) {
+    const r = price0(D, pick);
+    if (!r) return null;
+    // never claim certainty: keep hit chances between 1% and 99%
+    r.hit = clamp(r.hit, 0.01, 0.99);
+    if (r.push) r.push = clamp(r.push, 0, 0.99 - r.hit);
+    return r;
+  }
+  function price0(D, pick) {
     const whole = pick.line != null && Number.isInteger(pick.line);
     if (pick.kind === "game") {
       const gm = (D.games || {})[pick.g]; if (!gm) return null;
+      if (pick.stat === "game_spread" && Math.abs(pick.line) > 30) return null;       // no sane spread is this big
+      if (pick.stat === "game_total" && (pick.line < 20 || pick.line > 80)) return null;
       if (pick.stat === "game_total") {
         const L = pick.line;
         const o = gameChance(D, pick.g, "totals", whole ? L + 0.5 : L), u = whole ? gameChance(D, pick.g, "totals", L - 0.5) : o;
         if (!o || !u) return null;
         const over = o.p, under = 1 - u.p, push = whole ? Math.max(0, 1 - over - under) : 0;
-        return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: o.unc};
+        return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: o.unc, src: o.src};
       }
       const home = pick.team === gm.h;
       if (pick.stat === "game_ml") {
         const r = gameChance(D, pick.g, "h2h", null); if (!r) return null;
-        return {hit: home ? r.p : 1 - r.p, push: 0, n: r.n, unc: r.unc};
+        return {hit: home ? r.p : 1 - r.p, push: 0, n: r.n, unc: r.unc, src: r.src};
       }
       // spread from the picked team's side: team +3 = home spread +3 (home) or -3 (away). Home covers spread H when
       // margin + H > 0; with a whole number H it wins at margin >= 1 - H, pushes at margin = -H.
@@ -152,24 +243,24 @@
       const a = gameChance(D, pick.g, "spreads", whole ? H - 0.5 : H), b = whole ? gameChance(D, pick.g, "spreads", H + 0.5) : a;
       if (!a || !b) return null;
       const homeWin = a.p, homeLose = 1 - b.p, push = whole ? Math.max(0, 1 - homeWin - homeLose) : 0;
-      return {hit: home ? homeWin : homeLose, push, n: a.n, unc: a.unc};
+      return {hit: home ? homeWin : homeLose, push, n: a.n, unc: a.unc, src: a.src};
     }
     if (pick.stat === TD) {
       const r = playerAtLeast(D, pick.player, TD, 1); if (!r) return null;
-      return {hit: pick.side === "No" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc};
+      return {hit: pick.side === "No" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc, src: r.src};
     }
     const L = pick.line;
     if (whole) {
       const o = playerAtLeast(D, pick.player, pick.stat, L + 1), atL = playerAtLeast(D, pick.player, pick.stat, L);
       if (!o || !atL) return null;
       const over = o.p, under = 1 - atL.p, push = Math.max(0, atL.p - o.p);
-      return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: Math.max(o.unc, atL.unc)};
+      return {hit: pick.side === "Under" ? under : over, push, n: o.n, unc: Math.max(o.unc, atL.unc), src: o.src, rough: o.rough || atL.rough};
     }
     const r = playerAtLeast(D, pick.player, pick.stat, Math.floor(L) + 1); if (!r) return null;
-    return {hit: pick.side === "Under" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc};
+    return {hit: pick.side === "Under" ? 1 - r.p : r.p, push: 0, n: r.n, unc: r.unc, src: r.src, rough: r.rough};
   }
 
-  const api = {yesOnlyFair, cdf, inv, prob, devig, lognormalAtLeast, poissonAtLeast, normalOver, playerAtLeast, gameChance, price, bookLines, norm};
+  const api = {marketAtLeast, marketGame, yesOnlyFair, cdf, inv, prob, devig, lognormalAtLeast, poissonAtLeast, normalOver, playerAtLeast, gameChance, price, bookLines, norm};
   if (typeof module === "object" && module.exports) module.exports = api;
   else root.Model = api;
 })(this);

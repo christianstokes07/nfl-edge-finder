@@ -22,6 +22,14 @@ chance doesn't make a bet profitable: the price still matters, and the page show
   `site/model.js` mirrors the Python math, and a test checks the two agree to 0.001 percentage points. Lines more than
   about 50% from the books' line (2 units for catches and attempts) aren't priced: that far out the model isn't reliable,
   and the page says so. Type your book's odds to see whether that line is good value.
+- **Changing a line always gets an answer.** Custom picks, "Try another line" and the slip's − / + all price the new line.
+  With sportsbook lines, books' prices are moved to your line (up to 80% away; past 50% it's flagged as a rough
+  estimate). With no sportsbook line yet (Tuesday to Thursday's scan, or Kalshi/Polymarket-only categories), the line
+  is priced from the Kalshi and Polymarket price ladders: a curve is fitted through their rungs (40+, 50+, 60+...) for
+  props, and an expected margin/total is fitted from their spread and total ladders for games. The source is shown
+  ("from Kalshi's price ladder (3 prices)"). When a line can't be priced, the page says why and keeps your previous
+  line. Typed lines accept "−3.5", "+7" and spaces; spreads have a ± button (the iPhone number pad has no minus).
+  Player lines stay at 0.5 or above, spreads within ±30, totals between 20 and 80, and hit chances between 1% and 99%.
 - **Whole-number lines and pushes.** A .5 line can't tie, but a whole number can: Over 4 catches wins at 5+, *pushes*
   (stake back) at exactly 4, and loses at 3 or fewer. So Over 4 wins exactly as often as Over 4.5, and Under 4 exactly as
   often as Under 3.5; the difference is the push. For whole-number lines (props, spreads, totals) the page prices win, push

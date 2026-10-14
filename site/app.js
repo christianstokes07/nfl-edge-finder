@@ -8,7 +8,7 @@ const store = {get:k => { try { return localStorage.getItem(k); } catch(e) { ret
 const jget = (k, d) => { try { return JSON.parse(store.get(k) || "null") ?? d; } catch(e) { return d; } };
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const TD = "player_anytime_td";
-const BUILD = "2026-10-06 · Polymarket, Underdog, multi-platform";
+const BUILD = "2026-10-14 · line editing fixed";
 const STAT = {
   player_rush_yds:      {t:"Rushing yards",   u:"rushing yards",   d:"Yards a player gains running the ball"},
   player_reception_yds: {t:"Receiving yards", u:"receiving yards", d:"Yards a player gains on catches"},
@@ -439,6 +439,22 @@ function edLabel(ed){
   if (ed.stat === TD) return ed.side === "Yes" ? "Scores a TD" : "No TD";
   return ed.side + " " + fmtPt(ed.line) + " " + s.u;
 }
+// a typed line: "45.5", "-3.5", "−3.5" (iPhone minus), "+7", " 3 " -> number, or null if it isn't a line
+function parseLine(str){
+  const t = String(str == null ? "" : str).trim().replace(/[\u2212\u2013\u2014]/g, "-").replace(/\s+/g, "").replace(/^\+/, "");
+  return /^-?(\d+\.?\d*|\.\d+)$/.test(t) ? Number(t) : null;
+}
+// keep a line sensible: player stats can't go below 0.5; snap to halves
+function cleanLine(ed, v){
+  v = Math.round(v * 2) / 2;
+  if (ed.kind === "player" || ed.stat === "game_total") v = Math.max(0.5, v);
+  return v;
+}
+function srcText(r){
+  if (!r) return "";
+  if (r.src && r.src !== "books") return "from " + r.src + "'s price ladder (" + r.n + (r.n === 1 ? " price" : " prices") + ")";
+  return "from " + r.n + (r.n === 1 ? " book" : " books") + (r.rough ? " · far from the books' line: rough estimate" : "");
+}
 function lineStep(ed){
   if (ed.kind === "game") return 0.5;
   return ["player_rush_yds", "player_reception_yds", "player_pass_yds", "player_rush_reception_yds"].includes(ed.stat) ? 5 : 1;
@@ -849,7 +865,8 @@ function repriceLeg(l){
   Object.assign(l, {hit:r.hit, push:r.push || 0, unc:r.unc, n:r.n, custom:true, plat:"custom", line:edLabel(l.ed),
     key:"c|" + JSON.stringify(l.ed), prop:"c|" + (l.ed.player || l.ed.g) + "|" + l.ed.stat,
     dec:l.myOdds ? P.parseOdds(l.myOdds) : null,
-    price:l.myOdds ? "your odds " + l.myOdds : "type your book's odds to check value"});
+    src:srcText(r), rough:!!r.rough,
+    price:(l.myOdds ? "your odds " + l.myOdds : "type your book's odds to check value") + " · " + srcText(r)});
   return true;
 }
 function refreshSlip(){
@@ -902,6 +919,7 @@ function renderSlip(el){
         (editable ? '<div class="leg-ed"><button type="button" data-step="-1" data-i="' + i + '" aria-label="Lower the line">−</button>' +
           '<input class="l-line" data-i="' + i + '" inputmode="decimal" value="' + esc(fmtPt(l.ed.line)) + '" aria-label="Line for ' + esc(l.player) + '">' +
           '<button type="button" data-step="1" data-i="' + i + '" aria-label="Raise the line">+</button>' +
+          (l.ed.stat === "game_spread" ? '<button type="button" data-flip data-i="' + i + '" aria-label="Switch the sign of the spread">±</button>' : "") +
           '<input class="l-odds" data-i="' + i + '" placeholder="your odds" value="' + esc(l.myOdds || "") + '" aria-label="Your odds for this leg"></div>' : "") +
         '</div><div class="l-p">' + pct(l.hit) + '%</div><button class="rm" type="button" data-rm="' + i + '" aria-label="Remove ' + esc(l.player) + '">✕</button></li>';
     }).join("") + "</ul>";
@@ -955,8 +973,9 @@ function slipClick(e){
   if (t.dataset.rm != null){ slip.splice(Number(t.dataset.rm), 1); saveSlip(); rerenderSlip(); render(); }
   else if (t.dataset.step){
     const l = slip[Number(t.dataset.i)]; if (!l || !l.ed) return;
-    l.ed.line = Math.round((l.ed.line + Number(t.dataset.step) * lineStep(l.ed)) * 2) / 2;
-    if (!repriceLeg(l)) toast("No sportsbook prices to work from for that line.");
+    const old = l.ed.line;
+    l.ed.line = cleanLine(l.ed, l.ed.line + Number(t.dataset.step) * lineStep(l.ed));
+    if (!repriceLeg(l)){ const msg = cantPrice(l.ed); l.ed.line = old; toast(msg); }
     saveSlip(); rerenderSlip(); renderSlipBar(); render();
   }
   else if (t.dataset.legs){ pref.legsN = Number(t.dataset.legs); store.set("ps_legsN", pref.legsN); rerenderSlip(); }
@@ -967,6 +986,12 @@ function slipClick(e){
     slip = picks.map(snapshot); saveSlip(); rerenderSlip(); render();
     const tgt = slipTarget(); if (tgt) tgt.scrollTop = 0;
     toast(picks.length < pref.legsN ? "Only found " + picks.length + " legs with different players." : "Built a " + picks.length + "-leg parlay.");
+  }
+  else if (t.dataset.flip != null){   // ± for spreads (the iPhone number pad has no minus key)
+    const l = slip[Number(t.dataset.i)]; if (!l || !l.ed) return;
+    const old = l.ed.line; l.ed.line = -l.ed.line;
+    if (!repriceLeg(l)){ const msg = cantPrice(l.ed); l.ed.line = old; toast(msg); }
+    saveSlip(); rerenderSlip(); renderSlipBar(); render();
   }
   else if (t.dataset.clear != null){ slip = []; saveSlip(); rerenderSlip(); render(); }
   else if (t.dataset.customNew != null){ openSheet("custom", t); }
@@ -980,8 +1005,13 @@ function slipInput(e){
 function slipChange(e){
   const t = e.target;
   if (t.classList.contains("l-line")){
-    const l = slip[Number(t.dataset.i)], v = Number(String(t.value).replace(/[^\d.\-]/g, ""));
-    if (l && isFinite(v)){ l.ed.line = v; if (!repriceLeg(l)) toast("No sportsbook prices to work from for that line."); saveSlip(); rerenderSlip(); renderSlipBar(); render(); }
+    const l = slip[Number(t.dataset.i)], v = parseLine(t.value);
+    if (!l) return;
+    if (v == null){ toast("Type a line like 45.5 or -3.5."); rerenderSlip(); return; }
+    const old = l.ed.line;
+    l.ed.line = cleanLine(l.ed, v);
+    if (!repriceLeg(l)){ const msg = cantPrice(l.ed); l.ed.line = old; toast(msg); }
+    saveSlip(); rerenderSlip(); renderSlipBar(); render();
   }
   if (t.classList.contains("l-odds")) rerenderSlip();
 }
@@ -994,11 +1024,15 @@ $("slipBtn").onclick = () => openSheet("slip", $("slipBtn"));
 
 /* ---------- custom pick ---------- */
 let cust = null;
+// market rows (Kalshi + Polymarket) for one player / game
+const mktRows = () => [...(D.kalshi || []), ...(D.poly || [])];
 function customNames(){
   const players = new Map();
   for (const p of D.props || []) if (p.m === p.stat && !players.has(p.player)) players.set(p.player, p.g);
+  for (const u of mktRows()) if (!(STAT[u.stat] || {}).game && !players.has(u.player)) players.set(u.player, u.g);   // no sportsbook line yet
   const out = [...players.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([n, g]) => ({label:n, kind:"player", player:n, g}));
-  for (const g of Object.keys(D.games || {})) if ((D.lines || []).some(p => p.g === g)) out.push({label:"Game: " + gameName(g), kind:"game", g});
+  for (const g of Object.keys(D.games || {}))
+    if ((D.lines || []).some(p => p.g === g) || mktRows().some(u => u.g === g && (STAT[u.stat] || {}).game)) out.push({label:"Game: " + gameName(g), kind:"game", g});
   return out;
 }
 function consensusLine(kind, who, stat){
@@ -1006,7 +1040,15 @@ function consensusLine(kind, who, stat){
   const ps = kind === "player" ? (D.props || []).filter(p => p.stat === stat && p.m === stat && M.norm(p.player) === M.norm(who))
                                : (D.lines || []).filter(p => p.g === who && p.stat === stat);
   ps.sort((a, b) => Object.keys(b.b).length - Object.keys(a.b).length);
-  return ps.length ? ps[0].pt : null;
+  if (ps.length) return ps[0].pt;
+  // no sportsbook line: the market rung closest to 50/50 (for spreads, from the home team's side)
+  const gm = kind === "game" ? game(who) || {} : {};
+  const rows = mktRows().filter(u => u.stat === stat && (kind === "player" ? M.norm(u.player) === M.norm(who) : u.g === who) && u.threshold != null);
+  if (!rows.length) return null;
+  const f = u => u.km ? (u.bid + u.ask) / 200 : u.fair;
+  const best = rows.reduce((a, b) => Math.abs(f(b) - 0.5) < Math.abs(f(a) - 0.5) ? b : a);
+  if (stat === "game_spread") return best.team === gm.h ? -best.threshold : best.threshold;   // "wins by over X" = -X spread
+  return kind === "player" ? best.threshold - 0.5 : best.threshold;
 }
 function renderCustom(pre){
   const names = customNames();
@@ -1016,7 +1058,7 @@ function renderCustom(pre){
     '<label>Player or game<input id="cName" list="cNames" autocomplete="off" placeholder="Start typing a name" value="' + esc(label) + '"></label>' +
     '<datalist id="cNames">' + names.map(n => '<option value="' + esc(n.label) + '">').join("") + '</datalist>' +
     '<div class="two"><label>Prop<select id="cStat"></select></label><label>Side<select id="cSide"></select></label></div>' +
-    '<div class="two"><label>Line<input id="cLine" inputmode="decimal"></label><label><span>Your odds <span class="hint">· optional</span></span><input id="cOdds" placeholder="e.g. -110" inputmode="text"></label></div>' +
+    '<div class="two"><label>Line<span class="lrow"><input id="cLine" inputmode="decimal"><button type="button" id="cFlip" hidden aria-label="Switch the sign of the spread">±</button></span></label><label><span>Your odds <span class="hint">· optional</span></span><input id="cOdds" placeholder="e.g. -110" inputmode="text"></label></div>' +
     '<div class="out" id="cOut" aria-live="polite"></div>' +
     '<button class="primary" type="button" id="cAdd">Add to slip</button>' +
     '<p class="hint">The hit chance comes from every book\'s price for this player, moved to your line with the same model the list uses. It only works where the last scan has sportsbook lines.</p></div>';
@@ -1026,6 +1068,7 @@ function renderCustom(pre){
   $("cName").addEventListener("input", () => { if (pickName(names)) fillCustom(true); });
   $("cStat").addEventListener("change", () => { cust.stat = $("cStat").value; fillCustom(true); });
   for (const id of ["cSide", "cLine", "cOdds"]) $(id).addEventListener("input", sync);
+  $("cFlip").addEventListener("click", () => { const v = parseLine($("cLine").value); if (v != null){ $("cLine").value = fmtPt(-v); sync(); } });
 }
 function pickName(names){
   const n = names.find(x => x.label === $("cName").value);
@@ -1039,9 +1082,11 @@ function pickName(names){
 function fillCustom(resetLine){
   const st = $("cStat"), sd = $("cSide");
   let stats = [];
-  if (cust.kind === "game") stats = ["game_ml", "game_spread", "game_total"].filter(k => (D.lines || []).some(p => p.g === cust.g && p.stat === k));
+  if (cust.kind === "game") stats = ["game_ml", "game_spread", "game_total"].filter(k => (D.lines || []).some(p => p.g === cust.g && p.stat === k) ||
+    mktRows().some(u => u.g === cust.g && (u.stat === k || (k !== "game_total" && (u.stat === "game_ml" || u.stat === "game_spread")))));
   else if (cust.player){
-    stats = [...new Set((D.props || []).filter(p => p.m === p.stat && M.norm(p.player) === M.norm(cust.player)).map(p => p.stat))];
+    stats = [...new Set([...(D.props || []).filter(p => p.m === p.stat && M.norm(p.player) === M.norm(cust.player)).map(p => p.stat),
+                         ...mktRows().filter(u => !(STAT[u.stat] || {}).game && M.norm(u.player) === M.norm(cust.player)).map(u => u.stat)])].filter(k => STAT[k]);
     // main yardage prop first (passing yards for a QB), anytime TD last
     const ap = A ? AN.findPlayer(A, cust.player, []) : null, order = Object.keys(STAT);
     if (ap && ap.pos === "QB") order.unshift("player_pass_yds");
@@ -1057,6 +1102,7 @@ function fillCustom(resetLine){
   sd.innerHTML = sides.map(s => '<option' + (s === cust.side ? " selected" : "") + ' value="' + esc(s) + '">' + esc(cust.stat.startsWith("game_m") || cust.stat === "game_spread" ? teamShort(s) : s === "Yes" ? "Scores a TD" : s === "No" ? "No TD" : s) + '</option>').join("");
   const noLine = cust.stat === TD || cust.stat === "game_ml" || !cust.stat;
   $("cLine").disabled = noLine;
+  $("cFlip").hidden = cust.stat !== "game_spread";
   if (resetLine || cust.line == null){
     let l = noLine ? null : consensusLine(cust.kind, cust.kind === "game" ? cust.g : cust.player, cust.stat);
     if (l != null && cust.stat === "game_spread" && cust.side === gm.a) l = -l;   // stored as the home team's spread
@@ -1065,14 +1111,18 @@ function fillCustom(resetLine){
   $("cLine").value = cust.line == null ? "" : fmtPt(cust.line);
   outCustom();
 }
+let custBad = "";
 function readCustom(){
   const gm = game(cust.g) || {}, prevSide = cust.side;
   cust.side = $("cSide").value;
   if (cust.stat === "game_spread" && prevSide && prevSide !== cust.side && cust.line != null && $("cLine").value === fmtPt(cust.line)){
     cust.line = -cust.line; $("cLine").value = fmtPt(cust.line);   // switching team flips the spread
   }
-  const v = Number(String($("cLine").value).replace(/[^\d.\-]/g, ""));
-  cust.line = $("cLine").disabled || $("cLine").value === "" || !isFinite(v) ? (cust.stat === TD || cust.stat === "game_ml" ? null : cust.line) : v;
+  const raw = $("cLine").value, v = parseLine(raw);
+  custBad = "";
+  if (!$("cLine").disabled && raw.trim() && v == null) custBad = "Type a line like 45.5 or -3.5.";
+  else if (!$("cLine").disabled && v != null && cust.kind === "player" && v <= 0) custBad = "Player lines are above 0 (e.g. 0.5, 24.5).";
+  cust.line = $("cLine").disabled || v == null || custBad ? (cust.stat === TD || cust.stat === "game_ml" ? null : cust.line) : v;
   cust.odds = $("cOdds").value.trim();
   cust.team = cust.kind === "game" && cust.stat !== "game_total" ? cust.side : null;
 }
@@ -1083,18 +1133,13 @@ function custEd(){
 function outCustom(){
   const out = $("cOut"); if (!out || !cust) return;
   if (!cust.stat || (cust.stat !== TD && cust.stat !== "game_ml" && cust.line == null)){ out.innerHTML = '<div class="sub">Pick a player or game, a prop and a line.</div>'; return; }
+  if (custBad){ out.innerHTML = '<div class="sub">' + esc(custBad) + '</div>'; return; }
   const ed = custEd(), r = M.price(D, ed);
-  if (!r){
-    const base = consensusLine(cust.kind, cust.kind === "game" ? cust.g : cust.player, cust.stat);
-    out.innerHTML = '<div class="sub">' + (base != null && cust.kind === "player"
-      ? "Can't price " + fmtPt(ed.line) + ": the books' line is " + fmtPt(base) + ", and lines more than about 50% away from it (or 2 away for catches and attempts) aren't priced. That far out the math stops being reliable."
-      : "No sportsbook prices for this in the last scan, so there's nothing to price it from.") + '</div>';
-    return;
-  }
+  if (!r){ out.innerHTML = '<div class="sub">' + esc(cantPrice(ed)) + '</div>'; return; }
   // fair odds at a book (which refunds pushes) = chance of winning among the bets that don't push
   const fair = P.probToAmerican(r.hit / Math.max(1e-9, 1 - (r.push || 0))), dec = P.parseOdds(cust.odds || "");
   let h = '<div class="big">' + pct(r.hit) + '%</div><div class="sub"><b>' + esc(edLabel(ed)) + '</b> · ' + inTen(r.hit) + ' · fair odds ' + P.fmtAmerican(fair) +
-    ' · from ' + r.n + (r.n === 1 ? " book" : " books") + '</div>' +
+    ' · ' + esc(srcText(r)) + '</div>' + (r.rough ? '<div class="sub" style="color:var(--warn)">⚠ This line is far from where the books set it, so treat the % as a rough estimate.</div>' : "") +
     (r.push > 0.005 ? '<div class="sub">Whole-number line: ' + pct(r.push) + '% chance it lands exactly on ' + fmtPt(ed.line) + ' (a push: stake back). ' +
       'Wins ' + pct(r.hit) + '%, loses ' + pct(Math.max(0, 1 - r.hit - r.push)) + '%.</div>' : "");
   if (dec){
@@ -1115,6 +1160,22 @@ function outCustom(){
   }
   out.innerHTML = h;
 }
+// why a line can't be priced, in plain words
+function cantPrice(ed){
+  const who = ed.kind === "game" ? ed.g : ed.player;
+  const books = ed.kind === "player" ? (D.props || []).some(p => p.stat === ed.stat && M.norm(p.player) === M.norm(ed.player))
+                                     : (D.lines || []).some(p => p.g === ed.g);
+  const rows = mktRows().filter(u => ed.kind === "player" ? u.stat === ed.stat && M.norm(u.player) === M.norm(ed.player) : u.g === ed.g);
+  if (!books && !rows.length)
+    return "Nothing to price this from yet: no sportsbook, Kalshi or Polymarket line for it. Sportsbook lines arrive with Thursday's scan; markets add more during the week.";
+  const base = consensusLine(ed.kind, who, ed.stat);
+  if (ed.kind === "game" && ed.stat === "game_spread" && Math.abs(ed.line) > 30) return "Spreads are priced up to 30 points either way.";
+  if (ed.kind === "game" && ed.stat === "game_total" && (ed.line < 20 || ed.line > 80)) return "Game totals are priced between 20 and 80 points.";
+  if (books) return "Can't price " + fmtPt(ed.line) + ": it's too far from the books' line (" + fmtPt(base) + "). Lines up to about 80% away are priced; beyond that the math isn't reliable.";
+  const ts = rows.map(u => u.threshold).filter(x => x != null).sort((a, b) => a - b);
+  return "Can't price " + fmtPt(ed.line) + ": with no sportsbook line yet it's priced from the market's ladder, which runs " +
+    (ts.length ? fmtPt(ts[0] - (ed.kind === "player" ? 0.5 : 0)) + " to " + fmtPt(ts[ts.length - 1] - (ed.kind === "player" ? 0.5 : 0)) : "only at one line") + ". Pick a line closer to that range.";
+}
 function customClick(e){
   const t = e.target.closest("button"); if (!t) return;
   if (t.dataset.scope){ rerenderChart(t); return; }
@@ -1123,7 +1184,7 @@ function customClick(e){
   const ed = custEd(), gm = game(cust.g) || {};
   const leg = {player:ed.player || (ed.team || "Game total"), g:cust.g, game:gameName(cust.g), stat:ed.stat, side:ed.side, pt:ed.line,
                ed, myOdds:cust.odds || "", kick:gm.t, a:gm.a, h:gm.h};
-  if (!repriceLeg(leg)){ toast("No sportsbook prices to work from for that."); return; }
+  if (!repriceLeg(leg)){ toast(cantPrice(ed)); return; }
   slip = slip.filter(l => l.prop !== leg.prop); slip.push(leg); saveSlip();
   closeSheet(); render(); toast("Added " + edLabel(ed) + " (" + pct(leg.hit) + "%).");
 }
@@ -1240,7 +1301,7 @@ function renderPlayer(){
       const q = livePrice("poly", u), fair = u.km ? (q.bid + q.ask) / 200 : u.fair;
       return '<span class="lc">' + (st === TD ? "TD" : "Over " + fmtPt(u.threshold - 0.5)) + ' <b>' + Math.round(q.ask) + '¢</b> · ' + pct(fair) + '%' + (q.ask - q.bid > 8 ? " (thin)" : "") + '</span>';
     }).join("") + '</div>';
-    if (main && main.pt != null) h += '<p style="margin:6px 0 0"><button type="button" class="mini" data-ppcustom="' + esc(st) + '">Price a different line…</button></p>';
+    if (st !== TD) h += '<p style="margin:6px 0 0"><button type="button" class="mini" data-ppcustom="' + esc(st) + '">Price a different line…</button></p>';
     h += '</section>';
   }
   $("shBody").innerHTML = '<div class="pp">' + h + '</div>';
@@ -1260,7 +1321,7 @@ function playerClick(e){
     const ed = {kind:"player", player:curPlayer.name, g:x.g, stat:x.stat, side:x.side, line:x.stat === TD ? null : x.pt};
     const leg = {player:curPlayer.name, g:x.g, game:gameName(x.g), stat:x.stat, side:x.side, pt:ed.line, ed,
                  myOdds:x.a != null ? P.fmtAmerican(x.a) : "", kick:gm.t, a:gm.a, h:gm.h};
-    if (!repriceLeg(leg)){ toast("Couldn't price that."); return; }
+    if (!repriceLeg(leg)){ toast(cantPrice(ed)); return; }
     slip = slip.filter(l => l.prop !== leg.prop); slip.push(leg); saveSlip(); render();
     toast("Added " + curPlayer.name + ": " + edLabel(ed) + " (" + pct(leg.hit) + "%).");
   }

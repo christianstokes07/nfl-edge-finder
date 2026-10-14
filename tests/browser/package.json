@@ -1,0 +1,5 @@
+{
+  "private": true,
+  "description": "Optional browser tests for the page (see lib.js)",
+  "devDependencies": {"playwright-core": "^1"}
+}

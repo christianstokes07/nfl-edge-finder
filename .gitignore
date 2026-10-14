@@ -4,3 +4,5 @@ __pycache__/
 site/demo-data.json
 site/demo-analytics.json
 .cache/
+tests/browser/node_modules/
+tests/browser/package-lock.json

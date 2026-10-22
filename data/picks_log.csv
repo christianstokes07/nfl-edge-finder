@@ -5485,3 +5485,302 @@ ts_utc,source,game,player,stat,line,side,price,hit_chance,value,books,where,anal
 2026-10-18T18:38:00+00:00,game,Washington Commanders @ San Francisco 49ers,,game_ml,,San Francisco 49ers,-420,0.778,,8,fanduel,n/a,
 2026-10-18T18:38:00+00:00,game,Washington Commanders @ San Francisco 49ers,,game_spread,7.5,Washington Commanders,-110,0.504,,8,draftkings,n/a,
 2026-10-18T18:38:00+00:00,game,Washington Commanders @ San Francisco 49ers,,game_total,51.5,Over,-109,0.508,,8,ballybet,n/a,
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_receptions,1.5,NO,70,0.984,0.269,5,KXNFLREC-26OCT22NECHI-NETHENDERSON32-2,neutral,1.2
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Rhamondre Stevenson,player_receptions,1.5,YES,73,0.876,0.132,8,KXNFLREC-26OCT22NECHI-NERSTEVENSON38-2,agree,2.3
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,DeMario Douglas,player_receptions,1.5,YES,83,0.966,0.126,6,KXNFLREC-26OCT22NECHI-NEDDOUGLAS3-2,agree,3.1
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Kalif Raymond,player_receptions,1.5,YES,73,0.870,0.126,8,KXNFLREC-26OCT22NECHI-CHIKRAYMOND14-2,agree,3.1
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Hunter Henry,player_receptions,1.5,YES,83,0.959,0.119,6,KXNFLREC-26OCT22NECHI-NEHHENRY85-2,agree,3.5
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Rome Odunze,player_receptions,1.5,YES,83,0.955,0.115,6,KXNFLREC-26OCT22NECHI-CHIRODUNZE15-2,agree,3.7
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,D'Andre Swift,player_receptions,1.5,YES,77,0.896,0.113,6,KXNFLREC-26OCT22NECHI-CHIDSWIFT4-2,agree,3.0
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Mike Gesicki,player_receptions,1.5,YES,75,0.874,0.111,8,KXNFLREC-26OCT25CINBAL-CINMGESICKI88-2,agree,2.3
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Dohnte Meyers,player_receptions,2.5,NO,73,0.852,0.108,5,KXNFLREC-26OCT25CINBAL-CINDMEYERS81-3,neutral,2.7
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Efton Chism III,player_receptions,2.5,NO,75,0.870,0.107,8,KXNFLREC-26OCT22NECHI-NEECHISM86-3,agree,1.8
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Darnell Washington,player_receptions,1.5,YES,74,0.860,0.106,7,KXNFLREC-26OCT25PITNO-PITDWASHINGTON80-2,agree,2.4
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Noah Fant,player_receptions,2.5,NO,75,0.868,0.105,7,KXNFLREC-26OCT25PITNO-NONFANT87-3,agree,1.8
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_receptions,1.5,YES,84,0.953,0.104,6,KXNFLREC-26OCT25PITNO-PITJWARREN30-2,agree,3.2
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Caleb Williams,player_rush_yds,9.5,YES,74,0.858,0.104,7,KXNFLRSHYDS-26OCT22NECHI-CHICWILLIAMS18-10,agree,20.3
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Samaje Perine,player_receptions,2.5,NO,72,0.837,0.103,6,KXNFLREC-26OCT25CINBAL-CINSPERINE34-3,agree,1.1
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Eli Raridon,player_receptions,2.5,NO,78,0.892,0.100,6,KXNFLREC-26OCT22NECHI-NEERARIDON82-3,agree,2.0
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Corey Kiner,player_rush_yds,9.5,YES,63,0.745,0.099,9,KXNFLRSHYDS-26OCT22NECHI-NECKINER9-10,agree,27.8
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_receptions,2.5,NO,90,0.999,0.093,5,KXNFLREC-26OCT22NECHI-NETHENDERSON32-3,agree,1.2
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Brock Purdy,player_rush_yds,9.5,YES,76,0.865,0.093,9,KXNFLRSHYDS-26OCT25SFATL-SFBPURDY13-10,agree,18.3
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Efton Chism III,player_receptions,3.5,NO,87,0.970,0.092,8,KXNFLREC-26OCT22NECHI-NEECHISM86-4,agree,1.8
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Pat Freiermuth,player_receptions,1.5,YES,85,0.947,0.088,6,KXNFLREC-26OCT25PITNO-PITPFREIERMUTH88-2,agree,2.8
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Luther Burden III,player_receptions,2.5,YES,83,0.927,0.087,6,KXNFLREC-26OCT22NECHI-CHILBURDEN10-3,agree,4.9
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Kyle Pitts,player_receptions,1.5,YES,87,0.965,0.087,6,KXNFLREC-26OCT25SFATL-ATLKPITTS8-2,agree,3.5
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Ja'Marr Chase,player_reception_yds,119.5,YES,20,0.296,0.085,6,KXNFLRECYDS-26OCT25CINBAL-CINJCHASE1-120,disagree,64.6
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Tyler Shough,player_rush_yds,9.5,YES,65,0.749,0.083,7,KXNFLRSHYDS-26OCT25PITNO-NOTSHOUGH6-10,agree,16.1
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Jahan Dotson,player_reception_yds,14.5,YES,74,0.833,0.079,7,KXNFLRECYDS-26OCT25SFATL-ATLJDOTSON4-15,agree,34.3
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Kalif Raymond,player_reception_yds,14.5,YES,69,0.782,0.077,9,KXNFLRECYDS-26OCT22NECHI-CHIKRAYMOND14-15,agree,27.1
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Roschon Johnson,player_rush_yds,14.5,YES,74,0.829,0.076,8,KXNFLRSHYDS-26OCT22NECHI-CHIRJOHNSON23-15,agree,20.9
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_rush_yds,14.5,YES,70,0.789,0.075,9,KXNFLRSHYDS-26OCT22NECHI-NETHENDERSON32-15,agree,39.5
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Roschon Johnson,player_receptions,2.5,NO,83,0.914,0.074,5,KXNFLREC-26OCT22NECHI-CHIRJOHNSON23-3,neutral,2.7
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Colston Loveland,player_receptions,1.5,YES,91,0.984,0.068,6,KXNFLREC-26OCT22NECHI-CHICLOVELAND84-2,agree,3.7
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,DeMario Douglas,player_receptions,2.5,YES,67,0.752,0.067,6,KXNFLREC-26OCT22NECHI-NEDDOUGLAS3-3,agree,3.1
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Kyle Williams,player_reception_yds,14.5,YES,58,0.664,0.067,8,KXNFLRECYDS-26OCT22NECHI-NEKWILLIAMS18-15,agree,25.3
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Kyle Williams,player_receptions,2.5,NO,84,0.916,0.067,6,KXNFLREC-26OCT22NECHI-NEKWILLIAMS18-3,agree,1.0
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Jahan Dotson,player_receptions,1.5,YES,65,0.732,0.066,5,KXNFLREC-26OCT25SFATL-ATLJDOTSON4-2,neutral,1.8
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Bryce Lance,player_receptions,2.5,NO,82,0.897,0.066,4,KXNFLREC-26OCT25PITNO-NOBLANCE18-3,agree,0.9
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Juwan Johnson,player_receptions,1.5,YES,90,0.972,0.065,8,KXNFLREC-26OCT25PITNO-NOJJOHNSON83-2,agree,3.6
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,A.J. Brown,player_receptions,2.5,YES,87,0.943,0.065,7,KXNFLREC-26OCT22NECHI-NEABROWN1-3,agree,4.5
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Bryce Lance,player_reception_yds,9.5,YES,61,0.691,0.065,7,KXNFLRECYDS-26OCT25PITNO-NOBLANCE18-10,disagree,6.2
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Rome Odunze,player_receptions,2.5,YES,63,0.710,0.064,6,KXNFLREC-26OCT22NECHI-CHIRODUNZE15-3,agree,3.7
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Colston Loveland,player_receptions,2.5,YES,77,0.845,0.062,7,KXNFLREC-26OCT22NECHI-CHICLOVELAND84-3,agree,3.7
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_rush_yds,119.5,YES,21,0.283,0.062,7,KXNFLRSHYDS-26OCT25SFATL-ATLBROBINSON7-120,disagree,84.3
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Cole Kmet,player_receptions,2.5,NO,87,0.939,0.061,6,KXNFLREC-26OCT22NECHI-CHICKMET85-3,agree,1.5
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,D'Andre Swift,player_receptions,3.5,NO,66,0.736,0.061,6,KXNFLREC-26OCT22NECHI-CHIDSWIFT4-4,agree,3.0
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Eli Raridon,player_receptions,3.5,NO,91,0.976,0.061,6,KXNFLREC-26OCT22NECHI-NEERARIDON82-4,agree,2.0
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Hunter Henry,player_receptions,2.5,YES,65,0.725,0.059,6,KXNFLREC-26OCT22NECHI-NEHHENRY85-3,agree,3.5
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_receptions,2.5,YES,63,0.705,0.059,6,KXNFLREC-26OCT25PITNO-PITJWARREN30-3,agree,3.2
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_pass_yds,374.5,YES,7,0.132,0.057,8,KXNFLPASSYDS-26OCT25CINBAL-CINJBURROW9-375,disagree,265.3
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_pass_yds,349.5,YES,12,0.183,0.055,8,KXNFLPASSYDS-26OCT25CINBAL-CINJBURROW9-350,disagree,265.3
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_receptions,1.5,YES,92,0.980,0.055,6,KXNFLREC-26OCT25SFATL-ATLBROBINSON7-2,agree,3.5
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Kalif Raymond,player_receptions,3.5,NO,71,0.778,0.054,8,KXNFLREC-26OCT22NECHI-CHIKRAYMOND14-4,neutral,3.1
+2026-10-22T19:56:39+00:00,kalshi,Cincinnati Bengals @ Baltimore Ravens,Ja'Marr Chase,player_reception_yds,109.5,YES,27,0.337,0.053,9,KXNFLRECYDS-26OCT25CINBAL-CINJCHASE1-110,disagree,64.6
+2026-10-22T19:56:39+00:00,kalshi,Pittsburgh Steelers @ New Orleans Saints,Darnell Washington,player_reception_yds,14.5,YES,71,0.777,0.053,9,KXNFLRECYDS-26OCT25PITNO-PITDWASHINGTON80-15,agree,24.5
+2026-10-22T19:56:39+00:00,kalshi,San Francisco 49ers @ Atlanta Falcons,Kyle Pitts,player_receptions,2.5,YES,68,0.748,0.052,6,KXNFLREC-26OCT25SFATL-ATLKPITTS8-3,agree,3.5
+2026-10-22T19:56:39+00:00,kalshi,New England Patriots @ Chicago Bears,Drake Maye,player_pass_yds,349.5,YES,9,0.146,0.051,8,KXNFLPASSYDS-26OCT22NECHI-NEDMAYE10-350,disagree,311.1
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Aaron Rodgers,player_anytime_td,,Yes,1300,0.067,,7,betparx,disagree,0.015
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Aaron Rodgers,player_pass_completions,21.5,Over,-113,0.531,,4,betparx,agree,23.0
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Aaron Rodgers,player_pass_yds,238.5,Under,-114,0.514,,7,betparx,neutral,249.7
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Alvin Kamara,player_anytime_td,,Yes,330,0.227,,7,fanduel,neutral,0.274
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Alvin Kamara,player_reception_yds,12.5,Under,-110,0.506,,7,betparx,disagree,15.4
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Alvin Kamara,player_receptions,2.5,Over,-116,0.517,,6,draftkings,neutral,2.6
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Alvin Kamara,player_rush_yds,16.5,Over,-114,0.515,,7,fanduel,agree,27.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Barion Brown,player_anytime_td,,Yes,1800,0.052,,7,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Ben Skowronek,player_anytime_td,,Yes,1400,0.055,,3,betparx,neutral,0.083
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Brandon Smith,player_anytime_td,,Yes,900,0.090,,4,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Bryce Lance,player_anytime_td,,Yes,800,0.131,,7,draftkings,neutral,0.136
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Bryce Lance,player_reception_yds,13.5,Under,-114,0.507,,5,fanduel,agree,6.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Bryce Lance,player_receptions,1.5,Under,-130,0.549,,4,betparx,agree,0.9
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,CJ Donaldson,player_anytime_td,,Yes,750,0.123,,7,betmgm,neutral,0.081
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,CJ Donaldson,player_rush_yds,10.5,Over,-114,0.500,,2,fanduel,agree,14.8
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Cedric Tillman,player_anytime_td,,Yes,3500,0.027,,4,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Chris Olave,player_anytime_td,,Yes,190,0.325,,7,draftkings,neutral,0.302
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Chris Olave,player_reception_yds,73.5,Under,-115,0.502,,7,betparx,agree,58.9
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Chris Olave,player_receptions,5.5,Over,-133,0.554,,6,draftkings,neutral,5.1
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,DK Metcalf,player_anytime_td,,Yes,185,0.344,,7,draftkings,disagree,0.244
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,DK Metcalf,player_reception_yds,58.5,Under,-114,0.505,,7,fanduel,agree,53.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,DK Metcalf,player_receptions,4.5,Over,-125,0.536,,6,betmgm,neutral,4.7
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Darnell Washington,player_anytime_td,,Yes,300,0.228,,7,draftkings,neutral,0.223
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Darnell Washington,player_reception_yds,24.5,Over,-114,0.512,,7,fanduel,neutral,24.5
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Darnell Washington,player_receptions,2.5,Under,-125,0.528,,6,draftkings,neutral,2.4
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Devaughn Vele,player_anytime_td,,Yes,300,0.228,,7,draftkings,neutral,0.228
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Devaughn Vele,player_reception_yds,41.5,Over,-112,0.501,,7,draftkings,disagree,30.7
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Devaughn Vele,player_receptions,3.5,Over,-140,0.581,,6,espnbet,neutral,3.0
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Eli Heidenreich,player_anytime_td,,Yes,3000,0.030,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Germie Bernard,player_anytime_td,,Yes,230,0.276,,7,fanduel,neutral,0.321
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Germie Bernard,player_reception_yds,54.5,Under,-109,0.502,,7,draftkings,agree,44.3
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Germie Bernard,player_receptions,4.5,Over,-143,0.583,,6,betparx,neutral,4.9
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_anytime_td,,Yes,-120,0.541,,7,fanduel,disagree,0.469
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_reception_yds,25.5,Over,-111,0.500,,7,draftkings,agree,35.5
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_receptions,3.5,Under,-155,0.583,,6,betmgm,neutral,3.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Jaylen Warren,player_rush_yds,63.5,Over,-113,0.500,,7,draftkings,agree,71.0
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Juwan Johnson,player_anytime_td,,Yes,310,0.224,,7,draftkings,neutral,0.218
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Juwan Johnson,player_reception_yds,32.5,Under,-114,0.513,,7,fanduel,disagree,38.4
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Juwan Johnson,player_receptions,3.5,Over,-108,0.508,,6,draftkings,neutral,3.6
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Kaden Wetjen,player_anytime_td,,Yes,1500,0.060,,7,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Kendre Miller,player_anytime_td,,Yes,190,0.362,,7,betmgm,disagree,0.296
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Kendre Miller,player_rush_yds,41.5,Under,-115,0.536,,6,betparx,agree,28.3
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Lew Nichols,player_anytime_td,,Yes,4500,0.020,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,New Orleans Saints D/ST,player_anytime_td,,Yes,550,0.142,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,New Orleans Saints Defense,player_anytime_td,,Yes,850,0.087,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Noah Fant,player_anytime_td,,Yes,800,0.108,,7,draftkings,neutral,0.131
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Noah Fant,player_reception_yds,11.5,Under,-109,0.503,,7,betparx,disagree,15.5
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Noah Fant,player_receptions,1.5,Over,-115,0.511,,6,draftkings,neutral,1.8
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Oscar Delp,player_anytime_td,,Yes,2000,0.048,,7,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Pat Freiermuth,player_anytime_td,,Yes,310,0.232,,7,betparx,neutral,0.197
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Pat Freiermuth,player_reception_yds,31.5,Over,-114,0.502,,7,betparx,disagree,26.4
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Pat Freiermuth,player_receptions,3.5,Under,-151,0.601,,6,draftkings,agree,2.8
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Pittsburgh Steelers D/ST,player_anytime_td,,Yes,500,0.158,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Pittsburgh Steelers Defense,player_anytime_td,,Yes,600,0.120,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Rico Dowdle,player_anytime_td,,Yes,260,0.264,,7,fanduel,agree,0.481
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Rico Dowdle,player_reception_yds,9.5,Under,-106,0.511,,7,draftkings,disagree,15.6
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Rico Dowdle,player_receptions,1.5,Over,-130,0.536,,6,espnbet,agree,2.5
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Rico Dowdle,player_rush_yds,29.5,Over,100,0.502,,7,espnbet,agree,43.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Riley Nowakowski,player_anytime_td,,Yes,4000,0.029,,6,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Robert Tonyan,player_anytime_td,,Yes,1100,0.072,,6,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Travis Homer,player_anytime_td,,Yes,2250,0.039,,6,hardrockbet,agree,0.320
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Treyton Welch,player_anytime_td,,Yes,7500,0.019,,7,hardrockbet,n/a,
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Tyler Shough,player_anytime_td,,Yes,420,0.172,,7,fanduel,neutral,0.162
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Tyler Shough,player_pass_completions,22.5,Over,-125,0.526,,5,betmgm,disagree,20.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Tyler Shough,player_pass_yds,227.5,Over,-111,0.515,,7,draftkings,disagree,199.2
+2026-10-22T19:56:39+00:00,book,Pittsburgh Steelers @ New Orleans Saints,Tyler Shough,player_rush_yds,14.5,Over,-114,0.519,,6,betparx,agree,16.1
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Baltimore Ravens D/ST,player_anytime_td,,Yes,650,0.112,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Baltimore Ravens Defense,player_anytime_td,,Yes,900,0.083,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Chase Brown,player_anytime_td,,Yes,-105,0.489,,7,fanduel,neutral,0.507
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Chase Brown,player_reception_yds,21.5,Under,-115,0.520,,7,betparx,agree,16.4
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Chase Brown,player_receptions,3.5,Under,-114,0.511,,6,fanduel,disagree,4.1
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Chase Brown,player_rush_yds,49.5,Under,-115,0.502,,7,betmgm,agree,45.8
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Cincinnati Bengals D/ST,player_anytime_td,,Yes,525,0.138,,2,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Cincinnati Bengals Defense,player_anytime_td,,Yes,800,0.092,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Colbie Young,player_anytime_td,,Yes,1200,0.070,,6,ballybet,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Derrick Henry,player_anytime_td,,Yes,-210,0.648,,7,betmgm,disagree,0.557
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Derrick Henry,player_rush_yds,86.5,Over,-114,0.500,,7,betparx,neutral,85.8
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Devontez Walker,player_anytime_td,,Yes,900,0.096,,7,ballybet,neutral,0.104
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Dohnte Meyers,player_anytime_td,,Yes,475,0.183,,7,draftkings,disagree,0.044
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Dohnte Meyers,player_reception_yds,12.5,Over,-107,0.515,,5,draftkings,agree,25.9
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Dohnte Meyers,player_receptions,1.5,Over,-110,0.537,,5,espnbet,agree,2.7
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Drew Sample,player_anytime_td,,Yes,1100,0.073,,7,draftkings,neutral,0.049
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Elijah Sarratt,player_anytime_td,,Yes,1500,0.056,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Erick All,player_anytime_td,,Yes,1000,0.083,,7,draftkings,neutral,0.040
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Ja'Kobi Lane,player_anytime_td,,Yes,350,0.207,,7,betmgm,agree,0.407
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Ja'Marr Chase,player_anytime_td,,Yes,120,0.457,,7,betmgm,disagree,0.341
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Ja'Marr Chase,player_reception_yds,79.5,Over,-114,0.515,,7,fanduel,disagree,64.6
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Ja'Marr Chase,player_receptions,7.5,Under,-131,0.542,,6,draftkings,agree,6.1
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Jack Endries,player_anytime_td,,Yes,1000,0.085,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_anytime_td,,Yes,850,0.103,,7,betmgm,neutral,0.132
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_pass_completions,24.5,Over,-127,0.532,,5,draftkings,neutral,25.6
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_pass_yds,260.5,Over,-112,0.504,,7,draftkings,neutral,265.3
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Joe Burrow,player_rush_yds,6.5,Over,-113,0.500,,6,betparx,agree,7.2
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Josh Cuevas,player_anytime_td,,Yes,1100,0.084,,7,draftkings,agree,0.158
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Justice Hill,player_anytime_td,,Yes,500,0.148,,7,draftkings,disagree,0.085
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,LaJohntay Wester,player_anytime_td,,Yes,1600,0.052,,6,ballybet,neutral,0.033
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Lamar Jackson,player_anytime_td,,Yes,240,0.275,,4,betmgm,disagree,0.172
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Mark Andrews,player_anytime_td,,Yes,240,0.270,,7,ballybet,neutral,0.317
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Matthew Hibner,player_anytime_td,,Yes,1150,0.077,,6,betmgm,neutral,0.119
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Mike Gesicki,player_anytime_td,,Yes,390,0.196,,7,betmgm,neutral,0.180
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Mike Gesicki,player_reception_yds,22.5,Over,-114,0.505,,7,fanduel,agree,25.9
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Mike Gesicki,player_receptions,2.5,Over,-105,0.503,,6,betmgm,neutral,2.3
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Mitchell Tinsley,player_anytime_td,,Yes,900,0.088,,6,ballybet,agree,0.256
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Nick Vannett,player_anytime_td,,Yes,1300,0.073,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Rasheen Ali,player_anytime_td,,Yes,7500,0.023,,7,hardrockbet,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Rashod Bateman,player_anytime_td,,Yes,350,0.201,,7,draftkings,neutral,0.208
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Samaje Perine,player_anytime_td,,Yes,295,0.225,,7,draftkings,agree,0.308
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Samaje Perine,player_reception_yds,7.5,Over,-114,0.539,,6,fanduel,disagree,5.5
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Samaje Perine,player_receptions,1.5,Over,-139,0.562,,6,betparx,neutral,1.1
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Samaje Perine,player_rush_yds,20.5,Over,-114,0.526,,6,fanduel,agree,24.1
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Tahj Brooks,player_anytime_td,,Yes,4000,0.031,,7,hardrockbet,n/a,
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Tee Higgins,player_anytime_td,,Yes,155,0.372,,7,fanduel,disagree,0.215
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Tee Higgins,player_reception_yds,64.5,Over,-110,0.504,,7,draftkings,neutral,64.4
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Tee Higgins,player_receptions,4.5,Over,-145,0.565,,6,hardrockbet,neutral,4.6
+2026-10-22T19:56:39+00:00,book,Cincinnati Bengals @ Baltimore Ravens,Zay Flowers,player_anytime_td,,Yes,163,0.366,,7,ballybet,neutral,0.351
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Atlanta Falcons D/ST,player_anytime_td,,Yes,600,0.122,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Atlanta Falcons Defense,player_anytime_td,,Yes,700,0.104,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Austin Hooper,player_anytime_td,,Yes,1300,0.077,,7,draftkings,neutral,0.099
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_anytime_td,,Yes,-225,0.668,,7,betmgm,disagree,0.559
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_reception_yds,26.5,Over,-114,0.512,,7,fanduel,disagree,22.3
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_receptions,3.5,Over,-140,0.568,,6,espnbet,neutral,3.5
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Bijan Robinson,player_rush_yds,82.5,Under,-115,0.501,,7,betmgm,neutral,84.3
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brandin Cooks,player_anytime_td,,Yes,425,0.167,,7,draftkings,neutral,0.121
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brayden Willis,player_anytime_td,,Yes,4000,0.026,,6,hardrockbet,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brian Robinson Jr.,player_anytime_td,,Yes,270,0.242,,7,draftkings,neutral,0.269
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brian Robinson Jr.,player_reception_yds,3.5,Under,-118,0.520,,2,draftkings,agree,3.0
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brian Robinson Jr.,player_receptions,0.5,Over,-172,0.601,,4,fanduel,neutral,0.8
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brian Robinson Jr.,player_rush_yds,27.5,Under,-112,0.509,,7,betparx,agree,24.2
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brock Purdy,player_anytime_td,,Yes,360,0.203,,7,betmgm,disagree,0.145
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brock Purdy,player_pass_completions,20.5,Under,-125,0.526,,4,draftkings,disagree,22.4
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brock Purdy,player_pass_yds,238.5,Over,-114,0.512,,7,betparx,agree,269.0
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Brock Purdy,player_rush_yds,19.5,Under,-109,0.501,,7,draftkings,neutral,18.3
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Charlie Woerner,player_anytime_td,,Yes,1450,0.058,,7,betmgm,neutral,0.098
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Chris Blair,player_anytime_td,,Yes,5500,0.028,,7,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Christian Kirk,player_anytime_td,,Yes,400,0.182,,7,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Christian McCaffrey,player_anytime_td,,Yes,-225,0.659,,7,betmgm,neutral,0.637
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Christian McCaffrey,player_reception_yds,44.5,Under,-114,0.503,,7,fanduel,agree,31.9
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Christian McCaffrey,player_receptions,5.5,Under,-118,0.545,,6,betparx,agree,4.9
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Christian McCaffrey,player_rush_yds,59.5,Over,-105,0.503,,6,espnbet,disagree,53.3
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Drake London,player_anytime_td,,Yes,130,0.408,,7,draftkings,disagree,0.296
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Drake London,player_reception_yds,81.5,Over,-113,0.504,,7,betparx,neutral,80.1
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Drake London,player_receptions,5.5,Over,-130,0.544,,6,draftkings,neutral,5.2
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Elijah Dotson,player_reception_yds,24.5,Over,-130,0.531,,1,espnbet,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Elijah Dotson,player_receptions,2.5,Under,-190,0.611,,1,espnbet,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,George Kittle,player_anytime_td,,Yes,140,0.402,,7,betparx,neutral,0.379
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,George Kittle,player_reception_yds,69.5,Under,-105,0.501,,7,espnbet,agree,57.4
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,George Kittle,player_receptions,5.5,Under,-109,0.508,,6,draftkings,neutral,5.1
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Jacob Cowing,player_anytime_td,,Yes,750,0.100,,7,draftkings,disagree,0.030
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Jahan Dotson,player_anytime_td,,Yes,425,0.181,,7,draftkings,neutral,0.225
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Jahan Dotson,player_reception_yds,29.5,Under,-114,0.519,,6,fanduel,disagree,34.3
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Jahan Dotson,player_receptions,2.5,Under,-160,0.680,,5,betmgm,agree,1.8
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,James Jordan,player_anytime_td,,Yes,2800,0.038,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Jordan Watkins,player_anytime_td,,Yes,650,0.125,,7,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kaelon Black,player_anytime_td,,Yes,410,0.187,,7,betparx,agree,0.249
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kaelon Black,player_rush_yds,29.5,Under,-114,0.504,,6,fanduel,agree,22.2
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kyle Juszczyk,player_anytime_td,,Yes,525,0.144,,7,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kyle Pitts,player_anytime_td,,Yes,290,0.232,,7,fanduel,agree,0.305
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kyle Pitts,player_reception_yds,34.5,Over,-105,0.504,,7,espnbet,disagree,31.9
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Kyle Pitts,player_receptions,3.5,Under,-120,0.533,,6,betmgm,neutral,3.5
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Luke Farrell,player_anytime_td,,Yes,1300,0.069,,7,betparx,neutral,0.119
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Malik Turner,player_anytime_td,,Yes,3000,0.028,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Michael Penix Jr.,player_anytime_td,,Yes,1150,0.080,,7,betmgm,neutral,0.057
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Michael Penix Jr.,player_pass_completions,19.5,Over,-112,0.504,,4,betparx,neutral,18.6
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Michael Penix Jr.,player_pass_yds,227.5,Over,-114,0.511,,7,fanduel,neutral,213.6
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Michael Penix Jr.,player_rush_yds,1.5,Over,-105,0.764,,1,espnbet,agree,4.2
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Mike Evans,player_anytime_td,,Yes,145,0.371,,3,betparx,disagree,0.298
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Nick Muse,player_anytime_td,,Yes,5000,0.027,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Olamide Zaccheaus,player_anytime_td,,Yes,1100,0.081,,7,fanduel,agree,0.162
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Olamide Zaccheaus,player_reception_yds,7.5,Under,-120,0.542,,4,fanduel,neutral,7.4
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Olamide Zaccheaus,player_receptions,1.5,Under,-229,0.666,,4,draftkings,neutral,1.2
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,San Francisco 49ers D/ST,player_anytime_td,,Yes,600,0.127,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,San Francisco 49ers Defense,player_anytime_td,,Yes,900,0.083,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Zachariah Branch,player_anytime_td,,Yes,950,0.109,,7,betmgm,disagree,0.029
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Zachariah Branch,player_reception_yds,5.5,Under,-106,0.508,,3,draftkings,disagree,9.7
+2026-10-22T19:56:39+00:00,book,San Francisco 49ers @ Atlanta Falcons,Zachariah Branch,player_receptions,1.5,Under,-231,0.768,,3,draftkings,neutral,1.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,A.J. Brown,player_anytime_td,,Yes,140,0.391,,7,draftkings,neutral,0.385
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,A.J. Brown,player_reception_yds,68.5,Over,-113,0.510,,7,draftkings,disagree,58.4
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,A.J. Brown,player_receptions,4.5,Over,-158,0.608,,6,fanduel,neutral,4.5
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Caleb Williams,player_anytime_td,,Yes,380,0.194,,7,draftkings,neutral,0.162
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Caleb Williams,player_pass_completions,20.5,Over,-120,0.525,,5,betmgm,agree,24.4
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Caleb Williams,player_pass_yds,242.5,Over,-115,0.504,,7,ballybet,agree,266.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Caleb Williams,player_rush_yds,19.5,Under,-113,0.508,,7,fanduel,neutral,20.3
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Cameron Latu,player_anytime_td,,Yes,3000,0.042,,7,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Chicago Bears D/ST,player_anytime_td,,Yes,600,0.141,,2,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Chicago Bears Defense,player_anytime_td,,Yes,850,0.087,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Cole Kmet,player_anytime_td,,Yes,600,0.142,,7,betmgm,neutral,0.107
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Cole Kmet,player_reception_yds,8.5,Over,-113,0.525,,7,fanduel,agree,11.2
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Cole Kmet,player_receptions,1.5,Under,-221,0.659,,6,draftkings,neutral,1.5
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Colston Loveland,player_anytime_td,,Yes,185,0.330,,7,betmgm,neutral,0.349
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Colston Loveland,player_reception_yds,42.5,Over,-117,0.520,,7,betparx,disagree,37.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Colston Loveland,player_receptions,3.5,Over,-167,0.602,,6,draftkings,neutral,3.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Corey Kiner,player_anytime_td,,Yes,700,0.108,,7,fanduel,agree,0.420
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Corey Kiner,player_rush_yds,14.5,Over,-108,0.505,,7,draftkings,agree,27.8
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,D'Andre Swift,player_anytime_td,,Yes,-160,0.586,,7,draftkings,disagree,0.453
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,D'Andre Swift,player_reception_yds,19.5,Over,-113,0.521,,7,betparx,agree,21.8
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,D'Andre Swift,player_receptions,2.5,Over,-127,0.547,,6,betparx,neutral,3.0
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,D'Andre Swift,player_rush_yds,60.5,Over,-113,0.509,,7,draftkings,disagree,51.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,DeMario Douglas,player_anytime_td,,Yes,325,0.215,,7,betmgm,neutral,0.193
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,DeMario Douglas,player_reception_yds,38.5,Over,-113,0.508,,7,fanduel,agree,44.3
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,DeMario Douglas,player_receptions,3.5,Under,-115,0.527,,6,betmgm,neutral,3.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Drake Maye,player_anytime_td,,Yes,350,0.202,,7,draftkings,disagree,0.148
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Drake Maye,player_pass_completions,20.5,Over,-105,0.506,,5,espnbet,neutral,21.9
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Drake Maye,player_pass_yds,248.5,Over,-111,0.503,,7,draftkings,agree,311.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Drake Maye,player_rush_yds,27.5,Over,-113,0.515,,7,fanduel,neutral,28.6
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Efton Chism III,player_anytime_td,,Yes,625,0.153,,7,betmgm,neutral,0.116
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Efton Chism III,player_reception_yds,17.5,Under,-110,0.513,,7,betparx,disagree,20.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Efton Chism III,player_receptions,1.5,Over,-110,0.507,,6,espnbet,neutral,1.8
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Eli Raridon,player_anytime_td,,Yes,550,0.152,,7,betmgm,neutral,0.188
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Eli Raridon,player_reception_yds,15.5,Under,-113,0.515,,7,fanduel,disagree,23.6
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Eli Raridon,player_receptions,1.5,Under,-121,0.538,,6,betparx,neutral,2.0
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Hunter Henry,player_anytime_td,,Yes,240,0.272,,7,betmgm,neutral,0.277
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Hunter Henry,player_reception_yds,32.5,Over,-118,0.532,,7,betparx,agree,43.8
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Hunter Henry,player_receptions,3.5,Under,-135,0.561,,6,espnbet,neutral,3.5
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Jahdae Walker,player_anytime_td,,Yes,1750,0.051,,6,hardrockbet,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kalif Raymond,player_anytime_td,,Yes,400,0.177,,7,draftkings,neutral,0.142
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kalif Raymond,player_reception_yds,24.5,Over,-113,0.519,,7,fanduel,agree,27.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kalif Raymond,player_receptions,2.5,Under,-110,0.508,,6,draftkings,disagree,3.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kyle Williams,player_anytime_td,,Yes,750,0.119,,7,fanduel,disagree,0.027
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kyle Williams,player_reception_yds,19.5,Over,-113,0.502,,7,fanduel,agree,25.3
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Kyle Williams,player_receptions,1.5,Under,-165,0.595,,6,betmgm,neutral,1.0
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Luther Burden III,player_anytime_td,,Yes,190,0.317,,7,draftkings,neutral,0.305
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Luther Burden III,player_reception_yds,57.5,Under,-111,0.507,,7,draftkings,neutral,54.2
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Luther Burden III,player_receptions,4.5,Over,-135,0.556,,6,betmgm,neutral,4.9
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,New England Patriots D/ST,player_anytime_td,,Yes,600,0.125,,2,betmgm,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,New England Patriots Defense,player_anytime_td,,Yes,800,0.092,,1,fanduel,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rhamondre Stevenson,player_anytime_td,,Yes,100,0.484,,7,draftkings,disagree,0.362
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rhamondre Stevenson,player_reception_yds,16.5,Over,-118,0.544,,7,betparx,neutral,15.6
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rhamondre Stevenson,player_receptions,2.5,Over,-109,0.507,,6,betparx,neutral,2.3
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rhamondre Stevenson,player_rush_yds,41.5,Over,-118,0.517,,7,betparx,neutral,39.9
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rome Odunze,player_anytime_td,,Yes,200,0.321,,7,betmgm,disagree,0.267
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rome Odunze,player_reception_yds,44.5,Over,-113,0.505,,7,fanduel,agree,50.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Rome Odunze,player_receptions,3.5,Under,-148,0.578,,6,betparx,neutral,3.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Roschon Johnson,player_anytime_td,,Yes,245,0.265,,7,draftkings,agree,0.360
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Roschon Johnson,player_reception_yds,6.5,Over,-113,0.518,,6,fanduel,agree,22.2
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Roschon Johnson,player_receptions,1.5,Under,-156,0.591,,5,draftkings,disagree,2.7
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Roschon Johnson,player_rush_yds,26.5,Over,-113,0.510,,7,draftkings,disagree,20.9
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Sam Roush,player_anytime_td,,Yes,1300,0.080,,7,betmgm,neutral,0.071
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Tanner Arkin,player_anytime_td,,Yes,2200,0.042,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_anytime_td,,Yes,380,0.202,,7,fanduel,neutral,0.249
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_reception_yds,3.5,Over,-115,0.505,,3,betmgm,agree,6.1
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_receptions,0.5,Over,-190,0.624,,5,betmgm,agree,1.2
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,TreVeyon Henderson,player_rush_yds,24.5,Under,-111,0.502,,7,draftkings,disagree,39.5
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Zavier Scott,player_anytime_td,,Yes,2200,0.050,,6,draftkings,n/a,
+2026-10-22T19:56:39+00:00,book,New England Patriots @ Chicago Bears,Zavion Thomas,player_anytime_td,,Yes,1750,0.059,,7,hardrockbet,neutral,0.027

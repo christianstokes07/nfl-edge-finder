@@ -10687,3 +10687,179 @@ ts_utc,source,game,player,stat,line,side,price,hit_chance,value,books,where,anal
 2026-11-19T22:59:28+00:00,game,Pittsburgh Steelers @ Philadelphia Eagles,,game_ml,,Pittsburgh Steelers,-206,0.656,,8,draftkings,n/a,
 2026-11-19T22:59:28+00:00,game,Pittsburgh Steelers @ Philadelphia Eagles,,game_spread,4.5,Philadelphia Eagles,-110,0.506,,8,betrivers,n/a,
 2026-11-19T22:59:28+00:00,game,Pittsburgh Steelers @ Philadelphia Eagles,,game_total,38.0,Under,-108,0.502,,8,betmgm,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,3.0,YES,19,0.587,0.386,8,KXNFLSPREAD-26NOV23CINWAS-WAS4,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,1.0,YES,26,0.650,0.376,8,KXNFLSPREAD-26NOV23CINWAS-WAS2,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,4.0,YES,17,0.555,0.375,8,KXNFLSPREAD-26NOV23CINWAS-WAS5,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,2.0,YES,25,0.619,0.355,8,KXNFLSPREAD-26NOV23CINWAS-WAS3,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,5.0,YES,16,0.522,0.353,8,KXNFLSPREAD-26NOV23CINWAS-WAS6,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,7.0,YES,10,0.457,0.350,8,KXNFLSPREAD-26NOV23CINWAS-WAS8,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,6.0,YES,14,0.489,0.341,8,KXNFLSPREAD-26NOV23CINWAS-WAS7,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,9.0,YES,9,0.392,0.297,8,KXNFLSPREAD-26NOV23CINWAS-WAS10,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,1.0,NO,38,0.677,0.281,8,KXNFLSPREAD-26NOV22MINSF-SF2,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,2.0,NO,41,0.706,0.279,8,KXNFLSPREAD-26NOV22MINSF-SF3,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,10.0,YES,8,0.361,0.276,8,KXNFLSPREAD-26NOV23CINWAS-WAS11,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,3.0,NO,49,0.734,0.226,8,KXNFLSPREAD-26NOV22MINSF-SF4,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,4.0,NO,53,0.760,0.212,8,KXNFLSPREAD-26NOV22MINSF-SF5,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,5.0,NO,56,0.785,0.207,8,KXNFLSPREAD-26NOV22MINSF-SF6,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,13.0,YES,7,0.274,0.199,8,KXNFLSPREAD-26NOV23CINWAS-WAS14,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,6.0,NO,60,0.808,0.191,8,KXNFLSPREAD-26NOV22MINSF-SF7,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals,game_spread,14.0,YES,6,0.247,0.183,8,KXNFLSPREAD-26NOV23CINWAS-WAS15,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_receptions,2.5,NO,65,0.830,0.164,5,KXNFLREC-26NOV22MINSF-MINAJONES33-3,neutral,2.1
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,7.0,NO,65,0.830,0.164,8,KXNFLSPREAD-26NOV22MINSF-SF8,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,9.0,NO,69,0.868,0.163,8,KXNFLSPREAD-26NOV22MINSF-SF10,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_receptions,1.5,YES,68,0.849,0.154,2,KXNFLREC-26NOV22MINSF-MINJJENNINGS14-2,agree,2.0
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,13.0,NO,78,0.926,0.134,8,KXNFLSPREAD-26NOV22MINSF-SF14,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Gavin Bartholomew,player_anytime_td,,YES,7,0.208,0.134,6,KXNFLTD-26NOV22MINSF-MINGBARTHOLOMEW86-1,disagree,0.158
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,10.0,NO,74,0.885,0.131,8,KXNFLSPREAD-26NOV22MINSF-SF11,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_reception_yds,9.5,YES,72,0.857,0.123,3,KXNFLRECYDS-26NOV22MINSF-MINJJENNINGS14-10,agree,17.4
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Mike Gesicki,player_receptions,1.5,YES,72,0.850,0.116,6,KXNFLREC-26NOV23CINWAS-CINMGESICKI88-2,agree,2.2
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_receptions,3.5,NO,83,0.956,0.116,5,KXNFLREC-26NOV22MINSF-MINAJONES33-4,agree,2.1
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_receptions,1.5,YES,85,0.970,0.111,8,KXNFLREC-26NOV23CINWAS-WASAWILLIAMS14-2,agree,2.6
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,14.0,NO,82,0.937,0.106,8,KXNFLSPREAD-26NOV22MINSF-SF15,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,16.0,NO,84,0.955,0.105,8,KXNFLSPREAD-26NOV22MINSF-SF17,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_receptions,2.5,YES,79,0.901,0.099,6,KXNFLREC-26NOV22MINSF-SFGKITTLE85-3,agree,4.8
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_rush_yds,9.5,YES,69,0.802,0.097,9,KXNFLRSHYDS-26NOV22MINSF-SFBPURDY13-10,agree,16.5
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,17.0,NO,86,0.962,0.094,8,KXNFLSPREAD-26NOV22MINSF-SF18,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Chase Brown,player_receptions,2.5,YES,80,0.893,0.082,6,KXNFLREC-26NOV23CINWAS-CINCBROWN30-3,agree,4.5
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_receptions,1.5,YES,89,0.978,0.081,6,KXNFLREC-26NOV22MINSF-SFCMCCAFFREY23-2,agree,4.4
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_reception_yds,139.5,YES,20,0.291,0.080,7,KXNFLRECYDS-26NOV23CINWAS-CINJCHASE1-140,disagree,99.6
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_receptions,3.5,YES,61,0.704,0.078,6,KXNFLREC-26NOV22MINSF-SFGKITTLE85-4,agree,4.8
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Samaje Perine,player_rush_yds,9.5,YES,78,0.866,0.074,3,KXNFLRSHYDS-26NOV23CINWAS-CINSPERINE34-10,agree,19.1
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_receptions,2.5,YES,68,0.769,0.074,8,KXNFLREC-26NOV23CINWAS-WASAWILLIAMS14-3,neutral,2.6
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings,game_spread,20.0,NO,90,0.978,0.072,8,KXNFLSPREAD-26NOV22MINSF-SF21,n/a,
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_reception_yds,79.5,YES,21,0.292,0.071,4,KXNFLRECYDS-26NOV22MINSF-SFGKITTLE85-80,disagree,52.0
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_yds,399.5,YES,12,0.196,0.068,9,KXNFLPASSYDS-26NOV23CINWAS-CINJBURROW9-400,disagree,300.7
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_yds,374.5,YES,18,0.256,0.066,9,KXNFLPASSYDS-26NOV23CINWAS-CINJBURROW9-375,disagree,300.7
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jordan Mason,player_rush_yds,59.5,YES,24,0.318,0.065,8,KXNFLRSHYDS-26NOV22MINSF-MINJMASON27-60,disagree,38.1
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jordan Mason,player_rush_yds,24.5,YES,73,0.809,0.065,9,KXNFLRSHYDS-26NOV22MINSF-MINJMASON27-25,agree,38.1
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_yds,424.5,YES,8,0.148,0.063,9,KXNFLPASSYDS-26NOV23CINWAS-CINJBURROW9-425,disagree,300.7
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_reception_yds,129.5,YES,25,0.325,0.062,9,KXNFLRECYDS-26NOV23CINWAS-CINJCHASE1-130,disagree,99.6
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_yds,249.5,NO,20,0.273,0.061,9,KXNFLPASSYDS-26NOV23CINWAS-CINJBURROW9-250,disagree,300.7
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_reception_yds,19.5,YES,71,0.785,0.061,9,KXNFLRECYDS-26NOV22MINSF-SFCMCCAFFREY23-20,agree,52.0
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_receptions,11.5,YES,14,0.208,0.059,5,KXNFLREC-26NOV23CINWAS-CINJCHASE1-12,disagree,8.4
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_rush_yds,9.5,NO,53,0.606,0.059,6,KXNFLRSHYDS-26NOV23CINWAS-CINJBURROW9-10,agree,6.6
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_reception_yds,19.5,YES,74,0.811,0.058,9,KXNFLRECYDS-26NOV23CINWAS-WASAWILLIAMS14-20,agree,32.0
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jordan Mason,player_rush_yds,39.5,YES,48,0.555,0.058,9,KXNFLRSHYDS-26NOV22MINSF-MINJMASON27-40,neutral,38.1
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_pass_yds,324.5,YES,13,0.195,0.057,9,KXNFLPASSYDS-26NOV22MINSF-SFBPURDY13-325,disagree,256.0
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Mike Gesicki,player_reception_yds,14.5,YES,71,0.781,0.057,9,KXNFLRECYDS-26NOV23CINWAS-CINMGESICKI88-15,agree,27.4
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_receptions,2.5,YES,74,0.810,0.057,6,KXNFLREC-26NOV22MINSF-SFCMCCAFFREY23-3,agree,4.4
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_completions,22.5,NO,18,0.246,0.056,6,KXNFLPASSCOMP-26NOV23CINWAS-CINJBURROW9-23,disagree,28.9
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_completions,32.5,YES,20,0.267,0.056,6,KXNFLPASSCOMP-26NOV23CINWAS-CINJBURROW9-33,disagree,28.9
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_reception_yds,69.5,YES,28,0.349,0.055,8,KXNFLRECYDS-26NOV22MINSF-SFGKITTLE85-70,disagree,52.0
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_reception_yds,14.5,YES,62,0.691,0.055,7,KXNFLRECYDS-26NOV22MINSF-MINJJENNINGS14-15,agree,17.4
+2026-11-22T21:44:55+00:00,kalshi,Cincinnati Bengals @ Washington Commanders,Stefon Diggs,player_receptions,2.5,YES,83,0.894,0.054,7,KXNFLREC-26NOV23CINWAS-WASSDIGGS3-3,agree,4.1
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_receptions,4.5,YES,42,0.491,0.053,6,KXNFLREC-26NOV22MINSF-SFGKITTLE85-5,neutral,4.8
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_pass_yds,349.5,YES,8,0.138,0.053,9,KXNFLPASSYDS-26NOV22MINSF-SFBPURDY13-350,disagree,256.0
+2026-11-22T21:44:55+00:00,kalshi,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_reception_yds,29.5,YES,73,0.795,0.052,8,KXNFLRECYDS-26NOV22MINSF-SFGKITTLE85-30,agree,52.0
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_anytime_td,,Yes,270,0.237,,7,betmgm,disagree,0.092
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_reception_yds,35.5,Over,-114,0.517,,7,fanduel,disagree,32.0
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Antonio Williams,player_receptions,3.5,Under,-114,0.509,,6,draftkings,agree,2.6
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Austin Ekeler,player_anytime_td,,Yes,310,0.237,,7,draftkings,neutral,0.237
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Ben Sinnott,player_anytime_td,,Yes,800,0.094,,6,betrivers,agree,0.211
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Cam Grandy,player_anytime_td,,Yes,2250,0.042,,7,hardrockbet,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chase Brown,player_anytime_td,,Yes,-125,0.516,,7,betmgm,neutral,0.537
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chase Brown,player_reception_yds,28.5,Under,-120,0.535,,7,betparx,agree,26.1
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chase Brown,player_receptions,4.5,Under,-118,0.528,,6,draftkings,neutral,4.5
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chase Brown,player_rush_yds,44.5,Over,-112,0.500,,7,draftkings,neutral,42.6
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chig Okonkwo,player_anytime_td,,Yes,260,0.245,,7,draftkings,disagree,0.163
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chig Okonkwo,player_reception_yds,39.5,Over,-115,0.510,,7,betmgm,neutral,38.5
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Chig Okonkwo,player_receptions,4.5,Under,-148,0.583,,6,fanduel,agree,3.2
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals D/ST,player_anytime_td,,Yes,550,0.138,,2,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Cincinnati Bengals Defense,player_anytime_td,,Yes,750,0.094,,1,fanduel,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Colbie Young,player_anytime_td,,Yes,1750,0.055,,7,hardrockbet,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Colson Yankoff,player_anytime_td,,Yes,1800,0.049,,6,betrivers,neutral,0.015
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Dohnte Meyers,player_anytime_td,,Yes,380,0.178,,7,draftkings,neutral,0.148
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Drew Sample,player_anytime_td,,Yes,625,0.127,,7,betmgm,neutral,0.123
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_anytime_td,,Yes,-145,0.549,,7,draftkings,disagree,0.422
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_reception_yds,93.5,Over,-114,0.504,,7,fanduel,neutral,99.6
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Ja'Marr Chase,player_receptions,7.5,Over,-141,0.555,,6,betrivers,agree,8.4
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Jack Endries,player_anytime_td,,Yes,850,0.096,,6,draftkings,neutral,0.144
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Jayden Daniels,player_anytime_td,,Yes,225,0.263,,7,betrivers,disagree,0.206
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Jayden Daniels,player_pass_completions,20.5,Under,-106,0.517,,4,draftkings,neutral,19.7
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Jayden Daniels,player_pass_yds,227.5,Over,-113,0.502,,7,betparx,neutral,233.7
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Jayden Daniels,player_rush_yds,36.5,Over,-114,0.513,,7,fanduel,neutral,35.4
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_anytime_td,,Yes,425,0.163,,7,betmgm,neutral,0.198
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_completions,27.5,Under,-111,0.517,,4,betmgm,neutral,28.9
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_pass_yds,305.5,Under,-115,0.507,,7,betrivers,neutral,300.7
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Joe Burrow,player_rush_yds,8.5,Under,-109,0.541,,4,betparx,agree,6.6
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,John Bates,player_anytime_td,,Yes,1500,0.063,,6,draftkings,neutral,0.078
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Luke McCaffrey,player_anytime_td,,Yes,1200,0.062,,6,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Mike Gesicki,player_anytime_td,,Yes,210,0.275,,7,betrivers,disagree,0.175
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Mike Gesicki,player_reception_yds,24.5,Over,-114,0.517,,7,fanduel,agree,27.4
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Mike Gesicki,player_receptions,2.5,Under,-127,0.541,,6,draftkings,neutral,2.2
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Mitchell Tinsley,player_anytime_td,,Yes,1900,0.046,,7,betmgm,agree,0.182
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Rachaad White,player_anytime_td,,Yes,165,0.361,,7,draftkings,agree,0.422
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Robert Henry Jr.,player_anytime_td,,Yes,3500,0.040,,7,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Samaje Perine,player_anytime_td,,Yes,210,0.279,,7,fanduel,agree,0.421
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Samaje Perine,player_rush_yds,20.5,Over,-110,0.500,,7,espnbet,neutral,19.1
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Stefon Diggs,player_anytime_td,,Yes,175,0.323,,7,draftkings,neutral,0.334
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Stefon Diggs,player_reception_yds,45.5,Over,-112,0.500,,7,betparx,neutral,48.6
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Stefon Diggs,player_receptions,4.5,Under,-125,0.529,,6,draftkings,neutral,4.1
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Tahj Brooks,player_anytime_td,,Yes,4000,0.028,,7,hardrockbet,neutral,0.028
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Tee Higgins,player_anytime_td,,Yes,110,0.450,,7,draftkings,disagree,0.323
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Tee Higgins,player_reception_yds,73.5,Over,-115,0.507,,7,betparx,disagree,64.9
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Tee Higgins,player_receptions,5.5,Under,-120,0.526,,6,betmgm,neutral,5.5
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Treylon Burks,player_anytime_td,,Yes,330,0.201,,7,draftkings,neutral,0.186
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Van Jefferson,player_anytime_td,,Yes,1100,0.089,,7,draftkings,agree,0.205
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Washington Commanders D/ST,player_anytime_td,,Yes,650,0.107,,2,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Cincinnati Bengals @ Washington Commanders,Washington Commanders Defense,player_anytime_td,,Yes,700,0.100,,1,fanduel,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_anytime_td,,Yes,175,0.318,,7,draftkings,agree,0.519
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_reception_yds,9.5,Under,-114,0.503,,5,fanduel,neutral,9.1
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_receptions,1.5,Over,-145,0.574,,5,draftkings,agree,2.1
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Aaron Jones,player_rush_yds,30.5,Over,-114,0.505,,7,fanduel,agree,35.7
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Ben Yurosek,player_anytime_td,,Yes,1050,0.080,,7,betrivers,disagree,0.018
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brandin Cooks,player_anytime_td,,Yes,1400,0.071,,6,betrivers,neutral,0.092
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brayden Willis,player_anytime_td,,Yes,4000,0.031,,6,hardrockbet,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_anytime_td,,Yes,500,0.146,,7,draftkings,neutral,0.149
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_pass_completions,20.5,Under,-117,0.523,,4,draftkings,disagree,22.3
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_pass_yds,243.5,Over,-114,0.513,,7,betparx,neutral,256.0
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Brock Purdy,player_rush_yds,16.5,Under,-114,0.501,,7,fanduel,neutral,16.5
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_anytime_td,,Yes,-155,0.568,,7,betmgm,neutral,0.616
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_reception_yds,33.5,Over,-114,0.513,,7,fanduel,agree,52.0
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_receptions,3.5,Over,-132,0.551,,6,fanduel,agree,4.4
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Christian McCaffrey,player_rush_yds,49.5,Over,-111,0.508,,7,betmgm,neutral,46.3
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,DeeJay Dallas,player_anytime_td,,Yes,2400,0.035,,7,betrivers,neutral,0.013
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Deebo Samuel,player_anytime_td,,Yes,275,0.229,,7,betrivers,agree,0.350
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Deebo Samuel,player_rush_yds,8.5,Over,-114,0.503,,3,fanduel,agree,20.3
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Demarcus Robinson,player_anytime_td,,Yes,950,0.092,,7,draftkings,agree,0.181
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Devin Culp,player_anytime_td,,Yes,2000,0.038,,3,betrivers,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Gavin Bartholomew,player_anytime_td,,Yes,330,0.208,,6,betrivers,neutral,0.158
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_anytime_td,,Yes,175,0.319,,7,betrivers,neutral,0.355
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_reception_yds,51.5,Over,-114,0.518,,6,fanduel,neutral,52.0
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,George Kittle,player_receptions,4.5,Under,-105,0.511,,5,betparx,neutral,4.8
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jacob Cowing,player_anytime_td,,Yes,2500,0.044,,6,betmgm,neutral,0.038
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,James Jordan,player_anytime_td,,Yes,2000,0.047,,7,betmgm,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_anytime_td,,Yes,525,0.170,,7,betmgm,neutral,0.139
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_reception_yds,19.5,Over,-125,0.539,,5,betmgm,disagree,17.4
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jauan Jennings,player_receptions,2.5,Under,-135,0.542,,2,hardrockbet,neutral,2.0
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jeshaun Jones,player_anytime_td,,Yes,2250,0.037,,3,hardrockbet,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jordan Mason,player_anytime_td,,Yes,235,0.265,,7,draftkings,agree,0.351
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jordan Mason,player_rush_yds,43.5,Under,-114,0.507,,7,fanduel,agree,38.1
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Jordan Watkins,player_anytime_td,,Yes,550,0.136,,7,betrivers,disagree,0.055
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Justin Jefferson,player_anytime_td,,Yes,120,0.398,,7,draftkings,neutral,0.361
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Justin Jefferson,player_reception_yds,82.5,Over,-114,0.502,,7,fanduel,disagree,51.0
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Justin Jefferson,player_receptions,7.5,Under,-145,0.563,,6,hardrockbet,agree,5.2
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kaelon Black,player_anytime_td,,Yes,300,0.210,,7,betmgm,neutral,0.202
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kaelon Black,player_rush_yds,26.5,Over,-114,0.513,,7,fanduel,agree,31.8
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Keenan Allen,player_anytime_td,,Yes,300,0.214,,7,betmgm,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kirk Cousins,player_anytime_td,,Yes,1300,0.064,,7,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kirk Cousins,player_pass_completions,22.5,Under,-111,0.512,,5,betmgm,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kirk Cousins,player_pass_yds,230.5,Over,-115,0.514,,7,betparx,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kirk Cousins,player_rush_yds,1.5,Over,-112,0.769,,1,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Kyle Juszczyk,player_anytime_td,,Yes,1150,0.073,,7,betmgm,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Luke Farrell,player_anytime_td,,Yes,1500,0.054,,7,betmgm,agree,0.140
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Max Bredeson,player_anytime_td,,Yes,4000,0.027,,7,hardrockbet,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Mike Evans,player_anytime_td,,Yes,175,0.309,,4,betmgm,neutral,0.286
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings D/ST,player_anytime_td,,Yes,600,0.124,,2,draftkings,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Minnesota Vikings Defense,player_anytime_td,,Yes,700,0.100,,1,fanduel,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Myles Price,player_anytime_td,,Yes,600,0.148,,7,draftkings,neutral,0.115
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,San Francisco 49ers D/ST,player_anytime_td,,Yes,575,0.126,,2,betmgm,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,San Francisco 49ers Defense,player_anytime_td,,Yes,800,0.089,,1,fanduel,n/a,
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,T.J. Hockenson,player_anytime_td,,Yes,255,0.236,,7,draftkings,neutral,0.282
+2026-11-22T21:44:55+00:00,book,Minnesota Vikings @ San Francisco 49ers,Tai Felton,player_anytime_td,,Yes,550,0.132,,7,fanduel,disagree,0.073
+2026-11-22T21:44:55+00:00,game,Cincinnati Bengals @ Washington Commanders,,game_ml,,Cincinnati Bengals,-290,0.715,,8,fanduel,n/a,
+2026-11-22T21:44:55+00:00,game,Cincinnati Bengals @ Washington Commanders,,game_spread,-6.0,Cincinnati Bengals,-108,0.506,,8,betmgm,n/a,
+2026-11-22T21:44:55+00:00,game,Cincinnati Bengals @ Washington Commanders,,game_total,54.5,Over,-109,0.506,,8,betrivers,n/a,
+2026-11-22T21:44:55+00:00,game,Minnesota Vikings @ San Francisco 49ers,,game_ml,,San Francisco 49ers,-190,0.639,,8,draftkings,n/a,
+2026-11-22T21:44:55+00:00,game,Minnesota Vikings @ San Francisco 49ers,,game_spread,-4.0,San Francisco 49ers,-110,0.503,,8,betmgm,n/a,
+2026-11-22T21:44:55+00:00,game,Minnesota Vikings @ San Francisco 49ers,,game_total,45.5,Over,100,0.500,,8,espnbet,n/a,
